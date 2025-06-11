@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -24,10 +26,13 @@ class AuthController extends Controller
             'password.required' => 'กรุณากรอกรหัสผ่าน',
             'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
         ]);
-        if ($request->password === '123456') {
-            return redirect('/home')->with('success', 'เข้าสู้ระบบสำเร็จ');
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
         } else {
-            return back()->withErrors(['password' => 'password ไม่ถูกต้อง']);
+            return back()->withErrors(['password' => 'email หรือ password ไม่ถูกต้อง']);
         }
     }
     public function homePage()
