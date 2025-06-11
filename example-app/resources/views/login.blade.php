@@ -12,16 +12,27 @@
 <body>
     <a href="{{route('login')}}"></a>
     <div class="flex items-center justify-center min-h-screen">
-        <div class="flex flex-col space-y-4 p-8 bg-white rounded-xl shadow-lg">
+        <form method="POST" action="{{route('login.submit')}}"
+            class="flex flex-col space-y-4 p-8 bg-white rounded-xl shadow-lg">
+            @csrf
             <h1 class="text-2xl font-bold text-center">เข้าสู่ระบบ</h1>
-            <input id="name" type="text" placeholder="USERNAME"
+            @if($errors->any())
+                <div class="text-red-500 text-sm items-center justify-center flex">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <input name="email" type="text" placeholder="EMAIL @go.buu.ac.th" value="{{old('email')}}"
                 class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <input id="password" type="password" placeholder="PASSWORD"
+            <input name="password" type="password" placeholder="PASSWORD"
                 class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <a href="https://myid.buu.ac.th/newchangepwd"
                 class="text-blue-500 hover:underline text-sm text-center">ลืมรหัสผ่าน?</a>
             <button class="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">ตกลง</button>
-        </div>
+        </form>
     </div>
 </body>
 

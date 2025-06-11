@@ -2,10 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class AuthController extends Controller
 {
     public function loginPage()
     {
         return view('login');
+    }
+
+    public function checkLogin(Request $request)
+    {
+
+        $request->validate([
+            'email' => ['required', 'email', 'regex:/@go\.buu\.ac\.th$/'],
+            'password' => 'required|min:6',
+        ], [
+            'email.regex' => 'email ต้องเป็น @go.buu.ac.th เท่านั้น',
+            'email.email' => 'รูปแบบ email ไม่ถูกต้อง',
+            'email.required' => 'กรุณากรอก email',
+            'password.required' => 'กรุณากรอกรหัสผ่าน',
+            'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
+        ]);
+        if ($request->password === '123456') {
+            return redirect('/home')->with('success', 'เข้าสู้ระบบสำเร็จ');
+        } else {
+            return back()->withErrors(['password' => 'password ไม่ถูกต้อง']);
+        }
+    }
+    public function homePage()
+    {
+        return view('home');
     }
 }

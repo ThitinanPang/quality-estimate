@@ -9,3 +9,6 @@ Route::get('/', function () {
 });
 
 Route::get('/login',[AuthController::class,'loginPage'])->name('login');
+Route::post('/login',[AuthController::class,'checkLogin'])->name('login.submit');
+
+Route::get('/home',[AuthController::class,'homePage'])->name('home');
