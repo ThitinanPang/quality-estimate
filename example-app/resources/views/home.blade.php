@@ -9,6 +9,7 @@
 
 </head>
 <body>
+    <h2>{{session('user_email')}}</h2>
     <a href="{{route('home')}}"></a>
     <img src="https://www.vets4pets.com/siteassets/species/cat/cat-close-up-of-side-profile.jpg" alt="">
 </body>
