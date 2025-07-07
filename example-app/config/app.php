@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'ldap_host_2' => env('LDAP_HOST_2'),
+    'ldap_port' => env('LDAP_PORT', 389),
+    'ldap_base_dn' => env('LDAP_BASE_DN'),
 ];

@@ -11,6 +11,7 @@ use LdapRecord\Container;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Connection;
 
+
 class AuthController extends Controller
 {
     public function loginPage()
@@ -43,11 +44,11 @@ class AuthController extends Controller
         try {
             // สร้าง connection ใหม่ด้วย username/password ที่ผู้ใช้กรอก
             $connection = new Connection([
-                'hosts' => [env('LDAP_HOST_2')],
-                'base_dn' => env('LDAP_BASE_DN'),
+                'hosts' => [config('app.ldap_host_2')],
+                'base_dn' => config('app.ldap_base_dn'),
                 'username' => $ldapUsername,
                 'password' => $ldapPassword,
-                'port' => env('LDAP_PORT', 389),
+                'port' => config('app.ldap_port'),
             ]);
 
             $connection->connect();
