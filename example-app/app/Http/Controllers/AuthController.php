@@ -71,4 +71,13 @@ class AuthController extends Controller
     {
         return view('home');
     }
+    public function userPage(){
+        return view('user');
+    }
+    public function assessmentPage(){
+        return view('assessment');
+    }
+    public function evaluationPage(){
+        return view('evaluation');
+    }
 }

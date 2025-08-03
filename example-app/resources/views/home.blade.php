@@ -55,9 +55,9 @@
             <p class=" absolute top-[24px] left-[680px]">กองบริหารการศึกษา</p>
             <p class=" absolute top-[72px] left-[266px] text-[36px]">ระบบรายงานผลประเมินคุณภาพการศึกษา</p>
             <p class=" absolute top-[10px] left-[1300px]">{{session('user_email')}}</p>
-            <div class=" absolute w-[1093px] h-[799px] top-[173px] left-[181px]  justify-items-center border border-red-500">
+            <div class=" absolute w-[1093px] h-[799px] top-[173px] left-[181px]  justify-items-center">
                 <div class=" shadow-xl absolute flex justify-between items-center px-4 bg-white w-[761px] h-[56px] rounded-full">
-                    <button type="button" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">หน้าหลัก</button>
+                    <button type="button" class="px-4 bg-[#FFE98B] rounded-full h-[39px]">หน้าหลัก</button>
                     <button type="button" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">ข้อมูลพื้นฐาน</button>
                     <button type="button"class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">บันทึกผลการประเมิน</button>
                     <button type="button" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">รายงานผลประเมิน</button>
