@@ -58,9 +58,9 @@
             <div class=" absolute w-[1093px] h-[799px] top-[173px] left-[181px]  justify-items-center">
                 <div class=" shadow-xl absolute flex justify-between items-center px-4 bg-white w-[761px] h-[56px] rounded-full">
                     <button type="button" class="px-4 bg-[#FFE98B] rounded-full h-[39px]">หน้าหลัก</button>
-                    <button type="button" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">ข้อมูลพื้นฐาน</button>
-                    <button type="button"class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">บันทึกผลการประเมิน</button>
-                    <button type="button" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">รายงานผลประเมิน</button>
+                    <button type="button" onclick="window.location.href='{{route('user')}}'" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">ข้อมูลพื้นฐาน</button>
+                    <button type="button" onclick="window.location.href='{{route('assessment')}}'" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">บันทึกผลการประเมิน</button>
+                    <button type="button" onclick="window.location.href='{{route('evaluation')}}'" class="px-4 hover:bg-[#FFE98B] rounded-full h-[39px]">รายงานผลประเมิน</button>
                 </div>
                 <p class="top-[80px] text-[36px] absolute">ที่มาและความสำคัญ</p>
                 <svg class=" absolute top-[140px]" width="1115" height="577" viewBox="0 0 1115 577" fill="none" xmlns="http://www.w3.org/2000/svg"

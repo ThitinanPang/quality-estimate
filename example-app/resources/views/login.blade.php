@@ -27,7 +27,7 @@
                     </ul>
                 </div>
             @endif
-            <input name="email" type="text" placeholder="EMAIL @go.buu.ac.th" value="{{old('email')}}"
+            <input name="email" type="text" placeholder="EMAIL BUU" value="{{old('email')}}"
                 class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <div class="relative">
                 <input id="password" name="password" type="password" placeholder="PASSWORD"

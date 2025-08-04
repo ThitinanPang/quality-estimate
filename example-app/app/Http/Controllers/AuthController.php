@@ -27,10 +27,10 @@ class AuthController extends Controller
         ]);
 
         $request->validate([
-            'email' => ['required', 'email', 'regex:/@go\.buu\.ac\.th$/'],
+            // 'email' => ['required', 'email', 'regex:/@go\.buu\.ac\.th$/'],
             'password' => 'required|min:6',
         ], [
-            'email.regex' => 'email ต้องเป็น @go.buu.ac.th เท่านั้น',
+            // 'email.regex' => 'email ต้องเป็น @go.buu.ac.th เท่านั้น',
             'email.email' => 'รูปแบบ email ไม่ถูกต้อง',
             'email.required' => 'กรุณากรอก email',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
