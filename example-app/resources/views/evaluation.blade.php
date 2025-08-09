@@ -10,7 +10,7 @@
 </head>
 <body>
     <a href="{{route('evaluation')}}"></a>
-            <div class=" h-[1024px] bg-[linear-gradient(rgba(251,216,68,1),rgba(255,233,139,1))]">
+    <div class=" h-[1024px] bg-[linear-gradient(rgba(251,216,68,1),rgba(255,233,139,1))]">
         <div class="h-[145px] relative bg-white">
             <svg class="absolute top-[21px] left-[44px]" width="192" height="104" viewBox="0 0 192 104" fill="none"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
