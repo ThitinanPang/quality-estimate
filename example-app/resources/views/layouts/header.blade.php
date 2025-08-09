@@ -34,17 +34,69 @@
         <p class=" absolute top-[37px] left-[1220px] text-[24px]">{{session('user_email')}}</p>
     </header>
     {{-- sliding sidebar --}}
-    <div class="absolute h-[931px] w-[256px] bg-white z-1
-    -translate-x-[195px] hover:translate-x-0 transition-transform duration-300">
-        <ul>
-            <li>
-                <a href="">
-                    <svg width="25" height="28" viewBox="0 0 25 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M0 24.8V10.4C0 9.89333 0.110937 9.41333 0.332812 8.96C0.554687 8.50667 0.860417 8.13333 1.25 7.84L10.625 0.64C11.1719 0.213333 11.7969 0 12.5 0C13.2031 0 13.8281 0.213333 14.375 0.64L23.75 7.84C24.1406 8.13333 24.4469 8.50667 24.6687 8.96C24.8906 9.41333 25.001 9.89333 25 10.4V24.8C25 25.68 24.6937 26.4336 24.0812 27.0608C23.4687 27.688 22.7333 28.0011 21.875 28H17.1875C16.7448 28 16.374 27.8464 16.075 27.5392C15.776 27.232 15.626 26.8523 15.625 26.4V18.4C15.625 17.9467 15.475 17.5669 15.175 17.2608C14.875 16.9547 14.5042 16.8011 14.0625 16.8H10.9375C10.4948 16.8 10.124 16.9536 9.825 17.2608C9.52604 17.568 9.37604 17.9477 9.375 18.4V26.4C9.375 26.8533 9.225 27.2336 8.925 27.5408C8.625 27.848 8.25416 28.0011 7.8125 28H3.125C2.26562 28 1.53021 27.6869 0.918749 27.0608C0.307291 26.4347 0.00104167 25.6811 0 24.8Z"
-                            fill="black" />
-                    </svg>
-                    <span>หน้าหลัก</span>
+    <div
+        class="group absolute h-[931px] w-[60px] overflow-hidden bg-white z-10 transition-all duration-300 hover:w-[256px]">
+        <ul class="relative">
+            <li class="my-[5px] hover:bg-[#FFCE00]">
+                <a href="" class="relative flex items-center whitespace-nowrap mb-0">
+                    <div class="flex justify-center items-center h-[75px] w-[60px]">
+                        <svg class="ml-4" width="25" height="28" viewBox="0 0 25 28" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0 24.8V10.4C0 9.89333 0.110937 9.41333 0.332812 8.96C0.554687 8.50667 0.860417 8.13333 1.25 7.84L10.625 0.64C11.1719 0.213333 11.7969 0 12.5 0C13.2031 0 13.8281 0.213333 14.375 0.64L23.75 7.84C24.1406 8.13333 24.4469 8.50667 24.6687 8.96C24.8906 9.41333 25.001 9.89333 25 10.4V24.8C25 25.68 24.6937 26.4336 24.0812 27.0608C23.4687 27.688 22.7333 28.0011 21.875 28H17.1875C16.7448 28 16.374 27.8464 16.075 27.5392C15.776 27.232 15.626 26.8523 15.625 26.4V18.4C15.625 17.9467 15.475 17.5669 15.175 17.2608C14.875 16.9547 14.5042 16.8011 14.0625 16.8H10.9375C10.4948 16.8 10.124 16.9536 9.825 17.2608C9.52604 17.568 9.37604 17.9477 9.375 18.4V26.4C9.375 26.8533 9.225 27.2336 8.925 27.5408C8.625 27.848 8.25416 28.0011 7.8125 28H3.125C2.26562 28 1.53021 27.6869 0.918749 27.0608C0.307291 26.4347 0.00104167 25.6811 0 24.8Z"
+                                fill="black" />
+                        </svg>
+                    </div>
+                    <span
+                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">หน้าหลัก</span>
+                </a>
+            </li>
+            <li class="my-[5px] hover:bg-[#FFCE00]">
+                <a href="{{route('user')}}" class="relative flex items-center whitespace-nowrap mb-0">
+                    <div class="flex justify-center items-center h-[75px] w-[60px]">
+                        <svg class="ml-4" width="25" height="25" viewBox="0 0 25 25" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M15.875 1.25H9.125C3.5 1.25 1.25 3.5 1.25 9.125V15.875C1.25 20.1275 2.5325 22.4563 5.5925 23.3225C5.84 20.3975 8.84375 18.0913 12.5 18.0913C16.1562 18.0913 19.16 20.3975 19.4075 23.3225C22.4675 22.4563 23.75 20.1275 23.75 15.875V9.125C23.75 3.5 21.5 1.25 15.875 1.25ZM12.5 14.9413C10.2725 14.9413 8.4725 13.13 8.4725 10.9025C8.4725 8.67502 10.2725 6.875 12.5 6.875C14.7275 6.875 16.5275 8.67502 16.5275 10.9025C16.5275 13.13 14.7275 14.9413 12.5 14.9413Z"
+                                stroke="black" stroke-opacity="0.9" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span
+                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">ข้อมูลพื้นฐาน</span>
+                </a>
+            </li>
+            <li class="my-[5px] hover:bg-[#FFCE00]">
+                <a href="" class="relative flex items-center whitespace-nowrap mb-0">
+                    <div class="flex justify-center items-center h-[75px] w-[60px]">
+                        <svg class="ml-4" width="27" height="29" viewBox="0 0 27 29" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20.4825 9.38498L21.0805 8.78565C21.5567 8.3093 22.2026 8.04163 22.8761 8.0415C23.5496 8.04138 24.1956 8.30883 24.672 8.785C25.1483 9.26118 25.416 9.90707 25.4161 10.5806C25.4163 11.2541 25.1488 11.9001 24.6726 12.3765L24.0746 12.9758M20.4825 9.38498C20.4825 9.38498 20.5574 10.656 21.6798 11.7784C22.8023 12.9009 24.0746 12.9758 24.0746 12.9758M20.4825 9.38498L14.98 14.8875C14.6054 15.2595 14.4194 15.4468 14.2592 15.6521C14.0698 15.895 13.9087 16.1559 13.7761 16.4349C13.6638 16.67 13.5811 16.9193 13.4145 17.4191L12.881 19.0208L12.7079 19.5388M24.0746 12.9758L18.5721 18.4783C18.1975 18.8529 18.0115 19.0389 17.8061 19.1991C17.5633 19.3885 17.3024 19.5495 17.0234 19.6821C16.7883 19.7945 16.539 19.8772 16.0391 20.0438L14.4375 20.5773L13.9195 20.7504M12.7079 19.5388L12.5361 20.058C12.4961 20.1785 12.4904 20.3078 12.5197 20.4314C12.5489 20.555 12.612 20.668 12.7018 20.7578C12.7916 20.8476 12.9046 20.9107 13.0282 20.9399C13.1517 20.9692 13.281 20.9635 13.4016 20.9234L13.9195 20.7504M12.7079 19.5388L13.9195 20.7504"
+                                stroke="black" stroke-width="1.5" />
+                            <path
+                                d="M7.33333 15.7917H10.5625M7.33333 10.625H15.7292M7.33333 20.9583H9.27083M22.6112 3.09718C21.0986 1.58334 18.6625 1.58334 13.7917 1.58334H11.2083C6.33746 1.58334 3.90137 1.58334 2.38883 3.09718C0.876292 4.61101 0.875 7.0458 0.875 11.9167V17.0833C0.875 21.9542 0.875 24.3903 2.38883 25.9028C3.90267 27.4154 6.33746 27.4167 11.2083 27.4167H13.7917C18.6625 27.4167 21.0986 27.4167 22.6112 25.9028C23.8305 24.6848 24.0669 22.87 24.1134 19.6667"
+                                stroke="black" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span
+                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">บันทึกผลการประเมิน</span>
+                </a>
+            </li>
+            <li class="my-[5px] hover:bg-[#FFCE00]">
+                <a href="" class="relative flex items-center whitespace-nowrap mb-0">
+                    <div class="flex justify-center items-center h-[75px] w-[60px]">
+                        <svg class="ml-[14px]" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.33329 28C8.62605 28 7.94777 27.719 7.44767 27.219C6.94758 26.7189 6.66663 26.0406 6.66663 25.3333V4H18.6666L25.3333 10.6667V25.3333C25.3333 26.0406 25.0523 26.7189 24.5522 27.219C24.0521 27.719 23.3739 28 22.6666 28H9.33329Z"
+                                stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17.3333 4V12H25.3333" stroke="black" stroke-width="1.5" stroke-linejoin="round" />
+                            <path d="M12 17.3334H20M12 22.6667H20" stroke="black" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <span
+                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">รายงานผลการประเมิน</span>
                 </a>
             </li>
         </ul>

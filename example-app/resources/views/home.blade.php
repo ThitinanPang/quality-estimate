@@ -3,7 +3,7 @@
 @section('content')
     <p class="absolute top-[184px] left-[646px] text-[45px]">หน้าหลัก</p>
     <button type="button" onclick="window.location.href='{{route('user')}}'"
-        class="absolute w-[427px] h-[548px] left-[62px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFE98B]">
+        class="absolute w-[427px] h-[548px] left-[62px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
         <svg class="absolute top-[113px] left-[157px]" width="114" height="119" viewBox="0 0 114 119" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -19,7 +19,7 @@
         <span class="absolute top-[300px] left-[122px] text-[40px]">ข้อมูลพื้นฐาน</span>
     </button>
     <button type="button" onclick=""
-        class="absolute w-[427px] h-[548px] left-[511px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFE98B]">
+        class="absolute w-[427px] h-[548px] left-[511px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
         <svg class="absolute top-[113px] left-[157px]" width="114" height="114" viewBox="0 0 114 114" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -32,7 +32,7 @@
         <span class="absolute top-[300px] left-[53px] text-[40px]">บันทึกข้อมูลพื้นฐาน</span>
     </button>
     <button type="button" onclick=""
-        class="absolute w-[427px] h-[548px] left-[958px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFE98B]">
+        class="absolute w-[427px] h-[548px] left-[958px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
         <svg class="absolute top-[113px] left-[157px]" width="114" height="114" viewBox="0 0 114 114" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
