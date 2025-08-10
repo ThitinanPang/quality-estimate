@@ -22,12 +22,7 @@ class AuthController extends Controller
     public function checkLogin(Request $request)
     {
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-
-        $request->validate([
-            // 'email' => ['required', 'email', 'regex:/@go\.buu\.ac\.th$/'],
+            'email' => ['required', 'email'],
             'password' => 'required|min:6',
         ], [
             // 'email.regex' => 'email ต้องเป็น @go.buu.ac.th เท่านั้น',
@@ -53,6 +48,21 @@ class AuthController extends Controller
 
             $connection->connect();
             $connection->auth()->bind();
+            // ดึงข้อมูล
+            $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
+
+            $name = $ldapUser['displayname'][0] ?? $username;
+            $email = $ldapUser['mail'][0] ?? $request->email;
+
+            $user = User::updateOrCreate(
+                ['email' => $email],
+                [
+                    'name' => $name,
+                    'role' => 'user',
+                    'status' => 'active',
+                ]
+            );
+
             session(['user_email' => $request->email]);
             // ถ้าไม่ throw exception แปลว่า login สำเร็จ
             logger('LDAP bind success: ' . $ldapUsername);
@@ -71,13 +81,16 @@ class AuthController extends Controller
     {
         return view('home');
     }
-    public function userPage(){
+    public function userPage()
+    {
         return view('user');
     }
-    public function assessmentPage(){
+    public function assessmentPage()
+    {
         return view('assessment');
     }
-    public function evaluationPage(){
+    public function evaluationPage()
+    {
         return view('evaluation');
     }
 }
