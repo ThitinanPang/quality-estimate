@@ -50,25 +50,31 @@ class AuthController extends Controller
             $connection->auth()->bind();
             // ดึงข้อมูล
             $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
-
-            $name = $ldapUser['displayname'][0] ?? $username;
+            
             $email = $ldapUser['mail'][0] ?? $request->email;
 
             $user = User::updateOrCreate(
                 ['email' => $email],
                 [
-                    'name' => $name,
-                    'role' => 'user',
+                    'role' => $user->role ?? null,
                     'status' => 'active',
                 ]
             );
-
+            session(['user_name' => $user->name]);
             session(['user_email' => $request->email]);
+            if (empty($user->role)) {
+                return back()->withErrors([
+                    'email' => 'บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน',
+                ]);
+            } elseif ($user->role == 'admin') {
+                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
+            } elseif ($user->role == 'user') {
+                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
+            } elseif ($user->role == 'admin_buu'){
+                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
+            }
             // ถ้าไม่ throw exception แปลว่า login สำเร็จ
             logger('LDAP bind success: ' . $ldapUsername);
-
-            return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-
         } catch (\LdapRecord\Auth\BindException $e) {
             logger('LDAP bind failed: ' . $e->getMessage());
 

@@ -31,14 +31,14 @@
         <a href="{{route('home')}}" class="hover:underline absolute text-[20px] top-[41px] left-[1044px]">หน้าหลัก</a>
         <p class=" absolute top-[25px] left-[232px] text-[24px] whitespace-pre-line">ระบบรายงานผลประเมินคุณภาพการศึกษา
             ภายในมหาวิทยาลัยบูรพา</p>
-        <p class=" absolute top-[37px] left-[1220px] text-[24px]">{{session('user_email')}}</p>
+        <p class=" absolute top-[37px] left-[1220px] text-[24px]">{{session('user_name')}}</p>
     </header>
     {{-- sliding sidebar --}}
     <div
-        class="group absolute h-[931px] w-[60px] overflow-hidden bg-white z-10 transition-all duration-300 hover:w-[256px]">
+        class="group absolute h-[931px] w-[60px] overflow-hidden bg-white z-10 transition-all duration-300 hover:w-[256px] border">
         <ul class="relative">
             <li class="my-[5px] hover:bg-[#FFCE00]">
-                <a href="" class="relative flex items-center whitespace-nowrap mb-0">
+                <a href="{{route('home')}}" class="relative flex items-center whitespace-nowrap mb-0">
                     <div class="flex justify-center items-center h-[75px] w-[60px]">
                         <svg class="ml-4" width="25" height="28" viewBox="0 0 25 28" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
