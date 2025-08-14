@@ -35,7 +35,7 @@
     </header>
     {{-- sliding sidebar --}}
     <div
-        class="group absolute h-[931px] w-[60px] overflow-hidden bg-white z-10 transition-all duration-300 hover:w-[256px] border">
+        class="group absolute h-[931px] w-[60px] overflow-hidden bg-white z-10 transition-all duration-300 hover:w-[256px]">
         <ul class="relative">
             <li class="my-[5px] hover:bg-[#FFCE00]">
                 <a href="{{route('home')}}" class="relative flex items-center whitespace-nowrap mb-0">
@@ -52,7 +52,7 @@
                 </a>
             </li>
             <li class="my-[5px] hover:bg-[#FFCE00]">
-                <a href="{{route('user')}}" class="relative flex items-center whitespace-nowrap mb-0">
+                <a class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                     <div class="flex justify-center items-center h-[75px] w-[60px]">
                         <svg class="ml-4" width="25" height="25" viewBox="0 0 25 25" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +63,21 @@
                         </svg>
                     </div>
                     <span
-                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">ข้อมูลพื้นฐาน</span>
+                        class="p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">ข้อมูลพื้นฐาน</span>
+                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                            fill="black" />
+                    </svg>
+                    <div class="dropdown-container hidden bg-white">
+                        <a href="{{route('user')}}" class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 text-[15px] rounded-[12px] left-[60px] relative">ข้อมูลผู้ใช้</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">ข้อมูลผู้ประเมิน</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">ข้อมูลผู้ดูแลระดับคณะ</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">จัดผู้ประเมินหลักสูตร</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">รายชื่อผู้ประเมิน</a>
+                        <a href="" class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[60px] relative">จัดโครงสร้างหลักสูตร</a>
+                    </div>
                 </a>
             </li>
             <li class="my-[5px] hover:bg-[#FFCE00]">
@@ -86,7 +100,8 @@
             <li class="my-[5px] hover:bg-[#FFCE00]">
                 <a href="" class="relative flex items-center whitespace-nowrap mb-0">
                     <div class="flex justify-center items-center h-[75px] w-[60px]">
-                        <svg class="ml-[14px]" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="ml-[14px]" width="32" height="32" viewBox="0 0 32 32" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M9.33329 28C8.62605 28 7.94777 27.719 7.44767 27.219C6.94758 26.7189 6.66663 26.0406 6.66663 25.3333V4H18.6666L25.3333 10.6667V25.3333C25.3333 26.0406 25.0523 26.7189 24.5522 27.219C24.0521 27.719 23.3739 28 22.6666 28H9.33329Z"
                                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -103,5 +118,16 @@
     </div>
     @yield('content')
 </body>
+<script>
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    for (let i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            var dropdownContent = this.nextElementSibling;
+            dropdownContent.classList.toggle("hidden");
+            dropdownContent.classList.toggle("block");
+        });
+    }
+
+</script>
 
 </html>
