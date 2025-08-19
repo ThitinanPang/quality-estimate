@@ -91,12 +91,18 @@ class AuthController extends Controller
     {
         return view('user');
     }
-    public function assessmentPage()
+    public function assessorPage()
     {
-        return view('assessment');
+        return view('assessor');
     }
-    public function evaluationPage()
+    public function facultyPage()
     {
-        return view('evaluation');
+        return view('faculty ');
+    }
+    public function universityPage(){
+        return view('university');
+    }
+    public function listnamePage(){
+        return view('listname');
     }
 }
