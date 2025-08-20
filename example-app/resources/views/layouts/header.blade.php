@@ -77,7 +77,7 @@
                         class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ดูแลระดับคณะ</a>
                     <a href="{{route('university')}}"
                         class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</a>
-                    <a href=""
+                    <a href="{{route('listname')}}"
                         class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
                     <a href=""
                         class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
