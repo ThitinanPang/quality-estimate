@@ -21,6 +21,6 @@
         สาขา</p>
     <select name="" id=""
         class=" absolute top-[215px] left-[422px] flex flex-row justify-center items-center px-[6px]w-[205px] h-[32px] bg-white border border-black rounded-r-[20px]">
-        <option value="">volvoaaaaaaaaaaaaaaaaaa</option>
+        <option value="">วิศวกรรมซอฟต์แวร์</option>
     </select>
 @endsection
