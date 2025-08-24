@@ -105,4 +105,10 @@ class AuthController extends Controller
     public function listnamePage(){
         return view('listname');
     }
+    public function recordPage(){
+        return view('record');
+    }
+    public function resultsPage(){
+        return view('results');
+    }
 }

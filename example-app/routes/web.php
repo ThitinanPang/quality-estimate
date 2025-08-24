@@ -16,3 +16,5 @@ Route::get('/assessor',[AuthController::class,'assessorPage'])->name('assessor')
 Route::get('/faculty',[AuthController::class,'facultyPage'])->name('faculty');
 Route::get('/university',[AuthController::class,'universityPage'])->name('university');
 Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname');
+Route::get('/record',[AuthController::class,'recordPage'])->name('record');
+Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
