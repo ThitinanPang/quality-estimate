@@ -31,6 +31,6 @@
                 <p class="text-[24px] ml-[10px]">อีเมล :</p>
             </div>
         </div>
-        <button type="button" class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] hover:bg-white">ปรเมิน</button>
+        <button type="button" onclick="window.location.href='{{route('save')}}'" class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] hover:bg-white">ปรเมิน</button>
     </div>
 @endsection

@@ -111,4 +111,7 @@ class AuthController extends Controller
     public function resultsPage(){
         return view('results');
     }
+    public function savePage(){
+        return view('save');
+    }
 }
