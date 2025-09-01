@@ -5,8 +5,7 @@
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[150px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
     <div
-        class="absolute w-[284px] h-[34.67px] left-[1114px] top-[158.33px] 
-                                                            bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
+        class="absolute w-[284px] h-[34.67px] left-[1114px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
             class="ml-4 outline-none border-none focus:outline-none focus:border-none ">
         <svg class="absolute left-[247px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -16,9 +15,8 @@
                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </div>
-    <button type="button"
-        class="absolute w-[155px] h-[37px] left-[85px] top-[210px] 
-                                    bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[18px] hover:bg-white">
+    <button type="button" onclick="window.location.href='{{route('adduser')}}'"
+        class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[18px] hover:bg-white">
         <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -79,12 +77,7 @@
                                         d='M13.0517 3.53243L14.4575 2.05305C14.7506 1.74484 15.148 1.57169 15.5625 1.57169C15.977 1.57169 16.3744 1.74484 16.6675 2.05305C16.9606 2.36126 17.1252 2.77929 17.1252 3.21517C17.1252 3.65105 16.9606 4.06907 16.6675 4.37729L7.81833 13.6839C7.37777 14.1469 6.83447 14.4873 6.2375 14.6742L4 15.3753L4.66667 13.0222C4.8444 12.3943 5.16803 11.823 5.60833 11.3596L13.0517 3.53243ZM13.0517 3.53243L15.25 5.84439M14 11.8697V16.0326C14 16.5556 13.8025 17.0572 13.4508 17.427C13.0992 17.7968 12.6223 18.0046 12.125 18.0046H3.375C2.87772 18.0046 2.40081 17.7968 2.04917 17.427C1.69754 17.0572 1.5 16.5556 1.5 16.0326V6.83035C1.5 6.30737 1.69754 5.8058 2.04917 5.436C2.40081 5.06619 2.87772 4.85843 3.375 4.85843H7.33333'
                                         stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' />
                                 </svg>
-                                <a href="#" class="text-[#7B7B7B] open-modal" data-prefix="{{ $row['prefix'] }}"
-                                    data-name="{{ $row['name'] }}" data-faculty="{{ $row['faculty'] }}"
-                                    data-status="{{ $row['status'] }}" data-email="{{ $row['email'] }}"
-                                    data-phone="{{ $row['phone_number'] }}">
-                                    แก้ไข
-                                </a>
+                                <a href="" class="text-[#7B7B7B]">แก้ไข</a>
                             </td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['name'] }}</td>
@@ -106,58 +99,6 @@
     @php
         $conn->close();
     @endphp
-    {{-- Modal --}}
-    <div id="editModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
-        <div class="bg-white w-[500px] rounded-2xl shadow-lg p-6 relative">
-            <h2 class="text-xl font-bold mb-4">แก้ไขข้อมูล</h2>
-
-            <form id="editForm" method="POST">
-                @csrf
-                @method('PUT')
-
-                <input type="hidden" name="id" id="edit_id">
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">คำนำหน้า</label>
-                    <input type="text" name="prefix" id="edit_prefix" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">ชื่อ - นามสกุล</label>
-                    <input type="text" name="name" id="edit_name" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">คณะ</label>
-                    <input type="text" name="faculty" id="edit_faculty" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">สถานะ</label>
-                    <input type="text" name="status" id="edit_status" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">อีเมล</label>
-                    <input type="email" name="email" id="edit_email" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="mb-3">
-                    <label class="block text-sm font-medium">เบอร์โทรศัพท์</label>
-                    <input type="text" name="phone_number" id="edit_phone_number" class="w-full border rounded px-3 py-2">
-                </div>
-
-                <div class="flex justify-end gap-3 mt-4">
-                    <button type="button" onclick="closeModal()"
-                        class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">ยกเลิก</button>
-                    <button type="submit" class="px-4 py-2 rounded bg-[#FFCE00] hover:bg-white">บันทึก</button>
-                </div>
-            </form>
-
-            <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-black">&times;</button>
-        </div>
-    </div>
-
     <script>
         function myFunction() {
             var input = document.getElementById("myInput");
@@ -177,31 +118,5 @@
                 tr[i].style.display = show ? "" : "none";
             }
         }
-        document.addEventListener("DOMContentLoaded", function () {
-            const modal = document.getElementById("editModal");
-            const closeBtns = document.querySelectorAll("#closeModal");
-
-            document.querySelectorAll(".open-modal").forEach(btn => {
-                btn.addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    // ดึงค่า data-* จากลิงก์ที่กด
-                    document.getElementById("edit_prefix").value = this.dataset.prefix;
-                    document.getElementById("edit_name").value = this.dataset.name;
-                    document.getElementById("edit_faculty").value = this.dataset.faculty;
-                    document.getElementById("edit_status").value = this.dataset.status;
-                    document.getElementById("edit_email").value = this.dataset.email;
-                    document.getElementById("edit_phone_number").value = this.dataset.phone;
-
-                    modal.classList.remove("hidden");
-                });
-            });
-
-            // ปิด modal ได้จากปุ่มทุกอันที่มี id="closeModal"
-            closeBtns.forEach(btn => {
-                btn.addEventListener("click", () => {
-                    modal.classList.add("hidden");
-                });
-            });
-        });    </script>
+</script>
 @endsection

@@ -25,7 +25,6 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => 'required|min:6',
         ], [
-            // 'email.regex' => 'email ต้องเป็น @go.buu.ac.th เท่านั้น',
             'email.email' => 'รูปแบบ email ไม่ถูกต้อง',
             'email.required' => 'กรุณากรอก email',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
@@ -48,40 +47,76 @@ class AuthController extends Controller
 
             $connection->connect();
             $connection->auth()->bind();
-            // ดึงข้อมูล
+
+            // ดึงข้อมูลผู้ใช้จาก LDAP
             $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
-            
             $email = $ldapUser['mail'][0] ?? $request->email;
 
+            // สร้างหรืออัปเดต user ใน DB
             $user = User::updateOrCreate(
                 ['email' => $email],
                 [
-                    'role' => $user->role ?? null,
+                    'name' => $ldapUser['displayname'][0] ?? $username,
+                    'role' => $user->role ?? null, // ถ้ามี role ใน DB อยู่แล้วใช้ค่าเดิม
                     'status' => 'active',
                 ]
             );
-            session(['user_name' => $user->name]);
-            session(['user_email' => $request->email]);
+
+            // ทำให้ Laravel Auth รู้จักผู้ใช้
+            Auth::login($user);
+
+            // ถ้า role ยังว่าง ให้ปิดการเข้าใช้งาน
             if (empty($user->role)) {
+                Auth::logout();
                 return back()->withErrors([
                     'email' => 'บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน',
                 ]);
-            } elseif ($user->role == 'admin') {
+            }
+
+            // redirect ตาม role
+            if ($user->role == 'admin') {
                 return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
             } elseif ($user->role == 'user') {
-                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-            } elseif ($user->role == 'admin_buu'){
-                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
+                return redirect('/userfill')->with('success', 'เข้าสู่ระบบสำเร็จ');
+            } elseif ($user->role == 'admin university') {
+                return redirect('/userfill')->with('success', 'เข้าสู่ระบบสำเร็จ');
             }
-            // ถ้าไม่ throw exception แปลว่า login สำเร็จ
+
             logger('LDAP bind success: ' . $ldapUsername);
+
         } catch (\LdapRecord\Auth\BindException $e) {
             logger('LDAP bind failed: ' . $e->getMessage());
-
             return back()->withErrors([
                 'email' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
             ]);
         }
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'prefix' => 'nullable|string|max:50',
+            'name' => 'required|string|max:255',
+            'subject_group' => 'nullable|string|max:100',
+            'faculty' => 'nullable|string|max:100',
+            'course' => 'nullable|string|max:100',
+            'email' => 'required|email|unique:users,email',
+            'phone_number' => 'nullable|string|max:10',
+        ]);
+
+        // บันทึกข้อมูลใหม่
+        User::updateOrCreate(
+            ['email' => $request->email], // ถ้ามี email เดิมให้ update
+            [
+                'prefix' => $request->prefix,
+                'name' => $request->name,
+                'subject_group' => $request->subject_group,
+                'faculty' => $request->faculty,
+                'course' => $request->course,
+                'phone_number' => $request->phone_number,
+            ]
+        );
+
+        return redirect()->back()->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
     public function homePage()
     {
@@ -99,19 +134,32 @@ class AuthController extends Controller
     {
         return view('faculty ');
     }
-    public function universityPage(){
+    public function universityPage()
+    {
         return view('university');
     }
-    public function listnamePage(){
+    public function listnamePage()
+    {
         return view('listname');
     }
-    public function recordPage(){
+    public function recordPage()
+    {
         return view('record');
     }
-    public function resultsPage(){
+    public function resultsPage()
+    {
         return view('results');
     }
-    public function savePage(){
+    public function savePage()
+    {
         return view('save');
+    }
+    public function adduserPage()
+    {
+        return view('adduser');
+    }
+    public function userfillPage()
+    {
+        return view('userfill');
     }
 }
