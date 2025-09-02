@@ -99,13 +99,15 @@ class AuthController extends Controller
             'subject_group' => 'nullable|string|max:100',
             'faculty' => 'nullable|string|max:100',
             'course' => 'nullable|string|max:100',
-            'email' => 'required|email|unique:users,email',
             'phone_number' => 'nullable|string|max:10',
         ]);
 
-        // บันทึกข้อมูลใหม่
+        // เอา email จาก user ที่ login แทน
+        $email = Auth::user()->email;
+
+        // อัปเดตหรือสร้าง record
         User::updateOrCreate(
-            ['email' => $request->email], // ถ้ามี email เดิมให้ update
+            ['email' => $email],
             [
                 'prefix' => $request->prefix,
                 'name' => $request->name,
@@ -116,7 +118,7 @@ class AuthController extends Controller
             ]
         );
 
-        return redirect()->back()->with('success', 'บันทึกข้อมูลเรียบร้อย');
+        return redirect('/home')->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
     public function homePage()
     {

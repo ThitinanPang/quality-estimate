@@ -13,39 +13,26 @@
 <body>
     <div class="flex flex-col items-center justify-center mt-[32px]">
         <p class="text-[24px]">กรอกรายละเอียด</p>
-        <form action="{{route('userfill.submit')}}" method="post" class="border rounded-[39px] bg-[#DBDBDB] w-[900px] h-[500px] mt-[32px] pl-[40px] pr-[40px] pt-[10px]">
+        <form action="{{route('userfill.submit')}}" method="post"
+            class="border rounded-[39px] bg-[#DBDBDB] w-[900px] h-[450px] mt-[32px] pl-[40px] pr-[40px] pt-[10px]">
             @csrf
             <p class="mt-[9px]">คำนำหน้า</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" name="prefix" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
             <p class="mt-[9px]">ขื่อ - สกุล</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" name="name" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
             <p class="mt-[9px]">กลุ่มวิชา</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" name="subject_group" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
             <p class="mt-[9px]">คณะ</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" name="faculty" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
             <p class="mt-[9px]">หลักสูตร</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
-            <p class="mt-[9px]">อีเมล</p>
-            <input type="text" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" name="course" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
             <p class="mt-[9px]">เบอร์โทรศัพท์</p>
-            <input type="text" id="myInput" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px]">
+            <input type="text" id="myInput" name="phone_number" class=" bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+            <div class="flex items-center justify-center">
+            <button type="submit"
+                class="w-[155px] mt-[55px] h-[37px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">บันทึก</button>
+            </div>
         </form>
-        <button onclick="myfunction()"
-            class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">บันทึก</button>
     </div>
-
 </body>
-    <script>
-        const input = document.getElementById('myInput');
-
-        input.addEventListener('input', () => {
-            // แทนที่เครื่องหมาย - ด้วยช่องว่าง
-            input.value = input.value.replace(/[-\s]/g, '');
-        });
-        function myfunction() {
-            alert("บันทึกสำเร็จ");
-            window.location.href = "{{ route('home') }}";
-        }
-    </script>
-
 </html>
