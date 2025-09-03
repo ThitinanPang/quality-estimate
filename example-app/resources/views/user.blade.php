@@ -1,5 +1,4 @@
 @extends('layouts.header')
-<script src="//unpkg.com/alpinejs" defer></script>
 
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[150px] font-normal text-[36px] leading-[54px]">
