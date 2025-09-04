@@ -45,7 +45,7 @@
             <thead class='bg-[#FFCE00]'>
                 <tr>
                     <th class='px-4 py-2 border-b text-center align-middle whitespace-nowrap'>เลือกรายการ</th>
-                    <th class='px-4 py-2 border-b text-center align-middle whitespace-nowrap'>Code Assessor</th>
+                    <th class='px-4 py-2 border-b text-center align-middle'>Code Assessor</th>
                     <th class='px-4 py-2 border-b text-center align-middle whitespace-nowrap'>คำนำหน้า</th>
                     <th class='px-4 py-2 border-b text-center align-middle'>ชื่อ - นามสกุล</th>
                     <th class='px-4 py-2 border-b text-center align-middle'>

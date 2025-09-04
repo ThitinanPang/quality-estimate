@@ -4,11 +4,11 @@
     <div class="flex flex-col items-center justify-center">
         <div class="w-[1032px] h-[265px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[74px] pl-[40px] pt-[10px]">
             <p class="text-[24px]">ชื่อ - นามสกุล</p>
-            <input type="text" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2">
+            <input type="text" value="{{Auth::user()->name}}" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
             <p class="text-[24px]">คณะ</p>
-            <input type="text" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2">
+            <input type="text" value="{{Auth::user()->faculty}}" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
             <p class="text-[24px]">หลักสูตร</p>
-            <input type="text" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2">
+            <input type="text" value="{{Auth::user()->course}}" class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
         </div>
         <div class="w-[1032px] h-[213px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
             <p class="text-[24px]">ส่วนที่ 1 การกำกับมาตรฐาน</p>
@@ -41,6 +41,6 @@
                 </div>
             @endfor
         </div>
-        <button type="button" onclick="" class="w-[155px] h-[37px] mt-[32px] ml-[900px] bg-[#FFCE00] border rounded-[9px]">บันทึก</button>
+        <button type="button" onclick="" class="w-[155px] h-[37px] mt-[32px] ml-[900px] hover:bg-white bg-[#FFCE00] border rounded-[9px]">บันทึก</button>
     </div>
 @endsection

@@ -1,5 +1,5 @@
 @extends('layouts.header')
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[150px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
@@ -14,15 +14,22 @@
                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </div>
-    <button type="button" onclick="window.location.href='{{route('adduser')}}'"
-        class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[18px] hover:bg-white">
-        <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-                d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
-                stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        เพิ่มข้อมูล
-    </button>
+    <form id="importForm" action="{{ route('import.users') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <!-- ซ่อน input file -->
+        <input type="file" id="excelInput" name="excel_file" accept=".xlsx,.xls" style="display: none;">
+
+        <!-- ปุ่มกด -->
+        <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] 
+                   box-border flex items-center justify-center text-[18px] hover:bg-white">
+            <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
+                    stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            เพิ่มข้อมูล
+        </button>
+    </form>
     @php
         // 1. เชื่อมต่อฐานข้อมูล
         $conn = new mysqli("localhost", "root", "", "localhost");
@@ -76,7 +83,7 @@
                                         d='M13.0517 3.53243L14.4575 2.05305C14.7506 1.74484 15.148 1.57169 15.5625 1.57169C15.977 1.57169 16.3744 1.74484 16.6675 2.05305C16.9606 2.36126 17.1252 2.77929 17.1252 3.21517C17.1252 3.65105 16.9606 4.06907 16.6675 4.37729L7.81833 13.6839C7.37777 14.1469 6.83447 14.4873 6.2375 14.6742L4 15.3753L4.66667 13.0222C4.8444 12.3943 5.16803 11.823 5.60833 11.3596L13.0517 3.53243ZM13.0517 3.53243L15.25 5.84439M14 11.8697V16.0326C14 16.5556 13.8025 17.0572 13.4508 17.427C13.0992 17.7968 12.6223 18.0046 12.125 18.0046H3.375C2.87772 18.0046 2.40081 17.7968 2.04917 17.427C1.69754 17.0572 1.5 16.5556 1.5 16.0326V6.83035C1.5 6.30737 1.69754 5.8058 2.04917 5.436C2.40081 5.06619 2.87772 4.85843 3.375 4.85843H7.33333'
                                         stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' />
                                 </svg>
-                                <a href="" class="text-[#7B7B7B]">แก้ไข</a>
+                                <a href="{{ route('edituser', $row['id']) }}" class="text-[#7B7B7B]">แก้ไข</a>
                             </td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['name'] }}</td>
@@ -117,5 +124,17 @@
                 tr[i].style.display = show ? "" : "none";
             }
         }
-</script>
+        const excelInput = document.getElementById('excelInput');
+        const form = document.getElementById('importForm');
+
+        excelInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                form.submit();
+                // reset ค่าให้เลือกไฟล์เดิมได้อีก
+                this.value = "";
+            }
+            alert('เพิ่มผู้ใช้งานสำเร็จ');
+        });
+        
+    </script>
 @endsection

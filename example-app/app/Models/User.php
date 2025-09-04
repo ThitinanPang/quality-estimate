@@ -24,6 +24,7 @@ class User extends Authenticatable
         'faculty',
         'course',
         'email',
+        'role',
         'phone_number',
     ];
 

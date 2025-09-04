@@ -10,6 +10,7 @@ use LdapRecord\Ldap;
 use LdapRecord\Container;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Connection;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
 class AuthController extends Controller
@@ -77,9 +78,9 @@ class AuthController extends Controller
             if ($user->role == 'admin') {
                 return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
             } elseif ($user->role == 'user') {
-                return redirect('/userfill')->with('success', 'เข้าสู่ระบบสำเร็จ');
+                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
             } elseif ($user->role == 'admin university') {
-                return redirect('/userfill')->with('success', 'เข้าสู่ระบบสำเร็จ');
+                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
             }
 
             logger('LDAP bind success: ' . $ldapUsername);
@@ -120,6 +121,70 @@ class AuthController extends Controller
 
         return redirect('/home')->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('excel_file');
+
+        // โหลดไฟล์ Excel
+        $spreadsheet = IOFactory::load($file->getPathname());
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray();
+
+        // ข้าม row แรก (header)
+        foreach ($rows as $index => $row) {
+            if ($index === 0)
+                continue;
+
+            User::updateOrCreate([
+                'prefix' => $row[0] ?? null,
+                'name' => $row[1] ?? null,
+                'faculty' => $row[2] ?? null,
+                'email' => $row[3] ?? null,
+                'phone_number' => $row[4] ?? null,
+            ]);
+        }
+
+        return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+    }
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('edituser', compact('user'));
+    }
+
+    // อัปเดตข้อมูล
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'prefix' => 'nullable|string|max:50',
+            'name' => 'required|string|max:255',
+            'faculty' => 'nullable|string|max:100',
+            'subject_group' => 'nullable|string|max:100',
+            'course' => 'nullable|string|max:100',
+            'phone_number' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
+            'role' => 'nullable|string|max:50',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->update([
+            'prefix' => $request->prefix,
+            'name' => $request->name,
+            'faculty' => $request->faculty,
+            'subject_group' => $request->subject_group,
+            'course' => $request->course,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+        
+        return redirect()->route('user')->with('success', 'อัปเดตข้อมูลเรียบร้อยแล้ว');
+    }
     public function homePage()
     {
         return view('home');
@@ -156,9 +221,9 @@ class AuthController extends Controller
     {
         return view('save');
     }
-    public function adduserPage()
+    public function edituserPage()
     {
-        return view('adduser');
+        return view('edituser');
     }
     public function userfillPage()
     {

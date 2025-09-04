@@ -20,7 +20,11 @@ Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname')
 Route::get('/record',[AuthController::class,'recordPage'])->name('record');
 Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
 Route::get('/save',[AuthController::class,'savePage'])->name('save');
-Route::get('/adduser',[AuthController::class,'adduserPage'])->name('adduser');
+
+Route::get('/edituser/{id}',[AuthController::class,'edit'])->name('edituser');
+Route::post('/update-user/{id}', [AuthController::class, 'update'])->name('updateuser');
+
+Route::post('/import-users', [AuthController::class, 'import'])->name('import.users');
 
 Route::get('/userfill',[AuthController::class,'userfillPage'])->name('userfill');
 Route::post('/userfill', [AuthController::class,'store'])->name('userfill.submit');

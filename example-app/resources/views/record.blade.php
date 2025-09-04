@@ -20,11 +20,11 @@
              shadow-[0_4px_4px_rgba(0,0,0,0.25)] 
              rounded-[12px] box-border mt-2 ml-[85px] items-center p-[30px]">
         <p class="text-[24px]">ชื่อ - นามสกุล</p>
-        <input type="text" class="bg-white w-[1070px] h-[30px] rounded border">
+        <input type="text" value="{{Auth::user()->name}}" class="bg-white w-[1070px] h-[30px] rounded border pl-3">
         <p class="text-[24px]">คณะ</p>
-        <input type="text" class="bg-white w-[1070px] h-[30px] rounded border">
+        <input type="text" value="{{Auth::user()->faculty}}" class="bg-white w-[1070px] h-[30px] rounded border pl-3">
         <p class="text-[24px]">หลักสูตร</p>
-        <input type="text" class="bg-white w-[1070px] h-[30px] rounded border">
+        <input type="text" value="{{Auth::user()->course}}" class="bg-white w-[1070px] h-[30px] rounded border pl-3">
     </div>
     <div class="w-[1130px] h-[240px] 
              bg-[#DBDBDB] border border-black 

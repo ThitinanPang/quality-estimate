@@ -6,9 +6,8 @@
         <div
             class="w-[796px] h-[511px] left-[322px] mt-[24px] bg-[#DBDBDB] shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-[15px] p-[46px] space-y-2">
             <div class="flex gap-4">
-                <p class="text-[24px]">ชื่อ - นามสกุล :</p>
-                <p class="text-[24px]">{{session('user_name')}}</p>
-            </div>
+                <p class="text-[24px]">ชื่อ - นามสกุล : {{Auth::user()->name}}</p>
+           </div>
             <div class="flex gap-4">
                 <p class="text-[24px]">คณะ :</p>
                 <select name="" id="" class="bg-white border rounded w-[223px] h-[30px]"></select>
