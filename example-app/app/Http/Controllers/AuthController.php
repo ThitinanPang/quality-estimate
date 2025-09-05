@@ -52,13 +52,13 @@ class AuthController extends Controller
             // ดึงข้อมูลผู้ใช้จาก LDAP
             $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
             $email = $ldapUser['mail'][0] ?? $request->email;
+            $existingUser = User::where('email', $email)->first();
 
             // สร้างหรืออัปเดต user ใน DB
             $user = User::updateOrCreate(
                 ['email' => $email],
                 [
-                    'name' => $ldapUser['displayname'][0] ?? $username,
-                    'role' => $user->role ?? null, // ถ้ามี role ใน DB อยู่แล้วใช้ค่าเดิม
+                    'role' => $existingUser->role ?? 'user', // ถ้ามี user เดิม ใช้ role เดิม, ถ้าไม่มีกำหนด default
                     'status' => 'active',
                 ]
             );
@@ -167,6 +167,7 @@ class AuthController extends Controller
             'course' => 'nullable|string|max:100',
             'phone_number' => 'nullable|string|max:15',
             'email' => 'nullable|email|max:255',
+            'status' => 'nullable|string|max:50',
             'role' => 'nullable|string|max:50',
         ]);
 
@@ -180,9 +181,10 @@ class AuthController extends Controller
             'course' => $request->course,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
-            'role' => $request->role,
+            'status' => $request->status ?? $user->status,
+            'role' => $request->role ,
         ]);
-        
+
         return redirect()->route('user')->with('success', 'อัปเดตข้อมูลเรียบร้อยแล้ว');
     }
     public function homePage()
