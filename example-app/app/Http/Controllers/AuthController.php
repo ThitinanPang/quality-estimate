@@ -11,6 +11,8 @@ use LdapRecord\Container;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Connection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Models\Faculty;
+
 
 
 class AuthController extends Controller
@@ -182,10 +184,37 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'status' => $request->status ?? $user->status,
-            'role' => $request->role ,
+            'role' => $request->role,
         ]);
 
         return redirect()->route('user')->with('success', 'อัปเดตข้อมูลเรียบร้อยแล้ว');
+    }
+    public function importFaculty(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        $file = $request->file('file');
+        $spreadsheet = IOFactory::load($file->getPathName());
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray();
+
+        $faculties = [];
+        foreach ($rows as $row) {
+            // สมมติ column แรกคือชื่อคณะ
+            if (!empty($row[0])) {
+                $faculty = Faculty::updateOrCreate(
+                    ['name' => $row[0]],
+                    ['name' => $row[0]]
+                );
+                $faculties[] = $faculty;
+            }
+        }
+        return response()->json([
+            'success' => true,
+            'faculties' => $faculties
+        ]);
     }
     public function homePage()
     {
@@ -230,5 +259,9 @@ class AuthController extends Controller
     public function userfillPage()
     {
         return view('userfill');
+    }
+    public function listfacultyPage()
+    {
+        return view('listfaculty');
     }
 }

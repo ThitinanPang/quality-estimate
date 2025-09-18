@@ -3,33 +3,28 @@
 @section('content')
     <div class="flex flex-col items-center justify-center">
         <p class="text-[36px] mt-[24px]">ข้อมูลการประเมิน</p>
+        <div class="w-[1008px] h-[68px] bg-[#FFCE00] rounded-t-[15px] border-b mt-[24px]">
+            <p class="text-[32px] ml-[24px] mt-[10px]">ผู้ประเมิน</p>
+        </div>
         <div
-            class="w-[796px] h-[511px] left-[322px] mt-[24px] bg-[#DBDBDB] shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-[15px] p-[46px] space-y-2">
-            <div class="flex gap-4">
-                <p class="text-[24px]">ชื่อ - นามสกุล : {{Auth::user()->name}}</p>
-           </div>
-            <div class="flex gap-4">
-                <p class="text-[24px]">คณะ :</p>
-                <select name="" id="" class="bg-white border rounded w-[223px] h-[30px]"></select>
+            class="w-[1008px] h-[540px] left-[322px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-b-[15px] border flex flex-col items-center justify-center">
+            <div class="w-[958px] h-[50px] rounded-[14px] bg-[#D9D9D9]">
+                <p class="text-[24px] ml-[24px] mt-[5px]">ชื่อ : {{Auth::user()->name}}</p>
             </div>
-            <p class="text-[24px]">หลักสูตร :</p>
-            <div class="flex gap-4">
-                <p class="text-[24px]">ตำแหน่ง :</p>
-                <p class="text-[24px] ml-[100px]">ประเภทการตรวจ :</p>
+            <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
+                <p class="text-[24px] ml-[24px] py-4">กรรมการ<br>
+                    ชื่อ : {{Auth::user()->name}}<br>
+                    อีเมล : {{Auth::user()->email}}<br>
+                    เบอร์โทร : {{Auth::user()->phone_number}}</p>
             </div>
-            <div class="flex gap-4">
-                <p class="text-[24px]">กรรมการ :</p>
-                <p class="text-[24px] ml-[10px]">ผู้ฝึกประสบการณ์ :</p>
-            </div>
-            <div class="flex gap-4">
-                <p class="text-[24px]">เบอร์โทรศัพท์ :</p>
-                <p class="text-[24px] ml-[10px]">เบอร์โทรศัพท์ :</p>
-            </div>
-            <div class="flex gap-4">
-                <p class="text-[24px]">อีเมล :</p>
-                <p class="text-[24px] ml-[10px]">อีเมล :</p>
+            <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
+                <p class="text-[24px] ml-[24px] py-4">ผู้ฝึกประสบการณ์<br>
+                    ชื่อ : {{Auth::user()->name}}<br>
+                    อีเมล : {{Auth::user()->email}}<br>
+                    เบอร์โทร : {{Auth::user()->phone_number}}</p>
             </div>
         </div>
-        <button type="button" onclick="window.location.href='{{route('save')}}'" class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] hover:bg-white">ประเมิน</button>
+        <button type="button" onclick="window.location.href='{{route('save')}}'"
+            class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] hover:bg-white">ประเมิน</button>
     </div>
 @endsection

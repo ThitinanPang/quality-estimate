@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Layout</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
 </head>
 
 <body>
@@ -114,6 +114,8 @@
                 <div class="dropdown-container hidden bg-white w-full py-2">
                     <a href="{{route('record')}}"
                         class="{{ request()->routeIs('record') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">การจัดการหัวข้อการประเมิน</a>
+                    <a href="{{route('listfaculty')}}" 
+                        class="{{ request()->routeIs('listfaculty') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">การจัดการหลักสูตร</a>
                     <a href="{{route('results')}}"
                         class="{{ request()->routeIs('results') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">บันทึกผลการประเมิน</a>
                     <a href=""

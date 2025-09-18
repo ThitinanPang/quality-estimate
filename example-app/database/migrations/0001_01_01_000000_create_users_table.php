@@ -13,9 +13,12 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('prefix')->nullable();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name')->nullable();
+            $table->string('subject_group')->nullable();
+            $table->string('faculty')->nullable();
+            $table->string('course')->nullable();
             $table->string('role')->default('user');
+            $table->string('email')->unique();
             $table->string('phone_number')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
@@ -35,6 +38,22 @@ return new class extends Migration {
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        // ตาราง faculty
+        Schema::create('faculty', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable(); // ชื่อคณะ
+            $table->timestamps();
+        });
+
+        // ตาราง courses
+        Schema::create('courses', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('faculty_id')->constrained('faculty')->onDelete('cascade');
+            $table->string('name')->nullable(); // ชื่อหลักสูตร
+            $table->timestamps();
+        });
+
     }
 
     /**
