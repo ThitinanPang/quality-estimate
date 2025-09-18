@@ -192,29 +192,32 @@ class AuthController extends Controller
     public function importFaculty(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
+            'excel_file' => 'required|mimes:xlsx,xls',
         ]);
 
-        $file = $request->file('file');
-        $spreadsheet = IOFactory::load($file->getPathName());
+        $file = $request->file('excel_file');
+
+        // โหลดไฟล์ Excel
+        $spreadsheet = IOFactory::load($file->getPathname());
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray();
 
-        $faculties = [];
-        foreach ($rows as $row) {
-            // สมมติ column แรกคือชื่อคณะ
-            if (!empty($row[0])) {
-                $faculty = Faculty::updateOrCreate(
-                    ['name' => $row[0]],
-                    ['name' => $row[0]]
-                );
-                $faculties[] = $faculty;
+        // ข้าม row แรก (header)
+        foreach ($rows as $index => $row) {
+            if ($index === 0)
+                continue;
+
+            $name = trim($row[0] ?? '');
+            if ($name === '') {
+                // ข้ามแถวที่ไม่มีชื่อ
+                continue;
             }
+            Faculty::updateOrCreate([
+                'name' => $row[0] ?? null
+            ]);
         }
-        return response()->json([
-            'success' => true,
-            'faculties' => $faculties
-        ]);
+
+        return redirect()->route('listfaculty')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
     public function homePage()
     {

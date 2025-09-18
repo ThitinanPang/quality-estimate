@@ -22,7 +22,7 @@ Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
 Route::get('/save',[AuthController::class,'savePage'])->name('save');
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
-Route::post('/faculty/import', [AuthController::class, 'importFaculty'])->name('faculty.import');
+Route::post('/import-faculty', [AuthController::class, 'importFaculty'])->name('import.faculty');
 
 Route::get('/edituser/{id}',[AuthController::class,'edit'])->name('edituser');
 Route::post('/update-user/{id}', [AuthController::class, 'update'])->name('updateuser');
