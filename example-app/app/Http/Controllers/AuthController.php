@@ -267,4 +267,7 @@ class AuthController extends Controller
     {
         return view('listfaculty');
     }
+    public function reportPage(){
+        return view('report');
+    }
 }

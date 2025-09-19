@@ -81,7 +81,7 @@
                             <a href="{{route('university')}}"
                                 class="{{ request()->routeIs('university') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</a>
                             <a href="{{route('listname')}}"
-                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
+                                class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
                             <a href=""
                                 class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
                             <a href=""
@@ -124,7 +124,7 @@
             </li>
 
             <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] h-[56px] mt-[16px] ml-[16px] mr-[16px]">
-                <a href="" class="relative flex items-center whitespace-nowrap mb-0">
+                <a href="{{route('report')}}" class="relative flex items-center whitespace-nowrap mb-0">
                     <svg class="menu-icon" width="25" height="28" viewBox="0 0 22 26" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
