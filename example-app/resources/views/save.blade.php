@@ -85,7 +85,7 @@
                     </p>
                 </div>
             @endforeach
-            <button type="submit"
+            <button type="submit" onclick=""
                 class="w-[155px] h-[37px] mt-[32px] hover:bg-white bg-[#FFCE00] border rounded-[9px]">บันทึก</button>
             <div class="h-[100px]"></div>
         </div>
