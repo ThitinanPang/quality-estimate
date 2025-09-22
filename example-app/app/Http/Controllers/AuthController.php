@@ -219,6 +219,18 @@ class AuthController extends Controller
 
         return redirect()->route('listfaculty')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
+    public function collect(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'criterion' => 'required|string',
+            'result' => 'required|string',
+            'strength' => 'required|string',
+            'improvement' => 'required|string',
+            'score' => 'required|array',
+        ]);
+        return back()->with('success', 'บันทึกข้อมูลเรียบร้อย');
+    }
     public function homePage()
     {
         return view('home');
@@ -267,7 +279,8 @@ class AuthController extends Controller
     {
         return view('listfaculty');
     }
-    public function reportPage(){
+    public function reportPage()
+    {
         return view('report');
     }
 }

@@ -33,3 +33,5 @@ Route::post('/import-users', [AuthController::class, 'import'])->name('import.us
 
 Route::get('/userfill',[AuthController::class,'userfillPage'])->name('userfill');
 Route::post('/userfill', [AuthController::class,'store'])->name('userfill.submit');
+
+Route::post('/save-collect', [AuthController::class, 'collect'])->name('save.collect');
