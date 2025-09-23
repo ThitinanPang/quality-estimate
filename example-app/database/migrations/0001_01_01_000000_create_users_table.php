@@ -54,6 +54,18 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('assessment', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();          // ชื่อผู้ประเมินหรือข้อมูลที่เกี่ยวข้อง
+            $table->string('faculty')->nullable();
+            $table->string('criterion')->nullable();      // เกณฑ์การประเมิน
+            $table->string('result')->nullable();       // ผลการประเมิน
+            $table->string('strength')->nullable();       // จุดแข็ง
+            $table->string('improvement')->nullable();    // จุดปรับปรุง
+            $table->json('score')->nullable();  // เก็บ array เป็น JSON
+            $table->json('overall')->nullable();          
+            $table->timestamps();
+        });
     }
 
     /**

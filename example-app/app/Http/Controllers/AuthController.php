@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use LdapRecord\Connection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Faculty;
+use App\Models\Assessment;
 
 
 
@@ -216,20 +217,42 @@ class AuthController extends Controller
                 'name' => $row[0] ?? null
             ]);
         }
-
         return redirect()->route('listfaculty')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+    }
+    public function collectFaculty(Request $request)
+    {
+        $facultyId = $request->faculty;
+        $faculty = Faculty::find($facultyId);
+        return view('save', compact('faculty'));
     }
     public function collect(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string',
             'criterion' => 'required|string',
+            'faculty' => 'required|string',
             'result' => 'required|string',
             'strength' => 'required|string',
             'improvement' => 'required|string',
-            'score' => 'required|array',
+            'score' => 'nullable|array',
+            'overall' => 'required|array',
         ]);
-        return back()->with('success', 'บันทึกข้อมูลเรียบร้อย');
+        // บันทึกข้อมูลลงฐานข้อมูล
+        Assessment::updateOrCreate(
+            [
+                'name' => $request->name,
+                'result' => $request->result,
+            ],
+            [
+                'faculty' => $request->faculty,
+                'criterion' => $request->criterion,
+                'strength' => $request->strength,
+                'improvement' => $request->improvement,
+                'score' => $request->score,
+                'overall' => $request->overall,
+            ]
+        );
+        return redirect()->route('home')->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
     public function homePage()
     {

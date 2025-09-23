@@ -19,7 +19,6 @@ Route::get('/university',[AuthController::class,'universityPage'])->name('univer
 Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname');
 Route::get('/record',[AuthController::class,'recordPage'])->name('record');
 Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
-Route::get('/save',[AuthController::class,'savePage'])->name('save');
 Route::get('/report',[AuthController::class,'reportPage'])->name('report');
 
 
@@ -34,4 +33,6 @@ Route::post('/import-users', [AuthController::class, 'import'])->name('import.us
 Route::get('/userfill',[AuthController::class,'userfillPage'])->name('userfill');
 Route::post('/userfill', [AuthController::class,'store'])->name('userfill.submit');
 
+Route::get('/save',[AuthController::class,'savePage'])->name('save');
+Route::get('/results-collect',[AuthController::class,'collectFaculty'])->name('results.collect');
 Route::post('/save-collect', [AuthController::class, 'collect'])->name('save.collect');

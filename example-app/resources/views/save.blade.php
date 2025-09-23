@@ -6,13 +6,14 @@
         <div class="flex flex-col items-center justify-center">
             <div class="w-[1032px] h-[265px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[74px] pl-[40px] pt-[10px]">
                 <p class="text-[24px]">ชื่อ - นามสกุล</p>
-                <input type="text" name="name" value="{{Auth::user()->name}}"
+                <input type="text" readonly name="name" value="{{Auth::user()->name}}"
                     class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
+                <input type="hidden" name="faculty" value="{{ $faculty->name }}">
                 <p class="text-[24px]">คณะ</p>
-                <input type="text" value="{{Auth::user()->faculty}}"
+                <input type="text" readonly value="{{Auth::user()->faculty}}"
                     class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                 <p class="text-[24px]">หลักสูตร</p>
-                <input type="text" value="{{Auth::user()->course}}"
+                <input type="text" readonly value="{{Auth::user()->course}}"
                     class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
             </div>
             <div class="w-[1032px] h-[213px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
@@ -23,13 +24,16 @@
                 </select>
                 <p class="text-[24px] mt-[9px]">ส่วนที่ 2 ผลการตรวจประเมินตามเกณฑ์ AUN-QA</p>
                 <select name="result" id="" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3">
-                    <option value="">Absolutely Inadequate (Rating 1)</option>
-                    <option value="">Inadequate and Improvement is Necessary (Rating 2)</option>
-                    <option value="">Inadequate but Minor Improvement Will Make It Adequate (Rating 3)</option>
-                    <option value="">Adequate as Expexted (Rating 4)</option>
-                    <option value="">Better Than Adequate (Rating 5)</option>
-                    <option value="">Example of Best Practices (Rating 6)</option>
-                    <option value="">Excellent (Example of World-class of Leading Practices (Rating 7))</option>
+                    <option value="Absolutely Inadequate (Rating 1)">Absolutely Inadequate (Rating 1)</option>
+                    <option value="Inadequate and Improvement is Necessary (Rating 2)">Inadequate and Improvement is
+                        Necessary (Rating 2)</option>
+                    <option value="Inadequate but Minor Improvement Will Make It Adequate (Rating 3)">Inadequate but Minor
+                        Improvement Will Make It Adequate (Rating 3)</option>
+                    <option value="Adequate as Expexted (Rating 4)">Adequate as Expexted (Rating 4)</option>
+                    <option value="Better Than Adequate (Rating 5)">Better Than Adequate (Rating 5)</option>
+                    <option value="Example of Best Practices (Rating 6)">Example of Best Practices (Rating 6)</option>
+                    <option value="Excellent (Example of World-class of Leading Practices (Rating 7))">Excellent (Example of
+                        World-class of Leading Practices (Rating 7))</option>
                 </select>
             </div>
             <div class="w-[1040px] h-[220px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
@@ -80,12 +84,12 @@
                 </div>
                 <div class="w-[1040px] h-[126px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
                     <p class="text-[24px]">AUN-QA {{$index + 1}}_Overall Opinion</p>
-                    <p type="text" name="overall" id="overall-opinion_{{$index}}"
+                    <input type="text" readonly name="overall[{{$index}}]" id="overall-opinion_{{$index}}"
                         class="w-[78px] h-[42px] border rounded-[5px] bg-white mt-[9px] pt-1 text-[20px] text-center">
-                    </p>
+                    </input>
                 </div>
             @endforeach
-            <button type="submit" onclick=""
+            <button onclick="alert('บันทึกสำเร็จ')"
                 class="w-[155px] h-[37px] mt-[32px] hover:bg-white bg-[#FFCE00] border rounded-[9px]">บันทึก</button>
             <div class="h-[100px]"></div>
         </div>
@@ -101,7 +105,7 @@
                 radios.forEach(r => r.addEventListener('change', () => {
                     const values = [...radios].filter(r => r.checked).map(r => r.value);
                     if (values.length === 0) {
-                        output.textContent = '';
+                        output.value = ''; // <-- เปลี่ยนจาก textContent เป็น value
                         return;
                     }
 
@@ -116,7 +120,7 @@
                             maxVal = key;
                         }
                     }
-                    output.textContent = maxVal;
+                    output.value = maxVal; // <-- เปลี่ยนจาก textContent เป็น value
                 }));
             }
         });
