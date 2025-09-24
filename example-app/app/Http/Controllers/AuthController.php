@@ -13,7 +13,7 @@ use LdapRecord\Connection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Faculty;
 use App\Models\Assessment;
-
+use Illuminate\Support\Facades\DB;
 
 
 class AuthController extends Controller
@@ -254,6 +254,22 @@ class AuthController extends Controller
         );
         return redirect()->route('home')->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
+    public function index()
+    {
+        $data = DB::table('faculty')
+            ->leftJoin('assessment', 'faculty.name', '=', 'assessment.faculty')
+            ->select(
+                'faculty.id',
+                'faculty.name',
+                DB::raw('COUNT(assessment.id) as total_courses'),
+                DB::raw("SUM(CASE WHEN assessment.result = 'เป็นไปตามเกณฑ์' THEN 1 ELSE 0 END) as passed"),
+                DB::raw("SUM(CASE WHEN assessment.result = 'ไม่เป็นไปตามเกณฑ์' THEN 1 ELSE 0 END) as failed")
+            )
+            ->groupBy('faculty.id', 'faculty.name')
+            ->get();
+
+        return view('report', compact('data'));
+    }
     public function homePage()
     {
         return view('home');
@@ -300,10 +316,30 @@ class AuthController extends Controller
     }
     public function listfacultyPage()
     {
-        return view('listfaculty');
+        // ดึงข้อมูล faculty ทั้งหมด
+        $faculties = Faculty::all();
+        
+        return view('listfaculty',compact('faculties'));
     }
     public function reportPage()
     {
-        return view('report');
+        // ดึง faculty พร้อมจำนวนที่ "เป็นไปตามเกณฑ์" และ "ไม่เป็นไปตามเกณฑ์"
+        $faculties = Faculty::all()->map(function ($faculty) {
+            $totalPass = Assessment::where('faculty', $faculty->name)
+                ->where('criterion', 'เป็นไปตามเกณฑ์')
+                ->count();
+
+            $totalFail = Assessment::where('faculty', $faculty->name)
+                ->where('criterion', 'ไม่เป็นไปตามเกณฑ์')
+                ->count();
+
+            // เพิ่ม property ชั่วคราวให้ faculty
+            $faculty->total_pass = $totalPass;
+            $faculty->total_fail = $totalFail;
+
+            return $faculty;
+        });
+        // ส่งข้อมูลไป Blade
+        return view('report', compact('faculties'));
     }
 }

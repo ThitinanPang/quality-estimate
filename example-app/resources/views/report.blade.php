@@ -16,16 +16,6 @@
         </p>
         <p class="text-[24px] w-full text-left">รายงานที่ 1 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร
             องค์ประกอบที่ 1 การกำกับมาตรฐาน </p>
-        @php
-            $conn = new mysqli("localhost", "root", "", "localhost");
-            $sql = "SELECT id, name FROM faculty";
-            if ($conn->connect_error) {
-                die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
-            }
-
-            $result = $conn->query($sql);
-            $counter = 1;
-        @endphp
         <div class="flex items-center justify-center mt-[30px] w-full">
             <table class="w-full h-[100px]">
                 <thead class="bg-[#FFCE00]">
@@ -47,20 +37,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($result->num_rows > 0)
-                        @while ($row = $result->fetch_assoc())
-                            <tr>
-                                <td class="text-center align-middle px-4 border text-[20px]">{{$counter++}}</td>
-                                <td class="text-center align-middle px-4 border text-[20px]">{{$row['name']}}</td>
-                                <td class="text-center align-middle px-4 border text-[20px]"></td>
-                                <td class="text-center align-middle px-4 border text-[20px]"></td>
-                                <td class="text-center align-middle px-4 border text-[20px]"></td>
-                                <td class="text-center align-middle px-4 border text-[20px]"></td>
-                            </tr>
-                        @endwhile
-                    @endif
+                    @foreach ($faculties as $index => $faculty)
+                        <tr>
+                            <td class="text-center align-middle px-4 border text-[20px]">{{ $index + 1 }}</td>
+                            <td class="text-center align-middle px-4 border text-[20px]">{{ $faculty->name }}</td>
+                            {{-- จำนวนหลักสูตร --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ ($faculty->courses_count ?? 0) == 0 ? '-' : $faculty->courses_count }}
+                            </td>
+                            {{-- เป็นไปตามเกณฑ์ --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ $faculty->total_pass == 0 ? '-' : $faculty->total_pass }}
+                            </td>
+                            {{-- ไม่เป็นไปตามเกณฑ์ --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ $faculty->total_fail == 0 ? '-' : $faculty->total_fail }}
+                            </td>
+                            <td class="text-center align-middle px-4 border text-[20px]"></td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
+        <div class="h-[50px]"></div>
     </div>
 @endsection
