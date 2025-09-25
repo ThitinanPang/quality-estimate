@@ -51,6 +51,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('faculty_id')->constrained('faculty')->onDelete('cascade');
             $table->string('name')->nullable(); // ชื่อหลักสูตร
+            $table->string('education')->nullable(); // ระดับการศึกษา
+            $table->string('year')->nullable(); // ปีที่ถูกเพิ่มเข้ามา
             $table->timestamps();
         });
 
@@ -63,7 +65,7 @@ return new class extends Migration {
             $table->string('strength')->nullable();       // จุดแข็ง
             $table->string('improvement')->nullable();    // จุดปรับปรุง
             $table->json('score')->nullable();  // เก็บ array เป็น JSON
-            $table->json('overall')->nullable();          
+            $table->json('overall')->nullable();
             $table->timestamps();
         });
     }

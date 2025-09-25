@@ -318,8 +318,8 @@ class AuthController extends Controller
     {
         // ดึงข้อมูล faculty ทั้งหมด
         $faculties = Faculty::all();
-        
-        return view('listfaculty',compact('faculties'));
+
+        return view('listfaculty', compact('faculties'));
     }
     public function reportPage()
     {
@@ -341,5 +341,10 @@ class AuthController extends Controller
         });
         // ส่งข้อมูลไป Blade
         return view('report', compact('faculties'));
+    }
+    public function editcoursePage($facultyId)
+    {
+        $faculty = Faculty::findOrFail($facultyId);
+        return view('editcourse', compact('faculty'));
     }
 }

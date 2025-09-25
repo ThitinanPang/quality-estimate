@@ -36,3 +36,4 @@ Route::post('/userfill', [AuthController::class,'store'])->name('userfill.submit
 Route::get('/save',[AuthController::class,'savePage'])->name('save');
 Route::get('/results-collect',[AuthController::class,'collectFaculty'])->name('results.collect');
 Route::post('/save-collect', [AuthController::class, 'collect'])->name('save.collect');
+Route::get('/editcourse/{faculty}',[AuthController::class,'editcoursePage'])->name('editcourse');

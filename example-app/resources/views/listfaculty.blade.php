@@ -9,8 +9,9 @@
         <input type="file" id="excelInput" name="excel_file" accept=".xlsx,.xls" style="display: none;">
 
         <!-- ปุ่มกด -->
-        <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] 
-                                           box-border flex items-center justify-center text-[18px] hover:bg-white">
+        <button type="button" onclick="document.getElementById('excelInput').click();"
+            class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] 
+                                                                                   box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -34,18 +35,21 @@
                         <td class="text-[24px] text-left pl-4 flex flex-col">
                             <div class="w-full flex items-center">
                                 {{$faculty->name}}
-                                <button type="้" onclick="" hidden class="w-[155px] h-[37px] mt-3 ml-auto bg-white border border-black rounded-[9px] 
-                                                           box-border flex items-center justify-center text-[18px]">
-                                    <svg width="23" height="22" viewBox="0 0 23 22" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
-                                            stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                    เพิ่มหลักสูตร
-                                </button>
+                                <a href="{{route('editcourse', ['faculty' => $faculty->id])}}" class="ml-auto">
+                                    <button type="้" onclick="" id="myBtn" hidden
+                                        class="w-[155px] h-[37px] mt-3 ml-auto bg-white border hover:bg-[#D9D9D9] border-black rounded-[9px] box-border flex items-center justify-center text-[18px]">
+                                        <svg width="23" height="22" viewBox="0 0 23 22" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
+                                                stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                        เพิ่มหลักสูตร
+                                    </button>
+                                </a>
                             </div>
-                            <label for="" class="text-[14px] text-[#5191FF]">แสดงหลักสูตร</label>
+                            <a href="" id="showBtn" class="text-[14px] text-[#5191FF] hover:underline w-[85px]">แสดงหลักสูตร</a>
                         </td>
                     </tr>
                 @endforeach
@@ -64,6 +68,16 @@
                 this.value = "";
             }
             alert('เพิ่มคณะสำเร็จ');
+        });
+        const btn = document.getElementById("myBtn");
+        const text = document.getElementById("showText");
+        document.getElementById("showBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            btn.hidden = !btn.hidden;
+        });
+        document.getElementById("showBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+            text.hidden = !text.hidden;
         });
     </script>
 @endsection
