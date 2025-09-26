@@ -43,7 +43,7 @@ return new class extends Migration {
         Schema::create('faculty', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable(); // ชื่อคณะ
-            $table->string('subject_group')->nullable(); //กลุ่มวิชา
+            $table->string('campus')->nullable(); //วิทยาเขต
             $table->timestamps();
         });
 
@@ -51,10 +51,9 @@ return new class extends Migration {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id')->constrained('faculty')->onDelete('cascade');
-            $table->string('subject_group')->nullable(); //กลุ่มวิชา
-            $table->string('education')->nullable(); // ระดับการศึกษา
-            $table->string('name')->nullable(); // ชื่อหลักสูตร
-            $table->string('year')->nullable(); // ปีที่ถูกเพิ่มเข้ามา
+            $table->string('code')->unique(); // รหัสหลักสูตร
+            $table->string('name'); // ชื่อหลักสูตร
+            $table->string('level')->nullable(); //1 = ตรี/2 = โท/3 = เอก
             $table->timestamps();
         });
 

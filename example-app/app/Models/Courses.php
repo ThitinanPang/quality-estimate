@@ -11,9 +11,8 @@ class Courses extends Model
     // ฟิลด์ที่อนุญาตให้กรอกข้อมูลได้
     protected $fillable = [
         'faculty_id',
-        'subject_group',
-        'education',
+        'code',
         'name',
-        'year',
+        'level',
     ];
 }

@@ -11,9 +11,11 @@ use LdapRecord\Container;
 use Illuminate\Support\Facades\Auth;
 use LdapRecord\Connection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Models\Courses;
 use App\Models\Faculty;
 use App\Models\Assessment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 
 class AuthController extends Controller
@@ -207,17 +209,33 @@ class AuthController extends Controller
         // ข้าม row แรก (header)
         foreach ($rows as $index => $row) {
             if ($index === 0)
-                continue;
+                continue; // ข้าม header
 
+            $facultyName = trim($row[0] ?? '');
+            $level = trim($row[1] ?? '');
+            $code = trim($row[2] ?? '');
+            $courseName = trim($row[3] ?? '');
+            $campus = trim($row[4] ?? '');
             $name = trim($row[0] ?? '');
             if ($name === '') {
                 // ข้ามแถวที่ไม่มีชื่อ
                 continue;
             }
-            Faculty::updateOrCreate([
-                'name' => $row[0] ?? null,
-                'subject_group' => $row[1] ?? null
-            ]);
+            // หาคณะก่อน ถ้าไม่มีให้สร้าง
+            $faculty = Faculty::firstOrCreate(
+                ['name' => $facultyName],
+                ['campus' => $campus]
+            );
+
+            // เพิ่ม/อัปเดตหลักสูตร
+            Courses::updateOrCreate(
+                ['code' => $code],
+                [
+                    'faculty_id' => $faculty->id,
+                    'name' => $courseName,
+                    'level' => $level
+                ]
+            );
         }
         return redirect()->route('listfaculty')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
