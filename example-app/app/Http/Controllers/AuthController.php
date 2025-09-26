@@ -146,8 +146,9 @@ class AuthController extends Controller
                 'prefix' => $row[0] ?? null,
                 'name' => $row[1] ?? null,
                 'faculty' => $row[2] ?? null,
-                'email' => $row[3] ?? null,
-                'phone_number' => $row[4] ?? null,
+                'subject_group' => $row[3] ?? null,
+                'email' => $row[4] ?? null,
+                'phone_number' => $row[5] ?? null,
             ]);
         }
 
@@ -214,7 +215,8 @@ class AuthController extends Controller
                 continue;
             }
             Faculty::updateOrCreate([
-                'name' => $row[0] ?? null
+                'name' => $row[0] ?? null,
+                'subject_group' => $row[1] ?? null
             ]);
         }
         return redirect()->route('listfaculty')->with('success', 'นำเข้าข้อมูลสำเร็จ');

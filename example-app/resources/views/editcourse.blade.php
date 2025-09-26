@@ -9,14 +9,14 @@
             <p class="text-[20px] mr-[345px]">คณะ/วิทยาลัย</p>
             <input type="text" readonly value="{{ $faculty->name }}"  class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
             <p class="text-[20px] mr-[390px] mt-2">กลุ่มวิชา</p>
-            <input type="text" readonly name="" id="" class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
+            <input type="text" readonly value="{{$faculty->subject_group}}" class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
             <p class="text-[20px] mr-[335px] mt-2">ระดับการศึกษา</p>
             <input type="text" name="" id="" class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
             <p class="text-[20px] mr-[390px] mt-2">หลักสูตร</p>
             <input type="text" name="" id="" class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
             <p class="text-[20px] mr-[400px] mt-2">ปี พ.ศ.</p>
             <input type="text" name="" id="" class="w-[461px] h-[45px] rounded-[8px] bg-white mt-3 pl-3">
-            <button class="bg-[#FFCE00] w-[149px] h-[37px] rounded-[9px] text-[20px] border ml-[315px] mt-3">บันทึก</button>
+            <button class="bg-[#FFCE00] hover:bg-white w-[149px] h-[37px] rounded-[9px] text-[20px] border mt-[20px]">บันทึก</button>
         </div>
     </div>
 @endsection
