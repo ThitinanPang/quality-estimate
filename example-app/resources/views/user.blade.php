@@ -1,8 +1,6 @@
 @extends('layouts.header')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
@@ -37,7 +35,7 @@
 
         <!-- ปุ่มกด -->
         <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
-                               box-border flex items-center justify-center text-[18px] hover:bg-white">
+                                   box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -124,8 +122,9 @@
                     </tr>
                 @endif
             </tbody>
-        </table>
+        </table>   
     </div>
+    <div id="pagination" class="mt-5 justify-center items-center flex space-x-2"></div>
     @php
         $conn->close();
     @endphp
@@ -178,16 +177,36 @@
             // ตั้งค่าให้ปีปัจจุบันเป็นตัวเลือกเริ่มต้น
             selectElement.value = currentThaiYear;
         });
-        // $(document).ready(function () {
-        //     $('#myTable').DataTable({
-        //         "pageLength": 6,        // แสดง 6 แถวต่อหน้า
-        //         "lengthChange": false,  // ซ่อน dropdown เปลี่ยนจำนวนแถว
-        //         "searching": false,     // ซ่อน search bar
-        //         "info": false,          // ซ่อน info "Showing 1 to 6 of ..."
-        //         "pagingType": "numbers",// แสดงแค่เลขหน้า 1 2 3
-        //         "autoWidth": false,     // ป้องกันการเปลี่ยนขนาดตาราง
-        //         "ordering": false       // ปิดการ sort ของคอลัมน์ทั้งหมด
-        //     });
-        // });
+        $(document).ready(function () {
+            const rowsPerPage = 6; // จำนวนแถวต่อหน้า
+            const $table = $('#myTable');
+            const $rows = $table.find('tbody tr');
+            const totalPages = Math.ceil($rows.length / rowsPerPage);
+
+            function showPage(page) {
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                $rows.hide().slice(start, end).show();
+                // highlight ปุ่มที่เลือก
+                $('#pagination button').removeClass('bg-[#FFCE00] text-white');
+                $(`#pagination button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
+            }
+
+            // สร้างปุ่มหน้า
+            for (let i = 1; i <= totalPages; i++) {
+                $('#pagination').append(
+                    `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
+                );
+            }
+
+            // กดปุ่มเปลี่ยนหน้า
+            $('#pagination').on('click', 'button', function () {
+                const page = $(this).data('page');
+                showPage(page);
+            });
+
+            // แสดงหน้าแรก
+            showPage(1);
+        });
     </script>
 @endsection
