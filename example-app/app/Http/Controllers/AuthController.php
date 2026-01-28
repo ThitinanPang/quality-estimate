@@ -144,14 +144,21 @@ class AuthController extends Controller
             if ($index === 0)
                 continue;
 
-            User::updateOrCreate([
-                'prefix' => $row[0] ?? null,
-                'name' => $row[1] ?? null,
-                'faculty' => $row[2] ?? null,
-                'subject_group' => $row[3] ?? null,
-                'email' => $row[4] ?? null,
-                'phone_number' => $row[5] ?? null,
-            ]);
+            // ข้ามถ้า email ว่าง
+            if (empty($row[4])) {
+                continue;
+            }
+
+            User::updateOrCreate(
+                ['email' => $row[4]], // ใช้ email เป็น unique key
+                [
+                    'prefix' => $row[0] ?? null,
+                    'name' => $row[1] ?? null,
+                    'faculty' => $row[2] ?? null,
+                    'subject_group' => $row[3] ?? null,
+                    'phone_number' => $row[5] ?? null,
+                ]
+            );
         }
 
         return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ');

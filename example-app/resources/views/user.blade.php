@@ -1,8 +1,16 @@
 @extends('layouts.header')
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 @section('content')
-    <p class="absolute w-[257px] h-[53px] left-[85px] top-[150px] font-normal text-[36px] leading-[54px]">
+    <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
+    <div
+        class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
+        ปีการศึกษา
+        <select name="thai_year" id="thai-year" class="h-[46px] ml-2"></select>
+    </div>
     <div
         class="absolute w-[284px] h-[34.67px] left-[1114px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
@@ -14,14 +22,22 @@
                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </div>
+    <div class="flex">
+        <button onclick="window.location.href='{{route('user')}}'"
+            class="w-[135px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[85px] mt-[150px]">ผู้ใช้ทั่วไป</button>
+        <button onclick="window.location.href='{{route('faculty')}}'"
+            class="w-[233px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับคณะ</button>
+        <button onclick="window.location.href='{{route('university')}}'"
+            class="w-[305px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับมหาวิทยาลัย</button>
+    </div>
     <form id="importForm" action="{{ route('import.users') }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- ซ่อน input file -->
         <input type="file" id="excelInput" name="excel_file" accept=".xlsx,.xls" style="display: none;">
 
         <!-- ปุ่มกด -->
-        <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] left-[85px] top-[210px] bg-[#FFCE00] border border-black rounded-[9px] 
-                   box-border flex items-center justify-center text-[18px] hover:bg-white">
+        <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
+                               box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -43,11 +59,19 @@
         $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users";
         $result = $conn->query($sql);
 
+        // $selectedYear = isset($_GET['thai_year']) ? $_GET['thai_year'] : date('Y') + 543; // ถ้าไม่มีค่าให้ใช้ปีปัจจุบัน
+        // $gregorianYear = $selectedYear - 543; // แปลงปีไทยเป็นปีคริสต์
+
+        // $sql = "SELECT id, prefix, name, faculty, status, email, phone_number 
+        //         FROM users 
+        //         WHERE YEAR(created_at) = $gregorianYear";
+        // $result = $conn->query($sql);
+
         $counter = 0;
     @endphp
 
-    <div class="overflow-x-auto flex items-center justify-center mt-[130px]">
-        <table id="myTable" class="w-[1350px] border border-black box-border">
+    <div class="overflow-x-auto flex items-center justify-center mt-[20px]">
+        <table id="myTable" class="w-[1350px] border border-black box-border" style="width:1350px;">
             <thead class="bg-[#FFCE00]">
                 <tr>
                     <th class="px-4 py-2 border-b text-center align-middle">เลือกรายการ</th>
@@ -135,6 +159,35 @@
             }
             alert('เพิ่มผู้ใช้งานสำเร็จ');
         });
-        
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectElement = document.getElementById('thai-year');
+            const currentYear = new Date().getFullYear();
+            const currentThaiYear = currentYear + 543;
+
+            // กำหนดช่วงปีที่ต้องการให้แสดง
+            const startYear = currentThaiYear - 2;
+            const endYear = currentThaiYear;
+
+            for (let i = endYear; i >= startYear; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i}`;
+                selectElement.appendChild(option);
+            }
+
+            // ตั้งค่าให้ปีปัจจุบันเป็นตัวเลือกเริ่มต้น
+            selectElement.value = currentThaiYear;
+        });
+        // $(document).ready(function () {
+        //     $('#myTable').DataTable({
+        //         "pageLength": 6,        // แสดง 6 แถวต่อหน้า
+        //         "lengthChange": false,  // ซ่อน dropdown เปลี่ยนจำนวนแถว
+        //         "searching": false,     // ซ่อน search bar
+        //         "info": false,          // ซ่อน info "Showing 1 to 6 of ..."
+        //         "pagingType": "numbers",// แสดงแค่เลขหน้า 1 2 3
+        //         "autoWidth": false,     // ป้องกันการเปลี่ยนขนาดตาราง
+        //         "ordering": false       // ปิดการ sort ของคอลัมน์ทั้งหมด
+        //     });
+        // });
     </script>
 @endsection
