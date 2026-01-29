@@ -4,13 +4,15 @@
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
+    <form method="GET">
+        <div
+            class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
+            ปีการศึกษา
+            <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
+        </div>
+    </form>
     <div
-        class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
-        ปีการศึกษา
-        <select name="thai_year" id="thai-year" class="h-[46px] ml-2"></select>
-    </div>
-    <div
-        class="absolute w-[284px] h-[34.67px] left-[1114px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
+        class="absolute w-[284px] h-[34.67px] right-[85px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
             class="ml-4 outline-none border-none focus:outline-none focus:border-none ">
         <svg class="absolute left-[247px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -35,7 +37,7 @@
 
         <!-- ปุ่มกด -->
         <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
-                                   box-border flex items-center justify-center text-[18px] hover:bg-white">
+                                                   box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -53,19 +55,30 @@
             die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
         }
 
-        // 2. ดึงข้อมูลจาก DB
+        // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users";
         $result = $conn->query($sql);
 
-        // $selectedYear = isset($_GET['thai_year']) ? $_GET['thai_year'] : date('Y') + 543; // ถ้าไม่มีค่าให้ใช้ปีปัจจุบัน
-        // $gregorianYear = $selectedYear - 543; // แปลงปีไทยเป็นปีคริสต์
-
-        // $sql = "SELECT id, prefix, name, faculty, status, email, phone_number 
-        //         FROM users 
-        //         WHERE YEAR(created_at) = $gregorianYear";
-        // $result = $conn->query($sql);
-
         $counter = 0;
+    @endphp
+    @php
+        $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+    @endphp
+    @php
+        $conn = new mysqli("localhost", "root", "", "localhost");
+
+        if ($conn->connect_error) {
+            die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
+        }
+
+        $sql = "
+                        SELECT id, prefix, name, faculty, status, email, phone_number, created_at
+                        FROM users
+                        WHERE YEAR(created_at) = $selectedADYear
+                    ";
+
+        $result = $conn->query($sql);
     @endphp
 
     <div class="overflow-x-auto flex items-center justify-center mt-[20px]">
@@ -122,7 +135,7 @@
                     </tr>
                 @endif
             </tbody>
-        </table>   
+        </table>
     </div>
     <div id="pagination" class="mt-5 justify-center items-center flex space-x-2"></div>
     @php
@@ -163,19 +176,20 @@
             const currentYear = new Date().getFullYear();
             const currentThaiYear = currentYear + 543;
 
-            // กำหนดช่วงปีที่ต้องการให้แสดง
             const startYear = currentThaiYear - 2;
             const endYear = currentThaiYear;
+
+            const selectedYear = {{ $selectedThaiYear }};
 
             for (let i = endYear; i >= startYear; i--) {
                 const option = document.createElement('option');
                 option.value = i;
-                option.textContent = `${i}`;
+                option.textContent = i;
+                if (i === selectedYear) {
+                    option.selected = true;
+                }
                 selectElement.appendChild(option);
             }
-
-            // ตั้งค่าให้ปีปัจจุบันเป็นตัวเลือกเริ่มต้น
-            selectElement.value = currentThaiYear;
         });
         $(document).ready(function () {
             const rowsPerPage = 6; // จำนวนแถวต่อหน้า
