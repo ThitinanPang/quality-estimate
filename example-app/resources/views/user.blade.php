@@ -55,28 +55,16 @@
             die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
         }
 
+        $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
-        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users";
+        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users 
+                WHERE YEAR(created_at) = $selectedADYear";
+
         $result = $conn->query($sql);
 
         $counter = 0;
     @endphp
-    @php
-        $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
-        $selectedADYear = $selectedThaiYear - 543;
-    @endphp
-    @php
-        $conn = new mysqli("localhost", "root", "", "localhost");
-
-        if ($conn->connect_error) {
-            die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
-        }
-
-        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number, created_at FROM users WHERE YEAR(created_at) = $selectedADYear";
-
-        $result = $conn->query($sql);
-    @endphp
-
     <div class="overflow-x-auto flex items-center justify-center mt-[20px]">
         <table id="myTable" class="w-[1350px] border border-black box-border" style="width:1350px;">
             <thead class="bg-[#FFCE00]">
