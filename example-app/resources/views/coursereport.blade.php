@@ -1,8 +1,9 @@
 @extends('layouts.header')
 
 @section('content')
-    <div class="flex flex-col items-center justify-center ml-[110px] mt-[42px]">
-        <p class="text-[36px] w-full text-left inline-flex items-center">รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร
+    <div class="flex">
+        <p class="text-[36px] text-left items-center ml-[110px] mt-[42px] inline-flex">รายงานสรุปผลการตรวจประเมินภายใน
+            ระดับหลักสูตร
             <svg class="ml-3" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M19.4883 11.75H15.9895V10.0006H19.4883V11.75ZM19.4883 12.7496H15.9895V14.499H19.4883V12.7496ZM19.4883 4.50244H15.9895V6.25183H19.4883V4.50244ZM19.4883 7.2515H15.9895V9.00088H19.4883V7.2515ZM19.4883 15.4987H15.9895V17.2481H19.4883V15.4987ZM21.905 18.9475C21.805 19.4673 21.1802 19.4798 20.7629 19.4973H12.9906V21.7465H11.4386L0 19.7472V2.25573L11.5061 0.253906H12.9906V2.24572H20.4955C20.9179 2.26321 21.3827 2.23322 21.7501 2.48562C22.0075 2.85549 21.9825 3.32536 22 3.75019L21.99 16.7607C21.9775 17.488 22.0574 18.2303 21.905 18.9475ZM9.16433 15.0263C8.4746 13.6269 7.77236 12.2373 7.08507 10.8378C7.76484 9.47573 8.43464 8.10872 9.1019 6.74167C8.53458 6.76917 7.96727 6.80415 7.40248 6.84415C6.9801 7.87128 6.48777 8.87095 6.15789 9.93309C5.8505 8.93093 5.44315 7.96624 5.07079 6.98909C4.52096 7.01908 3.97113 7.05156 3.42134 7.08405C4.00112 8.36366 4.61845 9.62565 5.18074 10.9127C4.51847 12.1623 3.89868 13.4294 3.25639 14.6865C3.80368 14.7089 4.35102 14.7315 4.89831 14.7389C5.28821 13.7443 5.77302 12.7871 6.11291 11.7725C6.41781 12.8621 6.93511 13.8692 7.35999 14.9114C7.96228 14.9539 8.56204 14.9914 9.16433 15.0263ZM20.808 3.43265H12.9906V4.50244H14.9899V6.25183H12.9906V7.2515H14.9899V9.00088H12.9906V10.0006H14.9899V11.75H12.9906V12.7496H14.9899V14.499H12.9906V15.4987H14.9899V17.2481H12.9906V18.4038H20.808V3.43265Z"
@@ -14,51 +15,52 @@
                     fill="black" />
             </svg>
         </p>
-        <div class="bg-[#FFCE00] rounded-[24px] w-[193px] h-[46px] absolute right-[50px] top-[180px] text-center pt-2 text-[20px]">ปีการศึกษา 2569</div>
-        <p class="text-[24px] w-full text-left">รายงานที่ 1 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร
-            องค์ประกอบที่ 1 การกำกับมาตรฐาน </p>
+        <div class="bg-[#FFCE00] rounded-[24px] w-[193px] h-[46px] text-[20px] text-center pt-2 mt-[46px] ml-[300px]">
+            ปีการศึกษา 2569</div>
     </div>
-    <div class="flex items-center justify-center ml-[110px] mt-[30px] w-[1364px]">
+    <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 2 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
+        ระดับหลักสูตร
+        ตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict) ประจำปีการศึกษา 2566</p>
+    <div class="flex items-center justify-center ml-[240px] mt-[30px] w-[1364px]">
         <table class="w-[1364px] h-[100px]">
             <thead class="bg-[#FFCE00]">
                 <tr>
-                    <th scope="col" rowspan="2" class="text-center align-middle px-4 border text-[20px]">ที่</th>
-                    <th scope="col" rowspan="2" class="text-center align-middle px-4 border text-[20px]">
-                        ส่วนงานคณะ/วิทยาลัย</th>
-                    <th scope="col" rowspan="2" class="text-center align-middle px-4 border text-[20px]">
-                        จำนวน<br>หลักสูตร</th>
-                    <th scope="col" colspan="2" class="text-center align-middle px-4 border text-[20px]">
-                        ผลการประเมินองค์ประกอบที่ 1
-                        <br>(การกำกับมาตรฐาน)
-                    </th>
-                    <th scope="col" rowspan="2" class="text-center align-middle px-4 border text-[20px]">หมายเหตุ</th>
+                    <th rowspan="3" class="px-4 border text-[24px]">ที่</th>
+                    <th rowspan="3" class="px-4 border text-[24px] whitespace-nowrap">ส่วนงานคณะ/มหาวิทยาลัย</th>
+                    <th colspan="5" class="px-4 border text-[20px]">ภาพรวมทั้งคณะ/มหาวิทยาลัย</th>
+                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาตรี</th>
+                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาโท</th>
+                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาเอก</th>
                 </tr>
                 <tr>
-                    <th scope="col" class="text-center align-middle px-4 border text-[20px]">เป็นไปตามเกณฑ์</th>
-                    <th scope="col" class="text-center align-middle px-4 border text-[20px]">ไม่เป็นไปตามเกณฑ์</th>
+                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                </tr>
+                <tr>
+                    <th class="px-4 border text-[24px]">2</th>
+                    <th class="px-4 border text-[24px]">3</th>
+                    <th class="px-4 border text-[24px]">4</th>
+                    <th class="px-4 border text-[24px]">5</th>
+                    <th class="px-4 border text-[24px]">2</th>
+                    <th class="px-4 border text-[24px]">3</th>
+                    <th class="px-4 border text-[24px]">4</th>
+                    <th class="px-4 border text-[24px]">5</th>
+                    <th class="px-4 border text-[24px]">2</th>
+                    <th class="px-4 border text-[24px]">3</th>
+                    <th class="px-4 border text-[24px]">4</th>
+                    <th class="px-4 border text-[24px]">5</th>
+                    <th class="px-4 border text-[24px]">2</th>
+                    <th class="px-4 border text-[24px]">3</th>
+                    <th class="px-4 border text-[24px]">4</th>
+                    <th class="px-4 border text-[24px]">5</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($faculties as $index => $faculty)
-                    <tr>
-                        <td class="text-center align-middle px-4 border text-[20px]">{{ $index + 1 }}</td>
-                        <td class="text-center align-middle px-4 border text-[20px]">{{ $faculty->name }}</td>
-                        {{-- จำนวนหลักสูตร --}}
-                        <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ ($faculty->courses_count ?? 0) == 0 ? '-' : $faculty->courses_count }}
-                        </td>
-                        {{-- เป็นไปตามเกณฑ์ --}}
-                        <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ $faculty->total_pass == 0 ? '-' : $faculty->total_pass }}
-                        </td>
-                        {{-- ไม่เป็นไปตามเกณฑ์ --}}
-                        <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ $faculty->total_fail == 0 ? '-' : $faculty->total_fail }}
-                        </td>
-                        <td class="text-center align-middle px-4 border text-[20px]"></td>
-                    </tr>
-                @endforeach
-            </tbody>
         </table>
     </div>
     <div class="h-[50px]"></div>

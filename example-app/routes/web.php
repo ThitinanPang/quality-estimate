@@ -20,7 +20,7 @@ Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname')
 Route::get('/record',[AuthController::class,'recordPage'])->name('record');
 Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
 Route::get('/report',[AuthController::class,'reportPage'])->name('report');
-
+Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('coursereport');
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
 Route::post('/import-faculty', [AuthController::class, 'importFaculty'])->name('import.faculty');

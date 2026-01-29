@@ -374,4 +374,7 @@ class AuthController extends Controller
         $faculty = Faculty::findOrFail($facultyId);
         return view('editcourse', compact('faculty'));
     }
+    public function coursereportPage(){
+        return view('coursereport');
+    }
 }
