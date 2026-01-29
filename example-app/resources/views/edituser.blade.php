@@ -11,8 +11,7 @@
                 <select name="role" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>user</option>
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>admin</option>
-                    <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>admin
-                        university</option>
+                    <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>admin university</option>
                 </select>
 
                 <p class="mt-[9px]">คำนำหน้า</p>

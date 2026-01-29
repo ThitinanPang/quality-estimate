@@ -72,11 +72,7 @@
             die("เชื่อมต่อไม่สำเร็จ: " . $conn->connect_error);
         }
 
-        $sql = "
-                        SELECT id, prefix, name, faculty, status, email, phone_number, created_at
-                        FROM users
-                        WHERE YEAR(created_at) = $selectedADYear
-                    ";
+        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number, created_at FROM users WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
     @endphp
@@ -99,7 +95,7 @@
                             </svg>
                         </span>
                     </th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Status</th>
+                    <th class="px-4 py-2 border-b text-center align-middle">สถานะ</th>
                     <th class="px-4 py-2 border-b text-center align-middle">อีเมล</th>
                     <th class="px-4 py-2 border-b text-center align-middle">เบอร์โทรศัพท์</th>
                 </tr>
