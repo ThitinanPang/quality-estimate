@@ -75,17 +75,13 @@
                             <a href="{{route('user')}}"
                                 class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ใช้</a>
                             <a href="{{route('assessor')}}"
-                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
-                            <a href="{{route('faculty')}}"
-                                class="{{ request()->routeIs('faculty') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ดูแลระดับคณะ</a>
-                            <a href="{{route('university')}}"
-                                class="{{ request()->routeIs('university') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</a>
+                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>    
                             <a href="{{route('listname')}}"
-                                class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
+                                class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
                             <a href=""
-                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
+                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
                             <a href=""
-                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
+                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางผู้ประเมิน</a>
                         </div>
                     </li>
                 @endif
