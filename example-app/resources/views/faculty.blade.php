@@ -72,7 +72,6 @@
             <thead class="bg-[#FFCE00]">
                 <tr>
                     <th class="px-4 py-2 border-b text-center align-middle">เลือกรายการ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Code Assessor</th>
                     <th class="px-4 py-2 border-b text-center align-middle">คำนำหน้า</th>
                     <th class="px-4 py-2 border-b text-center align-middle">ชื่อ - นามสกุล</th>
                     <th class="px-4 py-2 border-b text-center align-middle">
@@ -108,7 +107,6 @@
                                 </svg>
                                 <a href="{{ route('edituser', $row['id']) }}" class="text-[#7B7B7B]">แก้ไข</a>
                             </td>
-                            <td class="px-4 py-2 border-b text-center align-middle">63-001</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['name'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['faculty'] }}</td>

@@ -72,7 +72,6 @@
             <thead class="bg-[#FFCE00]">
                 <tr>
                     <th class="px-4 py-2 border-b text-center align-middle">เลือกรายการ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Code Assessor</th>
                     <th class="px-4 py-2 border-b text-center align-middle">คำนำหน้า</th>
                     <th class="px-4 py-2 border-b text-center align-middle">ชื่อ - นามสกุล</th>
                     <th class="px-4 py-2 border-b text-center align-middle">
@@ -87,7 +86,6 @@
                         </span>
                     </th>
                     <th class="px-4 py-2 border-b text-center align-middle">สถานะ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Assessor Type</th>
                     <th class="px-4 py-2 border-b text-center align-middle">อีเมล</th>
                     <th class="px-4 py-2 border-b text-center align-middle">เบอร์โทรศัพท์</th>
                 </tr>
