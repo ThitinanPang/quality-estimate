@@ -15,4 +15,8 @@ class Courses extends Model
         'name',
         'level',
     ];
+        public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id', 'id');
+    }
 }

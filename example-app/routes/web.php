@@ -37,3 +37,5 @@ Route::get('/save',[AuthController::class,'savePage'])->name('save');
 Route::get('/results-collect',[AuthController::class,'collectFaculty'])->name('results.collect');
 Route::post('/save-collect', [AuthController::class, 'collect'])->name('save.collect');
 Route::get('/editcourse/{faculty}',[AuthController::class,'editcoursePage'])->name('editcourse');
+
+Route::get('/manageassessor',[AuthController::class,'manageassessorPage'])->name('manage-assessor');

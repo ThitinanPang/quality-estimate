@@ -374,7 +374,14 @@ class AuthController extends Controller
         $faculty = Faculty::findOrFail($facultyId);
         return view('editcourse', compact('faculty'));
     }
-    public function coursereportPage(){
+    public function coursereportPage()
+    {
         return view('coursereport');
+    }
+    public function manageassessorPage()
+    {
+        $users = User::all();
+        $faculties = Faculty::with('courses')->get(); // ดึงข้อมูลคณะพร้อมหลักสูตร
+        return view('manage-assessor', compact('faculties', 'users'));
     }
 }
