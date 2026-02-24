@@ -21,50 +21,89 @@
     <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 2 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
         ระดับหลักสูตร
         ตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict) ประจำปีการศึกษา 2566</p>
-    <div class="flex items-center justify-center ml-[240px] mt-[30px] w-[1364px]">
-        <table class="w-[1364px] h-[100px]">
-            <thead class="bg-[#FFCE00]">
-                <tr>
-                    <th rowspan="3" class="px-4 border text-[24px]">ที่</th>
-                    <th rowspan="3" class="px-4 border text-[24px] whitespace-nowrap">ส่วนงานคณะ/มหาวิทยาลัย</th>
-                    <th colspan="5" class="px-4 border text-[20px]">ภาพรวมทั้งคณะ/มหาวิทยาลัย</th>
-                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาตรี</th>
-                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาโท</th>
-                    <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาเอก</th>
-                </tr>
-                <tr>
-                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
-                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
-                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
-                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
-                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
-                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
-                    <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
-                    <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
-                </tr>
-                <tr>
-                    <th class="px-4 border text-[24px]">2</th>
-                    <th class="px-4 border text-[24px]">3</th>
-                    <th class="px-4 border text-[24px]">4</th>
-                    <th class="px-4 border text-[24px]">5</th>
-                    <th class="px-4 border text-[24px]">2</th>
-                    <th class="px-4 border text-[24px]">3</th>
-                    <th class="px-4 border text-[24px]">4</th>
-                    <th class="px-4 border text-[24px]">5</th>
-                    <th class="px-4 border text-[24px]">2</th>
-                    <th class="px-4 border text-[24px]">3</th>
-                    <th class="px-4 border text-[24px]">4</th>
-                    <th class="px-4 border text-[24px]">5</th>
-                    <th class="px-4 border text-[24px]">2</th>
-                    <th class="px-4 border text-[24px]">3</th>
-                    <th class="px-4 border text-[24px]">4</th>
-                    <th class="px-4 border text-[24px]">5</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
+    <div class="flex pl-[110px] w-full pt-[10px]">
+        <div class="w-[1364px] h-[390px] overflow-auto">
+            <table class="w-[1364px] h-[100px]">
+                <thead class="bg-[#FFCE00]">
+                    <tr>
+                        <th rowspan="3" class="px-4 border text-[24px]">ที่</th>
+                        <th rowspan="3" class="px-4 border text-[24px] whitespace-nowrap">ส่วนงานคณะ/มหาวิทยาลัย</th>
+                        <th colspan="5" class="px-4 border text-[20px]">ภาพรวมทั้งคณะ/มหาวิทยาลัย</th>
+                        <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาตรี</th>
+                        <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาโท</th>
+                        <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาเอก</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                        <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                        <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                        <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                        <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                        <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                        <th rowspan="2" class="px-4 border text-[24px]">จำนวน<br>หลักสูตร</th>
+                        <th colspan="4" class="px-4 border text-[24px]">Overall Verdict</th>
+                    </tr>
+                    <tr>
+                        <th class="px-4 border text-[24px]">2</th>
+                        <th class="px-4 border text-[24px]">3</th>
+                        <th class="px-4 border text-[24px]">4</th>
+                        <th class="px-4 border text-[24px]">5</th>
+                        <th class="px-4 border text-[24px]">2</th>
+                        <th class="px-4 border text-[24px]">3</th>
+                        <th class="px-4 border text-[24px]">4</th>
+                        <th class="px-4 border text-[24px]">5</th>
+                        <th class="px-4 border text-[24px]">2</th>
+                        <th class="px-4 border text-[24px]">3</th>
+                        <th class="px-4 border text-[24px]">4</th>
+                        <th class="px-4 border text-[24px]">5</th>
+                        <th class="px-4 border text-[24px]">2</th>
+                        <th class="px-4 border text-[24px]">3</th>
+                        <th class="px-4 border text-[24px]">4</th>
+                        <th class="px-4 border text-[24px]">5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($faculties as $index => $faculty)
+                        <tr>
+                            <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
+                            <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $faculty->courses->count() }}</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">
+                                {{ $faculty->courses->where('level', '1')->count() }}</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">
+                                {{ $faculty->courses->where('level', '2')->count() }}</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">
+                                {{ $faculty->courses->where('level', '3')->count() }}</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">-</td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
+                        <td class="px-4 border text-[24px] text-center">
+                            {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="px-4 border text-[24px] text-center">เปอร์เซนต์ (%)</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="h-[50px]"></div>
 @endsection

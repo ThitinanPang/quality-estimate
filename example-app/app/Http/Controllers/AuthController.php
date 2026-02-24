@@ -376,7 +376,9 @@ class AuthController extends Controller
     }
     public function coursereportPage()
     {
-        return view('coursereport');
+        $assessment = Assessment::all();
+        $faculties = Faculty::with('courses')->get();
+        return view('coursereport',compact('assessment','faculties'));
     }
     public function manageassessorPage()
     {
