@@ -61,6 +61,9 @@
                     <th class="px-4 border text-[24px]">5</th>
                 </tr>
             </thead>
+            <tbody>
+                
+            </tbody>
         </table>
     </div>
     <div class="h-[50px]"></div>

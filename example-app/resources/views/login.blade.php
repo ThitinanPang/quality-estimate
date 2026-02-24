@@ -13,6 +13,7 @@
     <a href="{{route('login')}}"></a>
     <div class="flex flex-col items-center justify-center min-h-screen">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Buu-logo11.png" alt="" class="w-[100px] h-[100px]">
+        <span class="text-[24px] text-center p-5">ระบบรายงานผลคุณภาพการศึกษา <br> ภายในมหาวิทยาลัยบูรพา</span>
         {{-- ฟอร์มเข้าสู่ระบบ --}}
         <form method="POST" action="{{route('login.submit')}}"
             class="flex flex-col space-y-4 p-8 bg-white rounded-xl shadow-lg border mt-3">

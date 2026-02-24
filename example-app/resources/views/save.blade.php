@@ -84,7 +84,7 @@
                 </div>
                 <div class="w-[1040px] h-[126px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
                     <p class="text-[24px]">AUN-QA {{$index + 1}}_Overall Opinion</p>
-                    <input type="text" readonly name="overall[{{$index}}]" id="overall-opinion_{{$index}}"
+                    <input type="text" name="overall[{{$index}}]" id="overall-opinion_{{$index}}"
                         class="w-[78px] h-[42px] border rounded-[5px] bg-white mt-[9px] pt-1 text-[20px] text-center">
                     </input>
                 </div>
@@ -105,7 +105,7 @@
                 radios.forEach(r => r.addEventListener('change', () => {
                     const values = [...radios].filter(r => r.checked).map(r => r.value);
                     if (values.length === 0) {
-                        output.value = ''; // <-- เปลี่ยนจาก textContent เป็น value
+                        // output.value = ''; // <-- เปลี่ยนจาก textContent เป็น value
                         return;
                     }
 

@@ -71,7 +71,7 @@
                                     
                                     <!-- Modal -->
                                     <div x-show="open" class="fixed inset-0 bg-opacity-50 flex flex-col items-center justify-center z-50">
-                                        <div class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border">
+                                        <div class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border border-b-0">
                                             <p class="ml-3" x-text="title"></p>
                                             <svg class="" width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
