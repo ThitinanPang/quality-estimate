@@ -266,11 +266,13 @@ class AuthController extends Controller
         ]);
         // บันทึกข้อมูลลงฐานข้อมูล
         Assessment::updateOrCreate(
+            // [
+            //     'name' => $request->name,
+            //     'result' => $request->result,
+            // ],
             [
                 'name' => $request->name,
                 'result' => $request->result,
-            ],
-            [
                 'faculty' => $request->faculty,
                 'criterion' => $request->criterion,
                 'strength' => $request->strength,
@@ -378,7 +380,7 @@ class AuthController extends Controller
     {
         $assessment = Assessment::all();
         $faculties = Faculty::with('courses')->get();
-        return view('coursereport',compact('assessment','faculties'));
+        return view('coursereport', compact('assessment', 'faculties'));
     }
     public function manageassessorPage()
     {

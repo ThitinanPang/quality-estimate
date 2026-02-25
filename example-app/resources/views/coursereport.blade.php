@@ -68,10 +68,10 @@
                             <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
                             <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
                             <td class="px-4 border text-[24px] text-center">{{ $faculty->courses->count() }}</td>
-                            <td class="px-4 border text-[24px] text-center">-</td>
-                            <td class="px-4 border text-[24px] text-center">-</td>
-                            <td class="px-4 border text-[24px] text-center">-</td>
-                            <td class="px-4 border text-[24px] text-center">-</td>
+                            <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','2')->count()) ?: '-' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','3')->count()) ?: '-' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','4')->count()) ?: '-' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','5')->count()) ?: '-' }}</td>
                             <td class="px-4 border text-[24px] text-center">
                                 {{ $faculty->courses->where('level', '1')->count() }}</td>
                             <td class="px-4 border text-[24px] text-center">-</td>
@@ -95,11 +95,50 @@
                     <tr>
                         <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
                         <td class="px-4 border text-[24px] text-center">
-                            {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}</td>
+                            {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
+                        </td>
+                        <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','2')->count()) }}</td>
+                        <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','3')->count()) }}</td>
+                        <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','4')->count()) }}</td>
+                        <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','5')->count()) }}</td>                        
+                        <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
                     </tr>
                     <tr>
                         <td colspan="2" class="px-4 border text-[24px] text-center">เปอร์เซนต์ (%)</td>
-                        <td></td>
+                        <td class="px-4 border text-[24px] text-center">100</td>
+                        <td class="px-4 border text-[24px] text-center">
+                            @php
+                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
+                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','2')->count());
+                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
+                            @endphp
+                            {{ $percentage }}
+                        </td>
+                        <td class="px-4 border text-[24px] text-center">
+                            @php
+                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
+                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','3')->count());
+                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
+                            @endphp
+                            {{ $percentage }}
+                        </td>
+                        <td class="px-4 border text-[24px] text-center">
+                            @php
+                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
+                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','4')->count());
+                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
+                            @endphp
+                            {{ $percentage }}
+                        </td>
+                        <td class="px-4 border text-[24px] text-center">
+                            @php
+                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
+                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','5')->count());
+                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
+                            @endphp
+                            {{ $percentage }}
+                        </td>
+                        <td class="px-4 border text-[24px] text-center">100</td>
                     </tr>
                 </tbody>
             </table>

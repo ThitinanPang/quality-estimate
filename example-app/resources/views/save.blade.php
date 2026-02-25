@@ -24,15 +24,15 @@
                 </select>
                 <p class="text-[24px] mt-[9px]">ส่วนที่ 2 ผลการตรวจประเมินตามเกณฑ์ AUN-QA</p>
                 <select name="result" id="" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3">
-                    <option value="Absolutely Inadequate (Rating 1)">Absolutely Inadequate (Rating 1)</option>
-                    <option value="Inadequate and Improvement is Necessary (Rating 2)">Inadequate and Improvement is
+                    <option value="1">Absolutely Inadequate (Rating 1)</option>
+                    <option value="2">Inadequate and Improvement is
                         Necessary (Rating 2)</option>
-                    <option value="Inadequate but Minor Improvement Will Make It Adequate (Rating 3)">Inadequate but Minor
+                    <option value="3">Inadequate but Minor
                         Improvement Will Make It Adequate (Rating 3)</option>
-                    <option value="Adequate as Expexted (Rating 4)">Adequate as Expexted (Rating 4)</option>
-                    <option value="Better Than Adequate (Rating 5)">Better Than Adequate (Rating 5)</option>
-                    <option value="Example of Best Practices (Rating 6)">Example of Best Practices (Rating 6)</option>
-                    <option value="Excellent (Example of World-class of Leading Practices (Rating 7))">Excellent (Example of
+                    <option value="4">Adequate as Expexted (Rating 4)</option>
+                    <option value="5">Better Than Adequate (Rating 5)</option>
+                    <option value="6">Example of Best Practices (Rating 6)</option>
+                    <option value="7">Excellent (Example of
                         World-class of Leading Practices (Rating 7))</option>
                 </select>
             </div>

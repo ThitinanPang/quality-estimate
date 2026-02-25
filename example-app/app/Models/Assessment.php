@@ -12,6 +12,7 @@ class Assessment extends Model
     protected $fillable = [
         'name',
         'faculty',
+        'courses',
         'criterion',
         'result',
         'strength',

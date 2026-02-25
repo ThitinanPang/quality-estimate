@@ -61,6 +61,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->nullable();          // ชื่อผู้ประเมินหรือข้อมูลที่เกี่ยวข้อง
             $table->string('faculty')->nullable();
+            $table->string('courses')->nullable();
             $table->string('criterion')->nullable();      // เกณฑ์การประเมิน
             $table->string('result')->nullable();       // ผลการประเมิน
             $table->string('strength')->nullable();       // จุดแข็ง
