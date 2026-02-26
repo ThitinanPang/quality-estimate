@@ -1,4 +1,7 @@
 @extends('layouts.header')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
 <script src="//unpkg.com/alpinejs" defer></script>
 @section('content')
     <div class="flex">
@@ -22,6 +25,7 @@
             <option value=""></option>
             <option value=""></option>
         </select>
+        <button onclick="" class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">บันทึก</button>
     </div>
     <div class="flex pl-[85px] pt-[10px] w-full">
         <div class="w-[1500px] h-[380px] overflow-auto">
@@ -82,8 +86,9 @@
                                             เพิ่มข้อมูล
                                         </button>
                                         <div class="flex items-center gap-2">
-                                            <span x-show="selectedUser" x-text="selectedUser" class=" whitespace-nowrap"></span>
-                                            <svg x-show="selectedUser"
+                                            <span x-show="selectedUser" x-cloak x-text="selectedUser"
+                                                class=" whitespace-nowrap"></span>
+                                            <svg x-show="selectedUser" x-cloak
                                                 @click="open = true; title = 'ประธานการประเมิน';tempUser = selectedUser"
                                                 class="cursor-pointer" width="19" height="19" viewBox="0 0 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -92,8 +97,8 @@
                                                     stroke="black" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                            <span x-show="selectedUser" class="text-[18px]">|</span>
-                                            <svg x-show="selectedUser" @click="selectedUser = ''; tempUser = ''"
+                                            <span x-show="selectedUser" x-cloak class="text-[18px]">|</span>
+                                            <svg x-show="selectedUser" x-cloak @click="selectedUser = ''; tempUser = ''"
                                                 class=" cursor-pointer" width="16" height="18" viewBox="0 0 16 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -103,7 +108,7 @@
 
                                         </div>
                                         <!-- Modal -->
-                                        <div x-show="open"
+                                        <div x-show="open" x-cloak
                                             class="fixed inset-0 bg-opacity-50 flex flex-col items-center justify-center z-50">
                                             <div
                                                 class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border border-b-0">
@@ -148,8 +153,9 @@
                                             เพิ่มข้อมูล
                                         </button>
                                         <div class="flex items-center gap-2">
-                                            <span x-show="selectedUser" x-text="selectedUser" class=" whitespace-nowrap"></span>
-                                            <svg x-show="selectedUser"
+                                            <span x-show="selectedUser" x-cloak x-text="selectedUser"
+                                                class=" whitespace-nowrap"></span>
+                                            <svg x-show="selectedUser" x-cloak
                                                 @click="open = true; title = 'กรรมการ';tempUser = selectedUser"
                                                 class="cursor-pointer" width="19" height="19" viewBox="0 0 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -158,8 +164,8 @@
                                                     stroke="black" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                            <span x-show="selectedUser" class="text-[18px]">|</span>
-                                            <svg x-show="selectedUser" @click="selectedUser = ''; tempUser = ''"
+                                            <span x-show="selectedUser" x-cloak class="text-[18px]">|</span>
+                                            <svg x-show="selectedUser" x-cloak @click="selectedUser = ''; tempUser = ''"
                                                 class=" cursor-pointer" width="16" height="18" viewBox="0 0 16 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -169,7 +175,7 @@
 
                                         </div>
                                         <!-- Modal -->
-                                        <div x-show="open"
+                                        <div x-show="open" x-cloak
                                             class="fixed inset-0 bg-opacity-50 flex flex-col items-center justify-center z-50">
                                             <div
                                                 class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border border-b-0">
@@ -214,8 +220,9 @@
                                             เพิ่มข้อมูล
                                         </button>
                                         <div class="flex items-center gap-2">
-                                            <span x-show="selectedUser" x-text="selectedUser" class=" whitespace-nowrap"></span>
-                                            <svg x-show="selectedUser"
+                                            <span x-show="selectedUser" x-cloak x-text="selectedUser"
+                                                class=" whitespace-nowrap"></span>
+                                            <svg x-show="selectedUser" x-cloak
                                                 @click="open = true; title = 'ผู้ฝึกประสบการณ์';tempUser = selectedUser"
                                                 class="cursor-pointer" width="19" height="19" viewBox="0 0 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -224,8 +231,8 @@
                                                     stroke="black" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                            <span x-show="selectedUser" class="text-[18px]">|</span>
-                                            <svg x-show="selectedUser" @click="selectedUser = ''; tempUser = ''"
+                                            <span x-show="selectedUser" x-cloak class="text-[18px]">|</span>
+                                            <svg x-show="selectedUser" x-cloak @click="selectedUser = ''; tempUser = ''"
                                                 class=" cursor-pointer" width="16" height="18" viewBox="0 0 16 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -235,7 +242,7 @@
 
                                         </div>
                                         <!-- Modal -->
-                                        <div x-show="open"
+                                        <div x-show="open" x-cloak
                                             class="fixed inset-0 bg-opacity-50 flex flex-col items-center justify-center z-50">
                                             <div
                                                 class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border border-b-0">
@@ -264,17 +271,26 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-4 border text-center cursor-pointer">
-                                    <svg class=" inline-flex" width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16 18H2V7H16M13 0V2H5V0H3V2H2C0.89 2 0 2.89 0 4V18C0 18.5304 0.210714 19.0391 0.585786 19.4142C0.960859 19.7893 1.46957 20 2 20H16C16.5304 20 17.0391 19.7893 17.4142 19.4142C17.7893 19.0391 18 18.5304 18 18V4C18 3.46957 17.7893 2.96086 17.4142 2.58579C17.0391 2.21071 16.5304 2 16 2H15V0M14 11H9V16H14V11Z" fill="black"/>
-                                    </svg>
-                                    เลือกวัน
+                                <td class="px-4 border text-center relative">
+                                    <span onclick="openDate(this)" class="flex items-center justify-center gap-1 cursor-pointer">
+
+                                        <svg width="18" height="20" viewBox="0 0 18 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16 18H2V7H16M13 0V2H5V0H3V2H2C0.89 2 0 2.89 0 4V18C0 18.5304 0.210714 19.0391 0.585786 19.4142C0.960859 19.7893 1.46957 20 2 20H16C16.5304 20 17.0391 19.7893 17.4142 19.4142C17.7893 19.0391 18 18.5304 18 18V4C18 3.46957 17.7893 2.96086 17.4142 2.58579C17.0391 2.21071 16.5304 2 16 2H15V0M14 11H9V16H14V11Z"
+                                                fill="black" />
+                                        </svg>
+
+                                        <span class="date-text">เลือกวัน</span>
+                                    </span>
+
+                                    <input type="text" class="date-input absolute opacity-0 pointer-events-none w-0 h-0" />
                                 </td>
                                 <td class="px-4 border">
                                     <div x-data="{ open: false, title: '', selectedUser: '', tempUser: '' }"
                                         class="relative flex items-center justify-center">
                                         <!-- ปุ่มเปิด Modal -->
-                                        <button x-show="!selectedUser" @click="open = true; title = 'ผู้ฝึกประสบการณ์'"
+                                        <button x-show="!selectedUser" @click="open = true; title = 'เลขา'"
                                             class="w-[155px] h-[37px] bg-[#FFCE00] border border-black rounded-[9px] flex items-center justify-center text-[18px] hover:bg-white">
                                             <svg width="23" height="22" viewBox="0 0 23 22" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -286,18 +302,19 @@
                                             เพิ่มข้อมูล
                                         </button>
                                         <div class="flex items-center gap-2">
-                                            <span x-show="selectedUser" x-text="selectedUser" class=" whitespace-nowrap"></span>
-                                            <svg x-show="selectedUser"
-                                                @click="open = true; title = 'ผู้ฝึกประสบการณ์';tempUser = selectedUser"
-                                                class="cursor-pointer" width="19" height="19" viewBox="0 0 19 19" fill="none"
+                                            <span x-show="selectedUser" x-cloak x-text="selectedUser"
+                                                class=" whitespace-nowrap"></span>
+                                            <svg x-show="selectedUser" x-cloak
+                                                @click="open = true; title = 'เลขา';tempUser = selectedUser" class="cursor-pointer"
+                                                width="19" height="19" viewBox="0 0 19 19" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M8.5 2.76777H2.66667C2.22464 2.76777 1.80072 2.94336 1.48816 3.25592C1.17559 3.56848 1 3.99241 1 4.43443V16.1011C1 16.5431 1.17559 16.9671 1.48816 17.2796C1.80072 17.5922 2.22464 17.7678 2.66667 17.7678H14.3333C14.7754 17.7678 15.1993 17.5922 15.5118 17.2796C15.8244 16.9671 16 16.5431 16 16.1011V10.2678M14.75 1.51777C15.0815 1.18625 15.5312 1 16 1C16.4688 1 16.9185 1.18625 17.25 1.51777C17.5815 1.84929 17.7678 2.29893 17.7678 2.76777C17.7678 3.23661 17.5815 3.68625 17.25 4.01777L9.33333 11.9344L6 12.7678L6.83333 9.43443L14.75 1.51777Z"
                                                     stroke="black" stroke-width="2" stroke-linecap="round"
                                                     stroke-linejoin="round" />
                                             </svg>
-                                            <span x-show="selectedUser" class="text-[18px]">|</span>
-                                            <svg x-show="selectedUser" @click="selectedUser = ''; tempUser = ''"
+                                            <span x-show="selectedUser" x-cloak class="text-[18px]">|</span>
+                                            <svg x-show="selectedUser" x-cloak @click="selectedUser = ''; tempUser = ''"
                                                 class=" cursor-pointer" width="16" height="18" viewBox="0 0 16 18" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -307,7 +324,7 @@
 
                                         </div>
                                         <!-- Modal -->
-                                        <div x-show="open"
+                                        <div x-show="open" x-cloak
                                             class="fixed inset-0 bg-opacity-50 flex flex-col items-center justify-center z-50">
                                             <div
                                                 class="bg-[#FFCE00] w-[400px] h-[45px] rounded-t-[14px] flex items-center justify-between px-3 border border-b-0">
@@ -350,6 +367,61 @@
         @endforeach
     </select> --}}
     <script>
+        function openDate(el) {
+            const td = el.closest("td");
+            const input = td.querySelector(".date-input");
 
+            if (!input._flatpickr) {
+                flatpickr(input, {
+                    locale: flatpickr.l10ns.th,
+                    altInput: true,
+                    altFormat: "d/m/Y",
+                    dateFormat: "Y-m-d",
+
+                    // ให้ popup อ้างอิงตำแหน่งจากตัวที่คลิก
+                    positionElement: el,
+                    position: "below",
+
+                    onChange: function (selectedDates) {
+                        const date = selectedDates[0];
+                        const day = String(date.getDate()).padStart(2, "0");
+                        const month = String(date.getMonth() + 1).padStart(2, "0");
+                        const year = date.getFullYear() + 543;
+
+                        td.querySelector(".date-text").innerText = `${day}/${month}/${year}`;
+                    }
+                });
+            } else {
+                // ถ้าคลิกคนละจุด/คนละแถว ให้ย้าย anchor ตามที่กด
+                input._flatpickr.set("positionElement", el);
+            }
+
+            input._flatpickr.open();
+        } const td = el.closest("td");
+        const input = td.querySelector(".date-input");
+
+        input.classList.remove("hidden");
+
+        if (!input._flatpickr) {
+            flatpickr(input, {
+                locale: "th",          // ภาษาไทย
+                dateFormat: "d/m/Y",   // รูปแบบวัน/เดือน/ปี
+                position: "below",
+                onChange: function (selectedDates, dateStr) {
+
+                    // แปลง ค.ศ. → พ.ศ.
+                    const date = selectedDates[0];
+                    const day = String(date.getDate()).padStart(2, "0");
+                    const month = String(date.getMonth() + 1).padStart(2, "0");
+                    const year = date.getFullYear() + 543;
+
+                    td.querySelector(".date-text").innerText =
+                        `${day}/${month}/${year}`;
+
+                    input.classList.add("hidden");
+                }
+            });
+        }
+        input._flatpickr.open();
     </script>
 @endsection
