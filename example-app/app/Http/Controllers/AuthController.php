@@ -382,10 +382,23 @@ class AuthController extends Controller
         $faculties = Faculty::with('courses')->get();
         return view('coursereport', compact('assessment', 'faculties'));
     }
-    public function manageassessorPage()
+    public function manageassessorPage(Request $request)
     {
-        $users = User::all();
-        $faculties = Faculty::with('courses')->get(); // ดึงข้อมูลคณะพร้อมหลักสูตร
-        return view('manage-assessor', compact('faculties', 'users'));
+        // ปีที่เลือก (พ.ศ.)
+        $selectedThaiYear = $request->thai_year ?? date('Y') + 543;
+
+        // แปลงเป็น ค.ศ.
+        $selectedADYear = $selectedThaiYear - 543;
+
+        // กรองตามปี created_at
+        $users = User::whereYear('created_at', $selectedADYear)->get();
+
+        $faculties = Faculty::with([
+            'courses' => function ($query) use ($selectedADYear) {
+                $query->whereYear('created_at', $selectedADYear);
+            }
+        ])->get();
+
+        return view('manage-assessor', compact('faculties', 'users', 'selectedThaiYear'));
     }
 }

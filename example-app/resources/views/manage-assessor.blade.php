@@ -3,6 +3,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
 <script src="//unpkg.com/alpinejs" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
     <div class="flex">
         <p class="text-[36px] ml-[85px] mt-[10px]">จัดการผู้ประเมินหลักสูตร</p>
@@ -17,23 +18,28 @@
     <div class="flex ml-[85px] mt-3 mb-3 items-center gap-x-4">
         <span class="text-[16px]">วิทยาเขต :</span>
         <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
-            <option value="บางแสน" class="bg-white">บางแสน</option>
-            <option value="จันทบุรี" class="bg-white">จันทบุรี</option>
+            <option value="B" class="bg-white">บางแสน</option>
+            <option value="C" class="bg-white">จันทบุรี</option>
         </select>
         <span class="text-[16px]">กลุ่มวิชาสาขา :</span>
         <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
             <option value=""></option>
             <option value=""></option>
         </select>
-        <button onclick="" class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">บันทึก</button>
+        <button onclick=""
+            class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">บันทึก</button>
     </div>
+    @php
+        $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+    @endphp
     <div class="flex pl-[85px] pt-[10px] w-full">
         <div class="w-[1500px] h-[380px] overflow-auto">
-            <table class="w-[1500px] h-[390px]">
+            <table id="myTable" class="w-[1500px] h-[390px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
                         <th class="p-2 border text-[18px] whitespace-nowrap">ลำดับที่</th>
-                        <th class="px-4 border text-[18px]">หลักสูตร</th>
+                        <th class="px-4 min-w-[280px] border text-[18px]">หลักสูตร</th>
                         <th class="px-4 border text-[18px] whitespace-nowrap">ระดับการศึกษา</th>
                         <th class="px-4 border text-[18px] whitespace-nowrap">คณะ/วิทยาลัย</th>
                         <th class="px-4 border text-[18px] whitespace-nowrap">รูปแบบการประเมิน</th>
@@ -45,9 +51,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $no = 1; @endphp
+                    @php $hasData = false; $no = 1; @endphp
                     @foreach($faculties as $faculty)
                         @foreach($faculty->courses as $course)
+                            @php $hasData = true; @endphp
                             <tr>
                                 <td class="px-4 border text-center">{{ $no++ }}</td>
                                 <td class="px-4 border ">{{ $course->name }}</td>
@@ -356,16 +363,20 @@
                             </tr>
                         @endforeach
                     @endforeach
+                    @if(!$hasData)
+                        <tr>
+                            <td colspan="10" class="text-center border">
+                                ไม่มีข้อมูล
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
     </div>
-    {{-- <select name="assessor_user_id" class="w-auto border ">
-        <option value="" class="text-center">-- เลือกผู้ใช้ --</option>
-        @foreach($users->where('faculty', $faculty->name) as $user)
-        <option value="{{ $user->id }}">{{ $user->name }}</option>
-        @endforeach
-    </select> --}}
+    <div class="w-full flex justify-center mt-4">
+        <div id="pagination" class="flex gap-2"></div>
+    </div>
     <script>
         function openDate(el) {
             const td = el.closest("td");
@@ -377,51 +388,82 @@
                     altInput: true,
                     altFormat: "d/m/Y",
                     dateFormat: "Y-m-d",
-
-                    // ให้ popup อ้างอิงตำแหน่งจากตัวที่คลิก
                     positionElement: el,
                     position: "below",
 
                     onChange: function (selectedDates) {
+                        if (!selectedDates.length) return;
+
                         const date = selectedDates[0];
                         const day = String(date.getDate()).padStart(2, "0");
                         const month = String(date.getMonth() + 1).padStart(2, "0");
                         const year = date.getFullYear() + 543;
 
-                        td.querySelector(".date-text").innerText = `${day}/${month}/${year}`;
+                        td.querySelector(".date-text").innerText =
+                            `${day}/${month}/${year}`;
                     }
                 });
             } else {
-                // ถ้าคลิกคนละจุด/คนละแถว ให้ย้าย anchor ตามที่กด
+                // ถ้าคลิกแถวอื่นให้ย้ายตำแหน่ง popup
                 input._flatpickr.set("positionElement", el);
             }
 
             input._flatpickr.open();
-        } const td = el.closest("td");
-        const input = td.querySelector(".date-input");
-
-        input.classList.remove("hidden");
-
-        if (!input._flatpickr) {
-            flatpickr(input, {
-                locale: "th",          // ภาษาไทย
-                dateFormat: "d/m/Y",   // รูปแบบวัน/เดือน/ปี
-                position: "below",
-                onChange: function (selectedDates, dateStr) {
-
-                    // แปลง ค.ศ. → พ.ศ.
-                    const date = selectedDates[0];
-                    const day = String(date.getDate()).padStart(2, "0");
-                    const month = String(date.getMonth() + 1).padStart(2, "0");
-                    const year = date.getFullYear() + 543;
-
-                    td.querySelector(".date-text").innerText =
-                        `${day}/${month}/${year}`;
-
-                    input.classList.add("hidden");
-                }
-            });
         }
-        input._flatpickr.open();
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const selectElement = document.getElementById('thai-year');
+            if (!selectElement) return;
+
+            const currentYear = new Date().getFullYear();
+            const currentThaiYear = currentYear + 543;
+
+            const startYear = currentThaiYear - 2; // ย้อนหลัง 2 ปี
+            const endYear = currentThaiYear;
+
+            const selectedYear = {{ $selectedThaiYear }};
+
+            for (let i = endYear; i >= startYear; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+
+                if (i === selectedYear) {
+                    option.selected = true;
+                }
+                selectElement.appendChild(option);
+            }
+        });
+        $(document).ready(function () {
+            const rowsPerPage = 11; // จำนวนแถวต่อหน้า
+            const $table = $('#myTable');
+            const $rows = $table.find('tbody tr');
+            const totalPages = Math.ceil($rows.length / rowsPerPage);
+
+            function showPage(page) {
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                $rows.hide().slice(start, end).show();
+                // highlight ปุ่มที่เลือก
+                $('#pagination button').removeClass('bg-[#FFCE00] text-white');
+                $(`#pagination button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
+            }
+
+            // สร้างปุ่มหน้า
+            for (let i = 1; i <= totalPages; i++) {
+                $('#pagination').append(
+                    `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
+                );
+            }
+
+            // กดปุ่มเปลี่ยนหน้า
+            $('#pagination').on('click', 'button', function () {
+                const page = $(this).data('page');
+                showPage(page);
+            });
+
+            // แสดงหน้าแรก
+            showPage(1);
+        });
     </script>
 @endsection
