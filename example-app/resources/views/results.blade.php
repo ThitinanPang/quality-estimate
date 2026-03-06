@@ -45,7 +45,7 @@
                 </div>
             </div>
             <button
-                class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] hover:bg-white">ประเมิน</button>
+                class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] mb-[20px] hover:bg-white">ประเมิน</button>
         </div>
     </form>
 @endsection

@@ -70,6 +70,22 @@ return new class extends Migration {
             $table->json('overall')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('course_assessors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('faculty_id')->constrained('faculty')->onDelete('cascade');
+            $table->string('campus')->nullable(); // วิทยาเขต
+            $table->string('subject_group')->nullable(); // กลุ่มสาขาวิชา
+            $table->string('education_level')->nullable(); // ระดับการศึกษา
+            $table->string('assessment_type')->nullable(); // รูปแบบการประเมิน
+            $table->foreignId('chairperson_id')->nullable()->constrained('users'); // ประธานการประเมิน
+            $table->string('position')->nullable()->constrained('users'); // กรรมการ
+            $table->string('intern')->nullable()->constrained('users'); // ผู้ฝึกประสบการณ์
+            $table->date('assessment_date')->nullable(); // วันตรวจประเมิน
+            $table->string('secretary')->nullable()->constrained('users'); // เลขา
+        });
     }
 
     /**

@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="{{ request()->routeIs('coursereport','manage-assessor') ? 'overflow-hidden' : '' }}">
+<body class="{{ request()->routeIs('coursereport', 'manage-assessor') ? 'overflow-hidden' : '' }}">
     {{-- header --}}
     <header class="h-[129px] relative bg-white border-b">
         <svg class="absolute top-[28px] left-[42px]" width="130" height="71" viewBox="0 0 130 71" fill="none"
@@ -51,45 +51,45 @@
                 </a>
             </li>
             @auth
-            @if (auth()->user()->role == 'admin')
-            <li class="relative hover:bg-[#FFCE00] rounded-lg w-[224px] mt-[16px] ml-[16px] mr-[16px]">
-                <a class="relative flex items-center whitespace-nowrap dropdown-btn">
-                    <div class="">
-                        <svg class="menu-icon" width="25" height="25" viewBox="0 0 25 25" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M15.875 1.25H9.125C3.5 1.25 1.25 3.5 1.25 9.125V15.875C1.25 20.1275 2.5325 22.4563 5.5925 23.3225C5.84 20.3975 8.84375 18.0913 12.5 18.0913C16.1562 18.0913 19.16 20.3975 19.4075 23.3225C22.4675 22.4563 23.75 20.1275 23.75 15.875V9.125C23.75 3.5 21.5 1.25 15.875 1.25ZM12.5 14.9413C10.2725 14.9413 8.4725 13.13 8.4725 10.9025C8.4725 8.67502 10.2725 6.875 12.5 6.875C14.7275 6.875 16.5275 8.67502 16.5275 10.9025C16.5275 13.13 14.7275 14.9413 12.5 14.9413Z"
-                                stroke="black" stroke-opacity="0.9" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                    <span
-                        class="p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">ข้อมูลพื้นฐาน</span>
-                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
-                            fill="black" />
-                    </svg>
-                </a>
-                <div class="dropdown-container hidden bg-white w-full py-2">
-                    <a href="{{route('user')}}"
-                        class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ใช้</a>
-                    <a href=""
-                        class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
-                    <a href="{{route('assessor')}}"
-                        class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
-                    <a href="{{route('listname')}}"
-                        class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
-                    <a href=""
-                        class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
-                    <a href=""
-                        class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางผู้ประเมิน</a>
-                </div>
-            </li>
-            @endif
+                @if (auth()->user()->role == 'admin')
+                    <li class="relative hover:bg-[#FFCE00] rounded-lg w-[224px] mt-[16px] ml-[16px] mr-[16px]">
+                        <a class="relative flex items-center whitespace-nowrap dropdown-btn">
+                            <div class="">
+                                <svg class="menu-icon" width="25" height="25" viewBox="0 0 25 25" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M15.875 1.25H9.125C3.5 1.25 1.25 3.5 1.25 9.125V15.875C1.25 20.1275 2.5325 22.4563 5.5925 23.3225C5.84 20.3975 8.84375 18.0913 12.5 18.0913C16.1562 18.0913 19.16 20.3975 19.4075 23.3225C22.4675 22.4563 23.75 20.1275 23.75 15.875V9.125C23.75 3.5 21.5 1.25 15.875 1.25ZM12.5 14.9413C10.2725 14.9413 8.4725 13.13 8.4725 10.9025C8.4725 8.67502 10.2725 6.875 12.5 6.875C14.7275 6.875 16.5275 8.67502 16.5275 10.9025C16.5275 13.13 14.7275 14.9413 12.5 14.9413Z"
+                                        stroke="black" stroke-opacity="0.9" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <span
+                                class="p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[18px]">ข้อมูลพื้นฐาน</span>
+                            <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                                    fill="black" />
+                            </svg>
+                        </a>
+                        <div class="dropdown-container hidden bg-white w-full py-2">
+                            <a href="{{route('user')}}"
+                                class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ใช้</a>
+                            <a href=""
+                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
+                            <a href="{{route('assessor')}}"
+                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
+                            <a href="{{route('listname')}}"
+                                class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
+                            <a href="{{ route('manage-assessor') }}"
+                                class="{{ request()->routeIs('manage-assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
+                            <a href=""
+                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางผู้ประเมิน</a>
+                        </div>
+                    </li>
+                @endif
             @endauth
 
-            <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] h-[56px] mt-[16px] ml-[16px] mr-[16px]">
+            <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
                 <a href="" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                     <svg class="menu-icon" width="27" height="29" viewBox="0 0 27 29" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -110,19 +110,43 @@
                     </svg>
                 </a>
                 <div class="dropdown-container hidden bg-white w-full py-2">
-                    <a href="{{route('record')}}"
-                        class="{{ request()->routeIs('record') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">การจัดการหัวข้อการประเมิน</a>
-                    <a href="{{route('listfaculty')}}"
-                        class="{{ request()->routeIs('listfaculty') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">การจัดการหลักสูตร</a>
-                    <a href="{{route('results')}}"
-                        class="{{ request()->routeIs('results') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">บันทึกผลการประเมิน</a>
                     <a href=""
-                        class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางการประเมิน</a>
+                        class="dropdown-btn flex items-center justify-between bg-[#D9D9D9] px-2 py-2 text-[15px] rounded-[5px] border-2 border-gray-400">การจัดการหัวข้อการประเมิน
+                        <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                                fill="black" />
+                        </svg>
+                    </a>
+                    {{-- การจัดการหลักสูตร --}}
+                    <div
+                        class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
+                        <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px]">หลักสูตร AUN-QA</a>
+                        <a href="" class="block px-2 py-2 text-[15px]">หลักสูตร EdPEx</a>
+                    </div>
+                    <a href=""
+                        class="dropdown-btn flex items-center justify-between bg-[#D9D9D9] px-2 py-2 mt-2 text-[15px] rounded-[5px] border-2 border-gray-400">บันทึกผลการประเมิน
+                        <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                                fill="black" />
+                        </svg>
+                    </a>
+                    {{-- บันทึกผลกราปะเมิน --}}
+                    <div
+                        class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
+                        <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">หลักสูตร AUN-QA</a>
+                        <a href="" class="block px-2 py-2 text-[15px]">หลักสูตร EdPEx</a>
+                    </div>
+                    <a href=""
+                        class="block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
                 </div>
             </li>
 
-            <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] h-[56px] mt-[16px] ml-[16px] mr-[16px]">
-                <a href="{{route('report')}}" class="relative flex items-center whitespace-nowrap mb-0">
+            <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
+                <a href="" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                     <svg class="menu-icon" width="25" height="28" viewBox="0 0 22 26" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -133,7 +157,17 @@
                             stroke-linejoin="round" />
                     </svg>
                     <span
-                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[17px]">รายงานผลการประเมิน</span>
+                        class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[15px]">รายงานผลการประเมิน</span>
+                    <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                            fill="black" />
+                    </svg>
+                    <div class="dropdown-container hidden bg-white w-full py-2">
+                        <a href="{{route('report')}}" class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">หลักสูตร AUN-QA</a>
+                        <a href="" class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">หลักสูตร EdPEx</a>
+                    </div>
                 </a>
             </li>
         </ul>
@@ -149,12 +183,21 @@
 
             var dropdownContainer = dropdown.nextElementSibling;
 
-            // Toggle the 'hidden' class to control visibility
+            // เปิด / ปิด dropdown
             dropdownContainer.classList.toggle("hidden");
 
-            // Toggle the 'h-[56px]' class on the parent li to adjust its height
+            // ปรับความสูง li
             var parentLi = dropdown.closest("li");
             parentLi.classList.toggle("h-auto");
+
+            // ⭐ เพิ่มส่วนนี้เข้าไป
+            if (dropdownContainer.classList.contains("hidden")) {
+                dropdown.classList.remove("rounded-t-[5px]");
+                dropdown.classList.add("rounded-[5px]");
+            } else {
+                dropdown.classList.remove("rounded-[5px]");
+                dropdown.classList.add("rounded-t-[5px]");
+            }
 
         });
     });
