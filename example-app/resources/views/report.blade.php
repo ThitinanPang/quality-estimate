@@ -14,7 +14,9 @@
                     fill="black" />
             </svg>
         </p>
-        <div class="bg-[#FFCE00] rounded-[24px] w-[193px] h-[46px] absolute right-[50px] top-[180px] text-center pt-2 text-[20px]">ปีการศึกษา 2569</div>
+        <div
+            class="bg-[#FFCE00] rounded-[24px] w-[193px] h-[46px] absolute right-[50px] top-[180px] text-center pt-2 text-[20px]">
+            ปีการศึกษา 2569</div>
         <p class="text-[24px] w-full text-left">รายงานที่ 1 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร
             องค์ประกอบที่ 1 การกำกับมาตรฐาน </p>
     </div>
@@ -58,6 +60,19 @@
                         <td class="text-center align-middle px-4 border text-[20px]"></td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td colspan="2" class="text-center align-middle px-4 border text-[20px]">รวม</td>
+                    <td class="text-center align-middle px-4 border text-[20px]">
+                        {{ $faculties->sum('courses_count') == 0 ? '-' : $faculties->sum('courses_count') }}
+                    </td>
+                    <td class="text-center align-middle px-4 border text-[20px]">
+                        {{ $faculties->sum('total_pass') == 0 ? '-' : $faculties->sum('total_pass') }}
+                    </td>
+                    <td class="text-center align-middle px-4 border text-[20px]">
+                        {{ $faculties->sum('total_fail') == 0 ? '-' : $faculties->sum('total_fail') }}
+                    </td>
+                    <td class="text-center align-middle px-4 border text-[20px]"></td>
+                </tr>
             </tbody>
         </table>
     </div>
