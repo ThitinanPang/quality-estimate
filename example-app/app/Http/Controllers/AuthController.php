@@ -16,7 +16,9 @@ use App\Models\Faculty;
 use App\Models\Assessment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AuthController extends Controller
 {
@@ -350,7 +352,7 @@ class AuthController extends Controller
     public function editassessorPage($id)
     {
         $user = User::findOrFail($id);
-        return view('editassessor',compact('user'));
+        return view('editassessor', compact('user'));
     }
     public function updateassessor(Request $request, $id)
     {
@@ -390,24 +392,87 @@ class AuthController extends Controller
     }
     public function reportPage()
     {
-        // ดึง faculty พร้อมจำนวนที่ "เป็นไปตามเกณฑ์" และ "ไม่เป็นไปตามเกณฑ์"
+        $faculties = $this->getReportData();
+        return view('report', compact('faculties'));
+    }
+    private function getReportData()
+    {
         $faculties = Faculty::all()->map(function ($faculty) {
+
+            // จำนวนหลักสูตร
+            $coursesCount = Courses::where('faculty_id', $faculty->id)->count();
+
+            // ผ่านเกณฑ์
             $totalPass = Assessment::where('faculty', $faculty->name)
                 ->where('criterion', 'เป็นไปตามเกณฑ์')
                 ->count();
 
+            // ไม่ผ่านเกณฑ์
             $totalFail = Assessment::where('faculty', $faculty->name)
                 ->where('criterion', 'ไม่เป็นไปตามเกณฑ์')
                 ->count();
 
-            // เพิ่ม property ชั่วคราวให้ faculty
+            $faculty->courses_count = $coursesCount;
             $faculty->total_pass = $totalPass;
             $faculty->total_fail = $totalFail;
 
             return $faculty;
         });
-        // ส่งข้อมูลไป Blade
-        return view('report', compact('faculties'));
+
+        return $faculties;
+    }
+    public function exportExcel()
+    {
+        $faculties = $this->getReportData(); // ใช้ function เดิมที่คุณมี
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Header
+        $sheet->setCellValue('A1', 'ที่');
+        $sheet->setCellValue('B1', 'ส่วนงานคณะ/วิทยาลัย');
+        $sheet->setCellValue('C1', 'จำนวนหลักสูตร');
+        $sheet->setCellValue('D1', 'เป็นไปตามเกณฑ์');
+        $sheet->setCellValue('E1', 'ไม่เป็นไปตามเกณฑ์');
+
+        $row = 2;
+
+        foreach ($faculties as $index => $faculty) {
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $faculty->name);
+            $sheet->setCellValue('C' . $row, $faculty->courses_count ?? '-');
+            $sheet->setCellValue('D' . $row, $faculty->total_pass ?: '-');
+            $sheet->setCellValue('E' . $row, $faculty->total_fail ?: '-');
+
+            $row++;
+        }
+
+        // แถวรวม
+        $sheet->setCellValue('A' . $row, '');
+        $sheet->setCellValue('B' . $row, 'รวม');
+        $sheet->setCellValue('C' . $row, $faculties->sum('courses_count'));
+        $sheet->setCellValue('D' . $row, $faculties->sum('total_pass'));
+        $sheet->setCellValue('E' . $row, $faculties->sum('total_fail'));
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment;filename="report.xlsx"'
+        );
+
+        $response->headers->set('Cache-Control', 'max-age=0');
+
+        return $response;
     }
     public function editcoursePage($facultyId)
     {
