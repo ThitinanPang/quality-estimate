@@ -32,7 +32,7 @@ return new class extends Migration {
             $table->string('subject_group')->nullable();
             $table->string('faculty')->nullable();
             $table->string('course')->nullable();
-            $table->string('role')->default('user');
+            $table->string('role')->default('assessor');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();
             $table->string('assessor_type')->nullable();

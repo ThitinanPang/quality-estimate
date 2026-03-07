@@ -11,6 +11,11 @@
             <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
         </div>
     </form>
+    <span class="w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort By</span>
+    <select name="" id="sortName" class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
+        <option value="asc">ก-ฮ</option>
+        <option value="desc">ฮ-ก</option>
+    </select>
     <div
         class="absolute w-[284px] h-[34.67px] right-[85px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
@@ -36,8 +41,9 @@
         <input type="file" id="excelInput" name="excel_file" accept=".xlsx,.xls" style="display: none;">
 
         <!-- ปุ่มกด -->
-        <button type="button" onclick="document.getElementById('excelInput').click();" class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
-                                                   box-border flex items-center justify-center text-[18px] hover:bg-white">
+        <button type="button" onclick="document.getElementById('excelInput').click();"
+            class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
+                                                       box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -59,7 +65,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users 
-                WHERE YEAR(created_at) = $selectedADYear";
+                        WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
 
@@ -125,9 +131,17 @@
             var filter = input.value.toUpperCase();
             var table = document.getElementById("myTable");
             var tr = table.getElementsByTagName("tr");
+
+            var found = false;
+
+            // ลบ row "ไม่พบข้อมูล" เดิมก่อน
+            var oldMsg = document.getElementById("no-data-row");
+            if (oldMsg) oldMsg.remove();
+
             for (var i = 1; i < tr.length; i++) {
                 var tds = tr[i].getElementsByTagName("td");
                 var show = false;
+
                 for (var j = 0; j < tds.length; j++) {
                     var txtValue = tds[j].textContent || tds[j].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -135,7 +149,24 @@
                         break;
                     }
                 }
+
                 tr[i].style.display = show ? "" : "none";
+                if (show) found = true;
+            }
+
+            // ถ้าไม่พบข้อมูล
+            if (!found) {
+                var tbody = table.querySelector("tbody");
+                var row = document.createElement("tr");
+                row.id = "no-data-row";
+
+                var cell = document.createElement("td");
+                cell.colSpan = 7;
+                cell.className = "px-4 py-2 border-b text-center";
+                cell.innerText = "ไม่พบข้อมูล";
+
+                row.appendChild(cell);
+                tbody.appendChild(row);
             }
         }
         const excelInput = document.getElementById('excelInput');
@@ -169,6 +200,31 @@
                 selectElement.appendChild(option);
             }
         });
+        // SORT ชื่อ
+        document.getElementById("sortName").addEventListener("change", function () {
+
+            let order = this.value;
+            let table = document.getElementById("myTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.querySelectorAll("tr"));
+
+            rows.sort(function (a, b) {
+
+                let nameA = a.children[2].innerText.trim();
+                let nameB = b.children[2].innerText.trim();
+
+                if (order === "asc") {
+                    return nameA.localeCompare(nameB, 'th');
+                } else {
+                    return nameB.localeCompare(nameA, 'th');
+                }
+
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+
+        });
+
         $(document).ready(function () {
             const rowsPerPage = 6; // จำนวนแถวต่อหน้า
             const $table = $('#myTable');
