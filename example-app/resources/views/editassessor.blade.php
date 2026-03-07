@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex flex-col items-center justify-center mt-[32px]">
         <p class="text-[24px] w-[900px] h-[40px] bg-[#FFCE00] text-center border border-b-0 rounded-t-[14px]">
-            แก้ไขข้อมูลผู้ใช้</p>
+            แก้ไขข้อมูลผู้ประเมิน</p>
         <form action="{{ route('updateassessor', $user->id) }}" method="POST">
             @csrf
             <div
@@ -36,8 +36,11 @@
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
                 <p class="mt-[9px]">Assessor Type</p>
-                <input type="text" name="Assessor Type" value=""
-                    class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                <select name="role" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                    <option value="junior">junior</option>
+                    <option value=""></option>
+                    <option value=""></option>
+                </select>
 
                 <p class="mt-[9px]">Training Type</p>
                 <input type="text" name="Training Type" value=""
@@ -58,7 +61,7 @@
                 </select>
             </div>
             <div class=" justify-center flex gap-[50px]">
-                <button onclick="window.history.back()"
+                <button onclick="{{ route('assessor') }}"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border">ยกเลิก</button>
                 <button type="submit" onclick="alert('แก้ไขสำเร็จ')"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">

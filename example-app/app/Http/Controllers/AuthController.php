@@ -352,10 +352,34 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         return view('editassessor',compact('user'));
     }
-    public function updateassessor($id)
+    public function updateassessor(Request $request, $id)
     {
+        $request->validate([
+            'prefix' => 'nullable|string|max:50',
+            'name' => 'required|string|max:255',
+            'faculty' => 'nullable|string|max:100',
+            'subject_group' => 'nullable|string|max:100',
+            'course' => 'nullable|string|max:100',
+            'phone_number' => 'nullable|string|max:15',
+            'email' => 'nullable|email|max:255',
+            'status' => 'nullable|string|max:50',
+            'role' => 'nullable|string|max:50',
+        ]);
+
         $user = User::findOrFail($id);
-        return view('editassessor',compact('user'));
+
+        $user->update([
+            'prefix' => $request->prefix,
+            'name' => $request->name,
+            'faculty' => $request->faculty,
+            'subject_group' => $request->subject_group,
+            'course' => $request->course,
+            'phone_number' => $request->phone_number,
+            'email' => $request->email,
+            'status' => $request->status ?? $user->status,
+            'role' => $request->role,
+        ]);
+        return redirect()->route('assessor');
     }
     public function listfacultyPage()
     {

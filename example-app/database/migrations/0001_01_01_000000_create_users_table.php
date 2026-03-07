@@ -24,6 +24,23 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('users_assessor', function (Blueprint $table) {
+            $table->id();
+            $table->string('code_assessor')->nullable();
+            $table->string('prefix')->nullable();
+            $table->string('name')->nullable();
+            $table->string('subject_group')->nullable();
+            $table->string('faculty')->nullable();
+            $table->string('course')->nullable();
+            $table->string('role')->default('user');
+            $table->string('email')->unique();
+            $table->string('phone_number')->nullable();
+            $table->string('assessor_type')->nullable();
+            $table->string('training_type')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

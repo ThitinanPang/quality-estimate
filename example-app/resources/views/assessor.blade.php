@@ -50,7 +50,7 @@
         $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
-        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users 
+        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users
                 WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
