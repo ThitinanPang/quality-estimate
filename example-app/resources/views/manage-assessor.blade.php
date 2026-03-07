@@ -18,13 +18,21 @@
     <div class="flex ml-[85px] mt-3 mb-3 items-center gap-x-4">
         <span class="text-[16px]">วิทยาเขต :</span>
         <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
-            <option value="B" class="bg-white">บางแสน</option>
-            <option value="C" class="bg-white">จันทบุรี</option>
+            <option value="B" class="">บางแสน</option>
+            <option value="C" class="">จันทบุรี</option>
         </select>
         <span class="text-[16px]">กลุ่มวิชาสาขา :</span>
         <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
-            <option value=""></option>
-            <option value=""></option>
+            <option value="" selected disabled>เลือกข้อมูล</option>
+            <option value="">วิทยาศาสตร์สุขภาพ</option>
+            <option value="">วิทยาศาสตร์และเทคโนโลยี</option>
+            <option value="">วิศวกรรมศาตร์</option>
+            <option value="">สถาปัตยกรรมศาสตร์</option>
+            <option value="">เกษตรศาสตร์</option>
+            <option value="">บริหารธุรกิจ</option>
+            <option value="">ศิลปกรรมศาสตร์</option>
+            <option value="">ครุศาสตร์/ศึกษาศาสตร์</option>
+            <option value="">สหสาขาวิชา</option>
         </select>
         <button onclick=""
             class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">บันทึก</button>

@@ -307,9 +307,9 @@ class AuthController extends Controller
     {
         return view('user');
     }
-    public function assessorPage()
+    public function listassessorPage()
     {
-        return view('assessor');
+        return view('listassessor');
     }
     public function facultyPage()
     {
@@ -342,6 +342,20 @@ class AuthController extends Controller
     public function userfillPage()
     {
         return view('userfill');
+    }
+    public function assessorPage()
+    {
+        return view('assessor');
+    }
+    public function editassessorPage($id)
+    {
+        $user = User::findOrFail($id);
+        return view('editassessor',compact('user'));
+    }
+    public function updateassessor($id)
+    {
+        $user = User::findOrFail($id);
+        return view('editassessor',compact('user'));
     }
     public function listfacultyPage()
     {

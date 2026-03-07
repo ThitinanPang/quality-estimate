@@ -74,10 +74,10 @@
                         <div class="dropdown-container hidden bg-white w-full py-2">
                             <a href="{{route('user')}}"
                                 class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ใช้</a>
-                            <a href=""
-                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
                             <a href="{{route('assessor')}}"
-                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
+                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
+                            <a href="{{route('listassessor')}}"
+                                class="{{ request()->routeIs('listassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
                             <a href="{{route('listname')}}"
                                 class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
                             <a href="{{ route('manage-assessor') }}"

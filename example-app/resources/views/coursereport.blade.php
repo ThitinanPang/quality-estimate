@@ -27,8 +27,8 @@
                 <thead class="bg-[#FFCE00]">
                     <tr>
                         <th rowspan="3" class="px-4 border text-[24px]">ที่</th>
-                        <th rowspan="3" class="px-4 border text-[24px] whitespace-nowrap">ส่วนงานคณะ/มหาวิทยาลัย</th>
-                        <th colspan="5" class="px-4 border text-[20px]">ภาพรวมทั้งคณะ/มหาวิทยาลัย</th>
+                        <th rowspan="3" class="px-4 border text-[24px] whitespace-nowrap">ส่วนงานคณะ/วิทยาลัย</th>
+                        <th colspan="5" class="px-4 border text-[20px]">ภาพรวมทั้งคณะ/วิทยาลัย</th>
                         <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาตรี</th>
                         <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาโท</th>
                         <th colspan="5" class="px-4 border text-[20px]">ระดับปริญญาเอก</th>

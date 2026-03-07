@@ -13,7 +13,10 @@ Route::post('/login',[AuthController::class,'checkLogin'])->name('login.submit')
 
 Route::get('/user',[AuthController::class,'userPage'])->name('user');
 Route::get('/home',[AuthController::class,'homePage'])->name('home');
+Route::get('/listassessor',[AuthController::class,'listassessorPage'])->name('listassessor');
 Route::get('/assessor',[AuthController::class,'assessorPage'])->name('assessor');
+Route::get('/editassessor/{id}',[AuthController::class,'editassessorPage'])->name('editassessor');
+Route::post('/updateassessor/{id}', [AuthController::class, 'updateassessor'])->name('updateassessor');
 Route::get('/faculty',[AuthController::class,'facultyPage'])->name('faculty');
 Route::get('/university',[AuthController::class,'universityPage'])->name('university');
 Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname');
