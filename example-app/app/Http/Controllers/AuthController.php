@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AuthController extends Controller
 {
@@ -473,6 +474,53 @@ class AuthController extends Controller
         $response->headers->set('Cache-Control', 'max-age=0');
 
         return $response;
+    }
+    public function exportPDF()
+    {
+        $faculties = $this->getReportData();
+        $html = '
+    <meta charset="UTF-8">
+    <style>
+    body{
+        font-family: DejaVu Sans;
+    }
+    </style>
+    <h3>รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร</h3>
+
+    <table border="1" cellspacing="0" cellpadding="5" width="100%">
+        <thead>
+            <tr>
+                <th>ที่</th>
+                <th>ส่วนงานคณะ/วิทยาลัย</th>
+                <th>จำนวนหลักสูตร</th>
+                <th>เป็นไปตามเกณฑ์</th>
+                <th>ไม่เป็นไปตามเกณฑ์</th>
+            </tr>
+        </thead>
+        <tbody>
+    ';
+
+        foreach ($faculties as $index => $faculty) {
+
+            $html .= '
+        <tr>
+            <td>' . ($index + 1) . '</td>
+            <td>' . $faculty->name . '</td>
+            <td>' . $faculty->courses_count . '</td>
+            <td>' . $faculty->total_pass . '</td>
+            <td>' . $faculty->total_fail . '</td>
+        </tr>
+        ';
+        }
+
+        $html .= '
+        </tbody>
+    </table>
+    ';
+
+        $pdf = Pdf::loadHTML($html);
+
+        return $pdf->download('report.pdf');
     }
     public function editcoursePage($facultyId)
     {
