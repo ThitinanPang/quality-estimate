@@ -95,7 +95,7 @@
                             </td>
                             <td class="px-4 py-2 border-b text-center align-middle">63-001</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['name'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle whitespace-nowrap">{{ $row['name'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['faculty'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['status'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">junior</td>
