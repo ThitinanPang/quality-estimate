@@ -10,7 +10,7 @@
 
 </head>
 
-<body class="{{ request()->routeIs('coursereport', 'manage-assessor') ? 'overflow-hidden' : '' }}">
+<body class="{{ request()->routeIs('coursereport', 'manage-assessor') ? 'overflow-x-hidden' : '' }}">
     {{-- header --}}
     <header class="h-[129px] relative bg-white border-b">
         <svg class="absolute top-[28px] left-[42px]" width="130" height="71" viewBox="0 0 130 71" fill="none"

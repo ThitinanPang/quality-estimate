@@ -22,8 +22,8 @@
         ระดับหลักสูตร
         ตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict) ประจำปีการศึกษา 2566</p>
     <div class="flex pl-[110px] w-full pt-[10px]">
-        <div class="w-[1364px] h-[390px] overflow-auto">
-            <table class="w-[1364px] h-[100px]">
+        <div class="w-[1364px] overflow-auto overflow-y-hidden">
+            <table class="w-[1364px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
                         <th rowspan="3" class="px-4 border text-[24px]">ที่</th>
