@@ -21,4 +21,12 @@ class CourseAssessor extends Model
         'assessment_date',
         'secretary'
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function course()
+    {
+        return $this->belongsTo(Courses::class);
+    }
 }

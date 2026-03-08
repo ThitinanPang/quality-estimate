@@ -253,8 +253,7 @@ class AuthController extends Controller
     }
     public function collectFaculty(Request $request)
     {
-        $facultyId = $request->faculty;
-        $faculty = Faculty::find($facultyId);
+        $faculty = Faculty::find($request->faculty);
         return view('save', compact('faculty'));
     }
     public function collect(Request $request)
@@ -332,13 +331,18 @@ class AuthController extends Controller
     {
         return view('record');
     }
+
     public function resultsPage()
     {
-        return view('results');
+        $course_assessment = CourseAssessor::all();
+        $faculties = Faculty::orderBy('name', 'ASC')->get();
+        $users = User::all()->keyBy('name');
+        return view('results', compact('course_assessment', 'faculties', 'users'));
     }
-    public function savePage()
+    public function savePage(Request $request)
     {
-        return view('save');
+        $faculty = Faculty::find($request->faculty);
+        return view('save', compact('faculty'));
     }
     public function edituserPage()
     {
