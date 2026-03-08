@@ -392,26 +392,38 @@ class AuthController extends Controller
 
         return view('listfaculty', compact('faculties'));
     }
-    public function reportPage()
+    public function reportPage(Request $request)
     {
-        $faculties = $this->getReportData();
-        return view('report', compact('faculties'));
+        // ปีการศึกษาที่เลือก
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+
+        // แปลงเป็น ค.ศ.
+        $selectedADYear = $selectedThaiYear - 543;
+
+        // ส่งปีไป query
+        $faculties = $this->getReportData($selectedADYear);
+
+        return view('report', compact('faculties', 'selectedThaiYear'));
     }
-    private function getReportData()
+    private function getReportData($year)
     {
-        $faculties = Faculty::all()->map(function ($faculty) {
+        $faculties = Faculty::all()->map(function ($faculty) use ($year) {
 
             // จำนวนหลักสูตร
-            $coursesCount = Courses::where('faculty_id', $faculty->id)->count();
+            $coursesCount = Courses::where('faculty_id', $faculty->id)
+                ->whereYear('created_at', $year)
+                ->count();
 
             // ผ่านเกณฑ์
             $totalPass = Assessment::where('faculty', $faculty->name)
                 ->where('criterion', 'เป็นไปตามเกณฑ์')
+                ->whereYear('created_at', $year)
                 ->count();
 
             // ไม่ผ่านเกณฑ์
             $totalFail = Assessment::where('faculty', $faculty->name)
                 ->where('criterion', 'ไม่เป็นไปตามเกณฑ์')
+                ->whereYear('created_at', $year)
                 ->count();
 
             $faculty->courses_count = $coursesCount;
@@ -423,14 +435,16 @@ class AuthController extends Controller
 
         return $faculties;
     }
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        $faculties = $this->getReportData(); // ใช้ function เดิมที่คุณมี
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = $this->getReportData($selectedADYear);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // Header
         $sheet->setCellValue('A1', 'ที่');
         $sheet->setCellValue('B1', 'ส่วนงานคณะ/วิทยาลัย');
         $sheet->setCellValue('C1', 'จำนวนหลักสูตร');
@@ -442,15 +456,12 @@ class AuthController extends Controller
         foreach ($faculties as $index => $faculty) {
             $sheet->setCellValue('A' . $row, $index + 1);
             $sheet->setCellValue('B' . $row, $faculty->name);
-            $sheet->setCellValue('C' . $row, $faculty->courses_count ?? '-');
+            $sheet->setCellValue('C' . $row, $faculty->courses_count ?: '-');
             $sheet->setCellValue('D' . $row, $faculty->total_pass ?: '-');
             $sheet->setCellValue('E' . $row, $faculty->total_fail ?: '-');
-
             $row++;
         }
-
-        // แถวรวม
-        $sheet->setCellValue('A' . $row, '');
+        
         $sheet->setCellValue('B' . $row, 'รวม');
         $sheet->setCellValue('C' . $row, $faculties->sum('courses_count'));
         $sheet->setCellValue('D' . $row, $faculties->sum('total_pass'));
@@ -469,24 +480,28 @@ class AuthController extends Controller
 
         $response->headers->set(
             'Content-Disposition',
-            'attachment;filename="report.xlsx"'
+            'attachment;filename="report_' . $selectedThaiYear . '.xlsx"'
         );
 
         $response->headers->set('Cache-Control', 'max-age=0');
 
         return $response;
     }
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
-        $faculties = $this->getReportData();
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = $this->getReportData($selectedADYear);
 
         $pdf = SnappyPdf::loadView('reportpdf', [
-            'faculties' => $faculties
+            'faculties' => $faculties,
+            'selectedThaiYear' => $selectedThaiYear
         ])
             ->setOption('encoding', 'utf-8')
             ->setOption('enable-local-file-access', true);
 
-        return $pdf->download('report.pdf');
+        return $pdf->download('report_' . $selectedThaiYear . '.pdf');
     }
     public function editcoursePage($facultyId)
     {
