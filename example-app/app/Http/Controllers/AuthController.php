@@ -402,8 +402,10 @@ class AuthController extends Controller
 
         // ส่งปีไป query
         $faculties = $this->getReportData($selectedADYear);
+        $assessment = Assessment::all();
+        $ft = Faculty::with('courses')->get();
 
-        return view('report', compact('faculties', 'selectedThaiYear'));
+        return view('report', compact('faculties','ft','assessment', 'selectedThaiYear'));
     }
     private function getReportData($year)
     {
@@ -461,7 +463,7 @@ class AuthController extends Controller
             $sheet->setCellValue('E' . $row, $faculty->total_fail ?: '-');
             $row++;
         }
-        
+
         $sheet->setCellValue('B' . $row, 'รวม');
         $sheet->setCellValue('C' . $row, $faculties->sum('courses_count'));
         $sheet->setCellValue('D' . $row, $faculties->sum('total_pass'));

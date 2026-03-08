@@ -11,7 +11,7 @@
 </head>
 
 <body class="
-{{ request()->routeIs('coursereport') ? 'overflow-x-hidden' : '' }}
+{{ request()->routeIs('report') ? 'overflow-x-hidden' : '' }}
 {{ request()->routeIs('manage-assessor') ? 'overflow-hidden' : '' }}
  ">
     {{-- header --}}
