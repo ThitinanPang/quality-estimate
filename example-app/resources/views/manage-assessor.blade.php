@@ -16,13 +16,15 @@
         </form>
     </div>
     <div class="flex ml-[85px] mt-3 mb-3 items-center gap-x-4">
-        <span class="text-[16px]">วิทยาเขต :</span>
-        <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
-            <option value="B" class="">บางแสน</option>
-            <option value="C" class="">จันทบุรี</option>
-        </select>
+        <form action="" method="GET">
+            <span class="text-[16px]">วิทยาเขต :</span>
+            <select name="campus" onchange="this.form.submit()" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center px-2">
+                <option value="บางแสน" {{ request('campus')=='บางแสน'?'selected':'' }}>บางแสน</option>
+                <option value="จันทบุรี" {{ request('campus')=='จันทบุรี'?'selected':'' }}>จันทบุรี</option>
+            </select>
+        </form>
         <span class="text-[16px]">กลุ่มวิชาสาขา :</span>
-        <select name="" id="" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
+        <select name="" id="" class="w-[230px] h-[35px] bg-[#DBDBDB] rounded-[8px] text-center">
             <option value="" selected disabled>เลือกข้อมูล</option>
             <option value="">วิทยาศาสตร์สุขภาพ</option>
             <option value="">วิทยาศาสตร์และเทคโนโลยี</option>
@@ -34,13 +36,15 @@
             <option value="">ครุศาสตร์/ศึกษาศาสตร์</option>
             <option value="">สหสาขาวิชา</option>
         </select>
-        <button onclick=""
-            class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">บันทึก</button>
+        <button onclick=""  class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">
+           บันทึก
+        </button>
     </div>
     @php
         $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
     @endphp
+
     <div class="flex pl-[85px] pt-[10px] w-full">
         <div class="w-[1500px] h-[380px] overflow-auto">
             <table id="myTable" class="w-[1500px] h-[390px]">
@@ -59,7 +63,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $hasData = false; $no = 1; @endphp
+                    @php $hasData = false;
+                    $no = 1; @endphp
                     @foreach($faculties as $faculty)
                         @foreach($faculty->courses as $course)
                             @php $hasData = true; @endphp

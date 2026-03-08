@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('prefix')->nullable();
             $table->string('name')->nullable();
-            $table->string('subject_group')->nullable();
+            $table->string('subject_group')->nullable(); // กลุ่มวิชา
             $table->string('faculty')->nullable();
-            $table->string('course')->nullable();
+            $table->string('course')->nullable(); // หลักสูตร
             $table->string('role')->default('user');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();

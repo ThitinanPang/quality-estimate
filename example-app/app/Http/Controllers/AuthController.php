@@ -405,7 +405,7 @@ class AuthController extends Controller
         $assessment = Assessment::all();
         $ft = Faculty::with('courses')->get();
 
-        return view('report', compact('faculties','ft','assessment', 'selectedThaiYear'));
+        return view('report', compact('faculties', 'ft', 'assessment', 'selectedThaiYear'));
     }
     private function getReportData($year)
     {
@@ -524,15 +524,28 @@ class AuthController extends Controller
         // แปลงเป็น ค.ศ.
         $selectedADYear = $selectedThaiYear - 543;
 
-        // กรองตามปี created_at
+        // วิทยาเขตที่เลือก
+        $campus = $request->campus;
+
+        // ผู้ใช้ตามปี
         $users = User::whereYear('created_at', $selectedADYear)->get();
 
+        // คณะ + หลักสูตร
         $faculties = Faculty::with([
             'courses' => function ($query) use ($selectedADYear) {
                 $query->whereYear('created_at', $selectedADYear);
             }
-        ])->get();
+        ])
+            ->when($campus, function ($query) use ($campus) {
+                $query->where('campus', $campus);
+            })
+            ->get();
 
-        return view('manage-assessor', compact('faculties', 'users', 'selectedThaiYear'));
+        return view('manage-assessor', compact(
+            'faculties',
+            'users',
+            'selectedThaiYear',
+            'campus'
+        ));
     }
 }
