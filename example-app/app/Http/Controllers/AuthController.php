@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 
 class AuthController extends Controller
 {
@@ -478,47 +479,12 @@ class AuthController extends Controller
     public function exportPDF()
     {
         $faculties = $this->getReportData();
-        $html = '
-    <meta charset="UTF-8">
-    <style>
-    body{
-        font-family: DejaVu Sans;
-    }
-    </style>
-    <h3>รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร</h3>
 
-    <table border="1" cellspacing="0" cellpadding="5" width="100%">
-        <thead>
-            <tr>
-                <th>ที่</th>
-                <th>ส่วนงานคณะ/วิทยาลัย</th>
-                <th>จำนวนหลักสูตร</th>
-                <th>เป็นไปตามเกณฑ์</th>
-                <th>ไม่เป็นไปตามเกณฑ์</th>
-            </tr>
-        </thead>
-        <tbody>
-    ';
-
-        foreach ($faculties as $index => $faculty) {
-
-            $html .= '
-        <tr>
-            <td>' . ($index + 1) . '</td>
-            <td>' . $faculty->name . '</td>
-            <td>' . $faculty->courses_count . '</td>
-            <td>' . $faculty->total_pass . '</td>
-            <td>' . $faculty->total_fail . '</td>
-        </tr>
-        ';
-        }
-
-        $html .= '
-        </tbody>
-    </table>
-    ';
-
-        $pdf = Pdf::loadHTML($html);
+        $pdf = SnappyPdf::loadView('reportpdf', [
+            'faculties' => $faculties
+        ])
+            ->setOption('encoding', 'utf-8')
+            ->setOption('enable-local-file-access', true);
 
         return $pdf->download('report.pdf');
     }
