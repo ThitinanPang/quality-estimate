@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Courses;
 use App\Models\Faculty;
 use App\Models\Assessment;
+use App\Models\CourseAssessor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -547,5 +548,37 @@ class AuthController extends Controller
             'selectedThaiYear',
             'campus'
         ));
+    }
+    public function storemanageassessor(Request $request)
+    {
+        $subject_group = $request->subject_group;
+
+        foreach ($request->courses as $data) {
+            // ถ้ายังไม่ได้กรอกข้อมูลสำคัญ ให้ข้าม
+            if (
+                empty($data['chairperson']) &&
+                empty($data['position']) &&
+                empty($data['intern']) &&
+                empty($data['assessment_date']) &&
+                empty($data['secretary'])
+            ) {
+                continue;
+            }
+            CourseAssessor::create([
+                'course_id' => $data['course_id'],
+                'user_id' => auth()->id(),
+                'faculty_id' => $data['faculty_id'] ?? null,
+                'campus' => $data['campus'] ?? null,
+                'subject_group' => $subject_group,
+                'education_level' => $data['education_level'] ?? null,
+                'assessment_type' => $data['assessment_type'] ?? null,
+                'chairperson' => $data['chairperson'] ?? null,
+                'position' => $data['position'] ?? null,
+                'intern' => $data['intern'] ?? null,
+                'assessment_date' => $data['assessment_date'] ?? null,
+                'secretary' => $data['secretary'] ?? null,
+            ]);
+        }
+        return redirect()->route('manage-assessor')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
 }

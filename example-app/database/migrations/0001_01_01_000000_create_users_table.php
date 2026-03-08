@@ -97,11 +97,12 @@ return new class extends Migration {
             $table->string('subject_group')->nullable(); // กลุ่มสาขาวิชา
             $table->string('education_level')->nullable(); // ระดับการศึกษา
             $table->string('assessment_type')->nullable(); // รูปแบบการประเมิน
-            $table->foreignId('chairperson_id')->nullable()->constrained('users'); // ประธานการประเมิน
-            $table->string('position')->nullable()->constrained('users'); // กรรมการ
-            $table->string('intern')->nullable()->constrained('users'); // ผู้ฝึกประสบการณ์
+            $table->string('chairperson')->nullable(); // ประธานการประเมิน
+            $table->string('position')->nullable(); // กรรมการ
+            $table->string('intern')->nullable(); // ผู้ฝึกประสบการณ์
             $table->date('assessment_date')->nullable(); // วันตรวจประเมิน
-            $table->string('secretary')->nullable()->constrained('users'); // เลขา
+            $table->string('secretary')->nullable(); // เลขา
+            $table->timestamps();
         });
     }
 

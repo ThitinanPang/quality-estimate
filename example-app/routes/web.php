@@ -44,3 +44,4 @@ Route::post('/save-collect', [AuthController::class, 'collect'])->name('save.col
 Route::get('/editcourse/{faculty}',[AuthController::class,'editcoursePage'])->name('editcourse');
 
 Route::get('/manageassessor',[AuthController::class,'manageassessorPage'])->name('manage-assessor');
+Route::post('/course-assessor/store',[AuthController::class,'storemanageassessor'])->name('course-assessor.store');

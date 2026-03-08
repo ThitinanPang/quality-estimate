@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Faculty extends Model
+class UserAssessor extends Model
 {
     protected $table = 'users_assessor';
     protected $fillable = [
