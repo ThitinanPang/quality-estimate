@@ -2,7 +2,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
-    <p class="absolute w-[330px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
+    <p class="absolute w-[500px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</p>
     <form method="GET">
         <div
