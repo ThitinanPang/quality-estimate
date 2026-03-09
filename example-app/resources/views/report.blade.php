@@ -51,38 +51,44 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($faculties as $index => $faculty)
+                @if($faculties->sum('courses_count') == 0)
                     <tr>
-                        <td class="text-center align-middle px-4 border text-[20px]">{{ $index + 1 }}</td>
-                        <td class="text-center align-middle px-4 border text-[20px]">{{ $faculty->name }}</td>
-                        {{-- จำนวนหลักสูตร --}}
+                        <td colspan="6" class="border text-center text-[20px]">ไม่มีข้อมูล</td>
+                    </tr>
+                @else
+                    @foreach ($faculties as $index => $faculty)
+                        <tr>
+                            <td class="text-center align-middle px-4 border text-[20px]">{{ $index + 1 }}</td>
+                            <td class="text-center align-middle px-4 border text-[20px]">{{ $faculty->name }}</td>
+                            {{-- จำนวนหลักสูตร --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ ($faculty->courses_count ?? 0) == 0 ? '-' : $faculty->courses_count }}
+                            </td>
+                            {{-- เป็นไปตามเกณฑ์ --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ $faculty->total_pass == 0 ? '-' : $faculty->total_pass }}
+                            </td>
+                            {{-- ไม่เป็นไปตามเกณฑ์ --}}
+                            <td class="text-center align-middle px-4 border text-[20px]">
+                                {{ $faculty->total_fail == 0 ? '-' : $faculty->total_fail }}
+                            </td>
+                            <td class="text-center align-middle px-4 border text-[20px]"></td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="2" class="text-center align-middle px-4 border text-[20px]">รวม</td>
                         <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ ($faculty->courses_count ?? 0) == 0 ? '-' : $faculty->courses_count }}
+                            {{ $faculties->sum('courses_count') == 0 ? '-' : $faculties->sum('courses_count') }}
                         </td>
-                        {{-- เป็นไปตามเกณฑ์ --}}
                         <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ $faculty->total_pass == 0 ? '-' : $faculty->total_pass }}
+                            {{ $faculties->sum('total_pass') == 0 ? '-' : $faculties->sum('total_pass') }}
                         </td>
-                        {{-- ไม่เป็นไปตามเกณฑ์ --}}
                         <td class="text-center align-middle px-4 border text-[20px]">
-                            {{ $faculty->total_fail == 0 ? '-' : $faculty->total_fail }}
+                            {{ $faculties->sum('total_fail') == 0 ? '-' : $faculties->sum('total_fail') }}
                         </td>
                         <td class="text-center align-middle px-4 border text-[20px]"></td>
                     </tr>
-                @endforeach
-                <tr>
-                    <td colspan="2" class="text-center align-middle px-4 border text-[20px]">รวม</td>
-                    <td class="text-center align-middle px-4 border text-[20px]">
-                        {{ $faculties->sum('courses_count') == 0 ? '-' : $faculties->sum('courses_count') }}
-                    </td>
-                    <td class="text-center align-middle px-4 border text-[20px]">
-                        {{ $faculties->sum('total_pass') == 0 ? '-' : $faculties->sum('total_pass') }}
-                    </td>
-                    <td class="text-center align-middle px-4 border text-[20px]">
-                        {{ $faculties->sum('total_fail') == 0 ? '-' : $faculties->sum('total_fail') }}
-                    </td>
-                    <td class="text-center align-middle px-4 border text-[20px]"></td>
-                </tr>
+                @endif
             </tbody>
         </table>
     </div>
