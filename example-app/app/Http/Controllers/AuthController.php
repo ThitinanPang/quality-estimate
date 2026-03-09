@@ -402,15 +402,25 @@ class AuthController extends Controller
 
         $yearReport1 = $request->year_report1 ?? (date('Y') + 543);
         $yearReport2 = $request->year_report2 ?? (date('Y') + 543);
-
+        $yearReport3 = $request->year_report3 ?? (date('Y') + 543);
+        $yearReport4 = $request->year_report4 ?? (date('Y') + 543);
+        $yearReport5 = $request->year_report5 ?? (date('Y') + 543);
+        $yearReport6 = $request->year_report6 ?? (date('Y') + 543);
         // แปลงเป็น ค.ศ.
         $yearReport1AD = $yearReport1 - 543;
         $yearReport2AD = $yearReport2 - 543;
-
+        $yearReport3AD = $yearReport3 - 543;
+        $yearReport4AD = $yearReport4 - 543;
+        $yearReport5AD = $yearReport5 - 543;
+        $yearReport6AD = $yearReport6 - 543;
         // query ข้อมูล
         $faculties = $this->getReportData($yearReport1AD);
 
         $assessment = Assessment::whereYear('created_at', $yearReport2AD)->get();
+        $assessment2 = Assessment::whereYear('created_at', $yearReport3AD)->get();
+        $assessment3 = Assessment::whereYear('created_at', $yearReport4AD)->get();
+        $assessment4 = Assessment::whereYear('created_at', $yearReport5AD)->get();
+        $assessment5 = Assessment::whereYear('created_at', $yearReport6AD)->get();
 
         $ft = Faculty::with('courses')->withCount('courses')->get();
 
@@ -418,8 +428,16 @@ class AuthController extends Controller
             'faculties',
             'ft',
             'assessment',
+            'assessment2',
+            'assessment3',
+            'assessment4',
+            'assessment5',
             'yearReport1',
             'yearReport2',
+            'yearReport3',
+            'yearReport4',
+            'yearReport5',
+            'yearReport6',
         ));
     }
     private function getReportData($year)
@@ -547,7 +565,6 @@ class AuthController extends Controller
         $sheet->setCellValue('R1', 'ปริญญาเอก');
         $sheet->mergeCells('R1:V1');
 
-
         // HEADER ROW 2
         $sheet->setCellValue('C2', 'จำนวน');
         $sheet->mergeCells('D2:G2');
@@ -560,7 +577,6 @@ class AuthController extends Controller
 
         $sheet->setCellValue('R2', 'จำนวน');
         $sheet->mergeCells('S2:V2');
-
 
         // HEADER ROW 3
         $headers = ['2', '3', '4', '5'];
@@ -588,17 +604,45 @@ class AuthController extends Controller
             $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
             $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
 
-            // ปริญญาตรี
             $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
-
-            // ปริญญาโท
             $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
-
-            // ปริญญาเอก
             $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
 
             $row++;
         }
+
+        /* ----------- รวม ----------- */
+
+        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
+        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
+        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
+        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
+        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
+
+        $sheet->setCellValue('A' . $row, 'รวม');
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+
+        $sheet->setCellValue('C' . $row, $totalCourses);
+        $sheet->setCellValue('D' . $row, $total2);
+        $sheet->setCellValue('E' . $row, $total3);
+        $sheet->setCellValue('F' . $row, $total4);
+        $sheet->setCellValue('G' . $row, $total5);
+
+        $row++;
+
+        /* ----------- เปอร์เซนต์ ----------- */
+
+        $sheet->setCellValue('A' . $row, 'เปอร์เซนต์ (%)');
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+
+        $sheet->setCellValue('C' . $row, 100);
+
+        $sheet->setCellValue('D' . $row, $totalCourses ? round(($total2 / $totalCourses) * 100, 2) : 0);
+        $sheet->setCellValue('E' . $row, $totalCourses ? round(($total3 / $totalCourses) * 100, 2) : 0);
+        $sheet->setCellValue('F' . $row, $totalCourses ? round(($total4 / $totalCourses) * 100, 2) : 0);
+        $sheet->setCellValue('G' . $row, $totalCourses ? round(($total5 / $totalCourses) * 100, 2) : 0);
+
+        /* ----------- export ----------- */
 
         $writer = new Xlsx($spreadsheet);
 
@@ -633,6 +677,487 @@ class AuthController extends Controller
         ]);
 
         return $pdf->download('report2_' . $selectedThaiYear . '.pdf');
+    }
+    public function exportExcelReport3(Request $request)
+    {
+        $selectedThaiYear = $request->year_report3 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER ROW 1
+        $sheet->setCellValue('A1', 'ที่');
+        $sheet->setCellValue('B1', 'คณะ/วิทยาลัย');
+
+        $sheet->setCellValue('C1', 'ภาพรวม');
+        $sheet->mergeCells('C1:G1');
+
+        $sheet->setCellValue('H1', 'ปริญญาตรี');
+        $sheet->mergeCells('H1:L1');
+
+        $sheet->setCellValue('M1', 'ปริญญาโท');
+        $sheet->mergeCells('M1:Q1');
+
+        $sheet->setCellValue('R1', 'ปริญญาเอก');
+        $sheet->mergeCells('R1:V1');
+
+        // HEADER ROW 2
+        $sheet->setCellValue('C2', 'จำนวน');
+        $sheet->mergeCells('D2:G2');
+
+        $sheet->setCellValue('H2', 'จำนวน');
+        $sheet->mergeCells('I2:L2');
+
+        $sheet->setCellValue('M2', 'จำนวน');
+        $sheet->mergeCells('N2:Q2');
+
+        $sheet->setCellValue('R2', 'จำนวน');
+        $sheet->mergeCells('S2:V2');
+
+        // HEADER ROW 3
+        $headers = ['2', '3', '4', '5'];
+
+        foreach ($headers as $i => $h) {
+            $sheet->setCellValue(chr(68 + $i) . '3', $h);
+            $sheet->setCellValue(chr(73 + $i) . '3', $h);
+            $sheet->setCellValue(chr(78 + $i) . '3', $h);
+            $sheet->setCellValue(chr(83 + $i) . '3', $h);
+        }
+
+        $row = 4;
+
+        foreach ($faculties as $index => $faculty) {
+
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $faculty->name);
+
+            $totalCourses = $faculty->courses->count();
+
+            $sheet->setCellValue('C' . $row, $totalCourses);
+
+            $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->where('result', '2')->count());
+            $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->where('result', '3')->count());
+            $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
+            $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
+
+            $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
+            $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
+            $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
+
+            $row++;
+        }
+
+        /* ----------- รวม ----------- */
+
+        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
+        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
+        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
+        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
+        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
+
+        $sheet->setCellValue('A' . $row, 'รวม');
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+
+        $sheet->setCellValue('C' . $row, $totalCourses);
+        $sheet->setCellValue('D' . $row, $total2);
+        $sheet->setCellValue('E' . $row, $total3);
+        $sheet->setCellValue('F' . $row, $total4);
+        $sheet->setCellValue('G' . $row, $total5);
+
+        $row++;
+
+        /* ----------- export ----------- */
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment;filename="report3_' . $selectedThaiYear . '.xlsx"'
+        );
+
+        return $response;
+    }
+    public function exportPDFReport3(Request $request)
+    {
+        $selectedThaiYear = $request->year_report3 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $pdf = SnappyPdf::loadView('report3pdf', [
+            'faculties' => $faculties,
+            'assessment' => $assessment,
+            'selectedThaiYear' => $selectedThaiYear
+        ]);
+
+        return $pdf->download('report3_' . $selectedThaiYear . '.pdf');
+    }
+    public function exportExcelReport4(Request $request)
+    {
+        $selectedThaiYear = $request->year_report4 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER ROW 1
+        $sheet->setCellValue('A1', 'ที่');
+        $sheet->setCellValue('B1', 'คณะ/วิทยาลัย');
+
+        $sheet->setCellValue('C1', 'ภาพรวม');
+        $sheet->mergeCells('C1:G1');
+
+        $sheet->setCellValue('H1', 'ปริญญาตรี');
+        $sheet->mergeCells('H1:L1');
+
+        $sheet->setCellValue('M1', 'ปริญญาโท');
+        $sheet->mergeCells('M1:Q1');
+
+        $sheet->setCellValue('R1', 'ปริญญาเอก');
+        $sheet->mergeCells('R1:V1');
+
+        // HEADER ROW 2
+        $sheet->setCellValue('C2', 'จำนวน');
+        $sheet->mergeCells('D2:G2');
+
+        $sheet->setCellValue('H2', 'จำนวน');
+        $sheet->mergeCells('I2:L2');
+
+        $sheet->setCellValue('M2', 'จำนวน');
+        $sheet->mergeCells('N2:Q2');
+
+        $sheet->setCellValue('R2', 'จำนวน');
+        $sheet->mergeCells('S2:V2');
+
+        // HEADER ROW 3
+        $headers = ['2', '3', '4', '5'];
+
+        foreach ($headers as $i => $h) {
+            $sheet->setCellValue(chr(68 + $i) . '3', $h);
+            $sheet->setCellValue(chr(73 + $i) . '3', $h);
+            $sheet->setCellValue(chr(78 + $i) . '3', $h);
+            $sheet->setCellValue(chr(83 + $i) . '3', $h);
+        }
+
+        $row = 4;
+
+        foreach ($faculties as $index => $faculty) {
+
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $faculty->name);
+
+            $totalCourses = $faculty->courses->count();
+
+            $sheet->setCellValue('C' . $row, $totalCourses);
+
+            $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->where('result', '2')->count());
+            $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->where('result', '3')->count());
+            $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
+            $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
+
+            $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
+            $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
+            $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
+
+            $row++;
+        }
+
+        /* ----------- รวม ----------- */
+
+        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
+        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
+        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
+        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
+        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
+
+        $sheet->setCellValue('A' . $row, 'รวม');
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+
+        $sheet->setCellValue('C' . $row, $totalCourses);
+        $sheet->setCellValue('D' . $row, $total2);
+        $sheet->setCellValue('E' . $row, $total3);
+        $sheet->setCellValue('F' . $row, $total4);
+        $sheet->setCellValue('G' . $row, $total5);
+
+        $row++;
+
+        /* ----------- export ----------- */
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment;filename="report4_' . $selectedThaiYear . '.xlsx"'
+        );
+
+        return $response;
+    }
+    public function exportPDFReport4(Request $request)
+    {
+        $selectedThaiYear = $request->year_report4 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $pdf = SnappyPdf::loadView('report4pdf', [
+            'faculties' => $faculties,
+            'assessment' => $assessment,
+            'selectedThaiYear' => $selectedThaiYear
+        ]);
+
+        return $pdf->download('report4_' . $selectedThaiYear . '.pdf');
+    }
+    public function exportExcelReport5(Request $request)
+    {
+        $selectedThaiYear = $request->year_report5 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER ROW 1
+        $sheet->setCellValue('A1', 'ที่');
+        $sheet->setCellValue('B1', 'คณะ/วิทยาลัย');
+
+        $sheet->setCellValue('C1', 'ภาพรวม');
+        $sheet->mergeCells('C1:G1');
+
+        $sheet->setCellValue('H1', 'ปริญญาตรี');
+        $sheet->mergeCells('H1:L1');
+
+        $sheet->setCellValue('M1', 'ปริญญาโท');
+        $sheet->mergeCells('M1:Q1');
+
+        $sheet->setCellValue('R1', 'ปริญญาเอก');
+        $sheet->mergeCells('R1:V1');
+
+        // HEADER ROW 2
+        $sheet->setCellValue('C2', 'จำนวน');
+        $sheet->mergeCells('D2:G2');
+
+        $sheet->setCellValue('H2', 'จำนวน');
+        $sheet->mergeCells('I2:L2');
+
+        $sheet->setCellValue('M2', 'จำนวน');
+        $sheet->mergeCells('N2:Q2');
+
+        $sheet->setCellValue('R2', 'จำนวน');
+        $sheet->mergeCells('S2:V2');
+
+        // HEADER ROW 3
+        $headers = ['2', '3', '4', '5'];
+
+        foreach ($headers as $i => $h) {
+            $sheet->setCellValue(chr(68 + $i) . '3', $h);
+            $sheet->setCellValue(chr(73 + $i) . '3', $h);
+            $sheet->setCellValue(chr(78 + $i) . '3', $h);
+            $sheet->setCellValue(chr(83 + $i) . '3', $h);
+        }
+
+        $row = 4;
+
+        foreach ($faculties as $index => $faculty) {
+
+            $sheet->setCellValue('A' . $row, $index + 1);
+            $sheet->setCellValue('B' . $row, $faculty->name);
+
+            $totalCourses = $faculty->courses->count();
+
+            $sheet->setCellValue('C' . $row, $totalCourses);
+
+            $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->where('result', '2')->count());
+            $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->where('result', '3')->count());
+            $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
+            $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
+
+            $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
+            $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
+            $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
+
+            $row++;
+        }
+
+        /* ----------- รวม ----------- */
+
+        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
+        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
+        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
+        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
+        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
+
+        $sheet->setCellValue('A' . $row, 'รวม');
+        $sheet->mergeCells('A' . $row . ':B' . $row);
+
+        $sheet->setCellValue('C' . $row, $totalCourses);
+        $sheet->setCellValue('D' . $row, $total2);
+        $sheet->setCellValue('E' . $row, $total3);
+        $sheet->setCellValue('F' . $row, $total4);
+        $sheet->setCellValue('G' . $row, $total5);
+
+        $row++;
+
+        /* ----------- export ----------- */
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment;filename="report5_' . $selectedThaiYear . '.xlsx"'
+        );
+
+        return $response;
+    }
+    public function exportPDFReport5(Request $request)
+    {
+        $selectedThaiYear = $request->year_report5 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $pdf = SnappyPdf::loadView('report5pdf', [
+            'faculties' => $faculties,
+            'assessment' => $assessment,
+            'selectedThaiYear' => $selectedThaiYear
+        ]);
+
+        return $pdf->download('report5_' . $selectedThaiYear . '.pdf');
+    }
+    public function exportExcelReport6(Request $request)
+    {
+        $selectedThaiYear = $request->year_report6 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        /* -------- HEADER ROW 1 -------- */
+
+        $sheet->setCellValue('A1', 'Rating Scale');
+        $sheet->mergeCells('A1:A2');
+
+        $sheet->setCellValue('B1', 'Programme');
+        $sheet->mergeCells('B1:E1');
+
+        $sheet->setCellValue('F1', 'Resource');
+        $sheet->mergeCells('F1:H1');
+
+        $sheet->setCellValue('I1', 'Results');
+
+
+        /* -------- HEADER ROW 2 -------- */
+
+        $sheet->setCellValue('B2', 'AUN-QA 1');
+        $sheet->setCellValue('C2', 'AUN-QA 2');
+        $sheet->setCellValue('D2', 'AUN-QA 3');
+        $sheet->setCellValue('E2', 'AUN-QA 4');
+        $sheet->setCellValue('F2', 'AUN-QA 5');
+        $sheet->setCellValue('G2', 'AUN-QA 6');
+        $sheet->setCellValue('H2', 'AUN-QA 7');
+        $sheet->setCellValue('I2', 'AUN-QA 8');
+
+
+        /* -------- DATA -------- */
+
+        $levels = [5, 4, 3, 2, 1];
+        $row = 3;
+
+        foreach ($levels as $level) {
+
+            $sheet->setCellValue('A' . $row, 'ระดับ ' . $level);
+
+            for ($i = 1; $i <= 8; $i++) {
+
+                $count = $assessment
+                    ->where('aun_qa', $i)
+                    ->where('result', $level)
+                    ->count();
+
+                $column = chr(65 + $i);
+
+                $sheet->setCellValue($column . $row, $count);
+            }
+
+            $row++;
+        }
+
+
+        /* -------- EXPORT -------- */
+
+        $writer = new Xlsx($spreadsheet);
+
+        $response = new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        });
+
+        $response->headers->set(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+
+        $response->headers->set(
+            'Content-Disposition',
+            'attachment;filename="report6_' . $selectedThaiYear . '.xlsx"'
+        );
+
+        return $response;
+    }
+    public function exportPDFReport6(Request $request)
+    {
+        $selectedThaiYear = $request->year_report6 ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::with('courses')->get();
+        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $pdf = SnappyPdf::loadView('report6pdf', [
+            'faculties' => $faculties,
+            'assessment' => $assessment,
+            'selectedThaiYear' => $selectedThaiYear
+        ]);
+
+        return $pdf->download('report6_' . $selectedThaiYear . '.pdf');
     }
     public function editcoursePage($facultyId)
     {

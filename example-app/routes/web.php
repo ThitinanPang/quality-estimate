@@ -28,6 +28,15 @@ Route::get('/report/export', [AuthController::class, 'exportExcel'])->name('repo
 Route::get('/report/export-pdf',[AuthController::class,'exportPDF'])->name('report.export.pdf');
 Route::get('/report2/export-excel',[AuthController::class,'exportExcelReport2'])->name('report2.export.excel');
 Route::get('/report2/export-pdf',[AuthController::class,'exportPDFReport2'])->name('report2.export.pdf');
+Route::get('/report3/export-excel',[AuthController::class,'exportExcelReport3'])->name('report3.export.excel');
+Route::get('/report3/export-pdf',[AuthController::class,'exportPDFReport3'])->name('report3.export.pdf');
+Route::get('/report4/export-excel',[AuthController::class,'exportExcelReport4'])->name('report4.export.excel');
+Route::get('/report4/export-pdf',[AuthController::class,'exportPDFReport4'])->name('report4.export.pdf');
+Route::get('/report5/export-excel',[AuthController::class,'exportExcelReport5'])->name('report5.export.excel');
+Route::get('/report5/export-pdf',[AuthController::class,'exportPDFReport5'])->name('report5.export.pdf');
+Route::get('/report6/export-excel',[AuthController::class,'exportExcelReport6'])->name('report6.export.excel');
+Route::get('/report6/export-pdf',[AuthController::class,'exportPDFReport6'])->name('report6.export.pdf');
+
 
 
 Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('coursereport');
