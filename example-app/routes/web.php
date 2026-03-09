@@ -22,9 +22,14 @@ Route::get('/university',[AuthController::class,'universityPage'])->name('univer
 Route::get('/listname',[AuthController::class,'listnamePage'])->name('listname');
 Route::get('/record',[AuthController::class,'recordPage'])->name('record');
 Route::get('/results',[AuthController::class,'resultsPage'])->name('results');
+
 Route::get('/report',[AuthController::class,'reportPage'])->name('report');
 Route::get('/report/export', [AuthController::class, 'exportExcel'])->name('report.export');
 Route::get('/report/export-pdf',[AuthController::class,'exportPDF'])->name('report.export.pdf');
+Route::get('/report2/export-excel',[AuthController::class,'exportExcelReport2'])->name('report2.export.excel');
+Route::get('/report2/export-pdf',[AuthController::class,'exportPDFReport2'])->name('report2.export.pdf');
+
+
 Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('coursereport');
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
