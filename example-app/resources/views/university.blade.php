@@ -3,7 +3,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
     <p class="absolute w-[330px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
-        ข้อมูลผู้ดูแลระดับคณะ</p>
+        ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</p>
     <form method="GET">
         <div
             class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
