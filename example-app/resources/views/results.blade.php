@@ -34,11 +34,11 @@
                             @if ($assessment->assessment_type=='1')
                             แบบ 1 วัน (O)<br>
                             @elseif($assessment->assessment_type=='2')
-                            แบบเต็ม (F)
+                            แบบเต็ม (F)<br>
                             @elseif($assessment->assessment_type=='3')
-                            แบบ 2 วัน (ปธ.คนนอก)
+                            แบบ 2 วัน (ปธ.คนนอก)<br>
                             @endif
-                            <br>
+                            
                             ตำแหน่ง : ประธานกรรมการ
                         @endforeach
                     </p>
