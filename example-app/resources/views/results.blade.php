@@ -38,6 +38,7 @@
                             @elseif($assessment->assessment_type=='3')
                             แบบ 2 วัน (ปธ.คนนอก)
                             @endif
+                            <br>
                             ตำแหน่ง : ประธานกรรมการ
                         @endforeach
                     </p>
