@@ -4,6 +4,14 @@
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลพื้นฐานผู้ใช้</p>
+    {{-- ตัวอย่าง excel --}}
+    <a href="{{ route('users.template') }}" class="absolute left-[400px] top-[220px] border-b flex">ตัวอย่าง Excel
+        <svg class="ml-3" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M19.4883 11.75H15.9895V10.0006H19.4883V11.75ZM19.4883 12.7496H15.9895V14.499H19.4883V12.7496ZM19.4883 4.50244H15.9895V6.25183H19.4883V4.50244ZM19.4883 7.2515H15.9895V9.00088H19.4883V7.2515ZM19.4883 15.4987H15.9895V17.2481H19.4883V15.4987ZM21.905 18.9475C21.805 19.4673 21.1802 19.4798 20.7629 19.4973H12.9906V21.7465H11.4386L0 19.7472V2.25573L11.5061 0.253906H12.9906V2.24572H20.4955C20.9179 2.26321 21.3827 2.23322 21.7501 2.48562C22.0075 2.85549 21.9825 3.32536 22 3.75019L21.99 16.7607C21.9775 17.488 22.0574 18.2303 21.905 18.9475ZM9.16433 15.0263C8.4746 13.6269 7.77236 12.2373 7.08507 10.8378C7.76484 9.47573 8.43464 8.10872 9.1019 6.74167C8.53458 6.76917 7.96727 6.80415 7.40248 6.84415C6.9801 7.87128 6.48777 8.87095 6.15789 9.93309C5.8505 8.93093 5.44315 7.96624 5.07079 6.98909C4.52096 7.01908 3.97113 7.05156 3.42134 7.08405C4.00112 8.36366 4.61845 9.62565 5.18074 10.9127C4.51847 12.1623 3.89868 13.4294 3.25639 14.6865C3.80368 14.7089 4.35102 14.7315 4.89831 14.7389C5.28821 13.7443 5.77302 12.7871 6.11291 11.7725C6.41781 12.8621 6.93511 13.8692 7.35999 14.9114C7.96228 14.9539 8.56204 14.9914 9.16433 15.0263ZM20.808 3.43265H12.9906V4.50244H14.9899V6.25183H12.9906V7.2515H14.9899V9.00088H12.9906V10.0006H14.9899V11.75H12.9906V12.7496H14.9899V14.499H12.9906V15.4987H14.9899V17.2481H12.9906V18.4038H20.808V3.43265Z"
+                fill="black" />
+        </svg>
+    </a>
     <form method="GET">
         <div
             class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
@@ -11,8 +19,11 @@
             <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
         </div>
     </form>
-    <span class="w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort By</span>
-    <select name="" id="sortName" class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
+    <span
+        class="w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort
+        By</span>
+    <select name="" id="sortName"
+        class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
         <option value="asc">ก-ฮ</option>
         <option value="desc">ฮ-ก</option>
     </select>
@@ -43,7 +54,7 @@
         <!-- ปุ่มกด -->
         <button type="button" onclick="document.getElementById('excelInput').click();"
             class="absolute w-[155px] h-[37px] right-[85px] top-[275px] bg-[#FFCE00] border border-black rounded-[9px] 
-                                                       box-border flex items-center justify-center text-[18px] hover:bg-white">
+                                                           box-border flex items-center justify-center text-[18px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -65,7 +76,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users 
-                        WHERE YEAR(created_at) = $selectedADYear";
+                                WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
 

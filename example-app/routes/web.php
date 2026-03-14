@@ -37,8 +37,6 @@ Route::get('/report5/export-pdf',[AuthController::class,'exportPDFReport5'])->na
 Route::get('/report6/export-excel',[AuthController::class,'exportExcelReport6'])->name('report6.export.excel');
 Route::get('/report6/export-pdf',[AuthController::class,'exportPDFReport6'])->name('report6.export.pdf');
 
-
-
 Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('coursereport');
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
@@ -59,3 +57,5 @@ Route::get('/editcourse/{faculty}',[AuthController::class,'editcoursePage'])->na
 
 Route::get('/manageassessor',[AuthController::class,'manageassessorPage'])->name('manage-assessor');
 Route::post('/course-assessor/store',[AuthController::class,'storemanageassessor'])->name('course-assessor.store');
+
+Route::get('/users/template', [AuthController::class, 'downloadTemplate'])->name('users.template');

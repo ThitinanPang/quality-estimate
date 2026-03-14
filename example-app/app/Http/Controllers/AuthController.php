@@ -148,25 +148,53 @@ class AuthController extends Controller
         foreach ($rows as $index => $row) {
             if ($index === 0)
                 continue;
-
-            // ข้ามถ้า email ว่าง
-            if (empty($row[4])) {
+            $email = trim($row[5] ?? '');
+            if ($email == '') {
                 continue;
             }
+            $phone = $row[6] ?? null;
 
+            if ($phone) {
+                $phone = preg_replace('/[^0-9]/', '', $phone);
+            }
             User::updateOrCreate(
-                ['email' => $row[4]], // ใช้ email เป็น unique key
+                ['email' => $email], // ใช้ email เป็น unique key
                 [
                     'prefix' => $row[0] ?? null,
                     'name' => $row[1] ?? null,
-                    'faculty' => $row[2] ?? null,
-                    'subject_group' => $row[3] ?? null,
-                    'phone_number' => $row[5] ?? null,
+                    'subject_group' => $row[2] ?? null,
+                    'faculty' => $row[3] ?? null,
+                    'course' => $row[4] ?? null,
+                    'phone_number' => $phone,
                 ]
             );
         }
 
         return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+    }
+    public function downloadTemplate()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER
+        $sheet->setCellValue('A1', 'คำนำหน้า');
+        $sheet->setCellValue('B1', 'ชื่อ-สกุล');
+        $sheet->setCellValue('C1', 'กลุ่มวิชา');
+        $sheet->setCellValue('D1', 'คณะ');
+        $sheet->setCellValue('E1', 'หลักสูตร');
+        $sheet->setCellValue('F1', 'Email');
+        $sheet->setCellValue('G1', 'เบอร์โทร');
+
+        $writer = new Xlsx($spreadsheet);
+
+        $fileName = 'users_template.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+
+        $writer->save("php://output");
+        exit;
     }
     public function edit($id)
     {
