@@ -58,4 +58,6 @@ Route::get('/editcourse/{faculty}',[AuthController::class,'editcoursePage'])->na
 Route::get('/manageassessor',[AuthController::class,'manageassessorPage'])->name('manage-assessor');
 Route::post('/course-assessor/store',[AuthController::class,'storemanageassessor'])->name('course-assessor.store');
 
-Route::get('/users/template', [AuthController::class, 'downloadTemplate'])->name('users.template');
+Route::get('/users/template', [AuthController::class, 'templateUser'])->name('users.template');
+Route::post('/import-assessor', [AuthController::class, 'importassessor'])->name('import.assessor');
+Route::get('/assessor/template', [AuthController::class, 'templateAssessor'])->name('assessor.template');

@@ -4,6 +4,14 @@
 @section('content')
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลผู้ประเมิน</p>
+    {{-- ตัวอย่าง excel --}}
+    <a href="{{ route('assessor.template') }}" class="absolute left-[350px] top-[220px] border-b flex">ตัวอย่าง Excel
+        <svg class="ml-3" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M19.4883 11.75H15.9895V10.0006H19.4883V11.75ZM19.4883 12.7496H15.9895V14.499H19.4883V12.7496ZM19.4883 4.50244H15.9895V6.25183H19.4883V4.50244ZM19.4883 7.2515H15.9895V9.00088H19.4883V7.2515ZM19.4883 15.4987H15.9895V17.2481H19.4883V15.4987ZM21.905 18.9475C21.805 19.4673 21.1802 19.4798 20.7629 19.4973H12.9906V21.7465H11.4386L0 19.7472V2.25573L11.5061 0.253906H12.9906V2.24572H20.4955C20.9179 2.26321 21.3827 2.23322 21.7501 2.48562C22.0075 2.85549 21.9825 3.32536 22 3.75019L21.99 16.7607C21.9775 17.488 22.0574 18.2303 21.905 18.9475ZM9.16433 15.0263C8.4746 13.6269 7.77236 12.2373 7.08507 10.8378C7.76484 9.47573 8.43464 8.10872 9.1019 6.74167C8.53458 6.76917 7.96727 6.80415 7.40248 6.84415C6.9801 7.87128 6.48777 8.87095 6.15789 9.93309C5.8505 8.93093 5.44315 7.96624 5.07079 6.98909C4.52096 7.01908 3.97113 7.05156 3.42134 7.08405C4.00112 8.36366 4.61845 9.62565 5.18074 10.9127C4.51847 12.1623 3.89868 13.4294 3.25639 14.6865C3.80368 14.7089 4.35102 14.7315 4.89831 14.7389C5.28821 13.7443 5.77302 12.7871 6.11291 11.7725C6.41781 12.8621 6.93511 13.8692 7.35999 14.9114C7.96228 14.9539 8.56204 14.9914 9.16433 15.0263ZM20.808 3.43265H12.9906V4.50244H14.9899V6.25183H12.9906V7.2515H14.9899V9.00088H12.9906V10.0006H14.9899V11.75H12.9906V12.7496H14.9899V14.499H12.9906V15.4987H14.9899V17.2481H12.9906V18.4038H20.808V3.43265Z"
+                fill="black" />
+        </svg>
+    </a>
     <form method="GET">
         <div
             class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
@@ -31,7 +39,7 @@
         </svg>
     </div>
 
-    <form id="importForm" action="{{ route('import.users') }}" method="post" enctype="multipart/form-data">
+    <form id="importForm" action="{{ route('import.assessor') }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- ซ่อน input file -->
         <input type="file" id="excelInput" name="excel_file" accept=".xlsx,.xls" style="display: none;">
@@ -60,7 +68,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users_assessor
-                                WHERE YEAR(created_at) = $selectedADYear";
+                                        WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
 

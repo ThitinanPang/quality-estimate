@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserAssessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use LdapRecord\Laravel\LdapRecord;
@@ -172,7 +173,49 @@ class AuthController extends Controller
 
         return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
-    public function downloadTemplate()
+    public function importassessor(Request $request)
+    {
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        $file = $request->file('excel_file');
+
+        // โหลดไฟล์ Excel
+        $spreadsheet = IOFactory::load($file->getPathname());
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray();
+        // ข้าม row แรก (header)
+        foreach ($rows as $index => $row) {
+            if ($index === 0)
+                continue;
+            $email = trim($row[6] ?? '');
+            if ($email == '') {
+                continue;
+            }
+            $phone = $row[7] ?? null;
+
+            if ($phone) {
+                $phone = preg_replace('/[^0-9]/', '', $phone);
+            }
+            UserAssessor::updateOrCreate(
+                ['email' => $email], // ใช้ email เป็น unique key
+                [
+                    'code_assessor' => $row[0] ?? null,
+                    'prefix' => $row[1] ?? null,
+                    'name' => $row[2] ?? null,
+                    'subject_group' => $row[3] ?? null,
+                    'faculty' => $row[4] ?? null,
+                    'course' => $row[5] ?? null,
+                    'phone_number' => $phone,
+                    'assessor_type' => $row[8] ?? null,
+                    'training_type' => $row[9] ?? null,
+                ]
+            );
+        }
+        return redirect()->route('asssessor')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+    }
+    public function templateUser()
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -189,6 +232,33 @@ class AuthController extends Controller
         $writer = new Xlsx($spreadsheet);
 
         $fileName = 'users_template.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+
+        $writer->save("php://output");
+        exit;
+    }
+    public function templateAssessor()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER
+        $sheet->setCellValue('A1', 'Code Assessor');
+        $sheet->setCellValue('B1', 'คำนำหน้า');
+        $sheet->setCellValue('C1', 'ชื่อ-สกุล');
+        $sheet->setCellValue('D1', 'กลุ่มวิชา');
+        $sheet->setCellValue('E1', 'คณะ');
+        $sheet->setCellValue('F1', 'หลักสูตร');
+        $sheet->setCellValue('G1', 'Email');
+        $sheet->setCellValue('H1', 'เบอร์โทร');
+        $sheet->setCellValue('I1', 'Assessor type');
+        $sheet->setCellValue('J1', 'Training type');
+
+        $writer = new Xlsx($spreadsheet);
+
+        $fileName = 'assessor_template.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"$fileName\"");

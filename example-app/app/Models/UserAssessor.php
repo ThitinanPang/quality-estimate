@@ -20,5 +20,4 @@ class UserAssessor extends Model
         'assessor_type',
         'training_type',
     ];
-
 }

@@ -17,7 +17,9 @@
 
 @font-face {
   font-family: 'THSarabun';
-  src: url('/fonts/THSarabunNew.ttf') format('truetype');
+  src: url('../fonts/THSarabunNew.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
