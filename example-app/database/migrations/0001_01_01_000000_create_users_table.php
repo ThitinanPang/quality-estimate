@@ -35,7 +35,7 @@ return new class extends Migration {
             $table->string('role')->default('assessor');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();
-            $table->string('assessor_type')->nullable();
+            $table->string('assessor_type')->default('junior');
             $table->string('training_type')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();

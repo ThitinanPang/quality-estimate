@@ -67,8 +67,7 @@
         $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
-        $sql = "SELECT id, prefix, name, faculty, status, email, phone_number FROM users_assessor
-                                        WHERE YEAR(created_at) = $selectedADYear";
+        $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type FROM users_assessor WHERE YEAR(created_at) = $selectedADYear";
 
         $result = $conn->query($sql);
 
@@ -140,9 +139,17 @@
             var filter = input.value.toUpperCase();
             var table = document.getElementById("myTable");
             var tr = table.getElementsByTagName("tr");
+
+            var found = false;
+
+            // ลบ row "ไม่พบข้อมูล" เดิมก่อน
+            var oldMsg = document.getElementById("no-data-row");
+            if (oldMsg) oldMsg.remove();
+
             for (var i = 1; i < tr.length; i++) {
                 var tds = tr[i].getElementsByTagName("td");
                 var show = false;
+
                 for (var j = 0; j < tds.length; j++) {
                     var txtValue = tds[j].textContent || tds[j].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -150,7 +157,24 @@
                         break;
                     }
                 }
+
                 tr[i].style.display = show ? "" : "none";
+                if (show) found = true;
+            }
+
+            // ถ้าไม่พบข้อมูล
+            if (!found) {
+                var tbody = table.querySelector("tbody");
+                var row = document.createElement("tr");
+                row.id = "no-data-row";
+
+                var cell = document.createElement("td");
+                cell.colSpan = 10;
+                cell.className = "px-4 py-2 border-b text-center";
+                cell.innerText = "ไม่พบข้อมูล";
+
+                row.appendChild(cell);
+                tbody.appendChild(row);
             }
         }
         const excelInput = document.getElementById('excelInput');

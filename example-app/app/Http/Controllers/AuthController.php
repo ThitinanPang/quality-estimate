@@ -208,12 +208,11 @@ class AuthController extends Controller
                     'faculty' => $row[4] ?? null,
                     'course' => $row[5] ?? null,
                     'phone_number' => $phone,
-                    'assessor_type' => $row[8] ?? null,
-                    'training_type' => $row[9] ?? null,
+                    'training_type' => $row[8] ?? null,
                 ]
             );
         }
-        return redirect()->route('asssessor')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+        return redirect()->route('assessor')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
     public function templateUser()
     {
@@ -253,8 +252,7 @@ class AuthController extends Controller
         $sheet->setCellValue('F1', 'หลักสูตร');
         $sheet->setCellValue('G1', 'Email');
         $sheet->setCellValue('H1', 'เบอร์โทร');
-        $sheet->setCellValue('I1', 'Assessor type');
-        $sheet->setCellValue('J1', 'Training type');
+        $sheet->setCellValue('I1', 'Training type');
 
         $writer = new Xlsx($spreadsheet);
 
@@ -456,8 +454,8 @@ class AuthController extends Controller
     }
     public function editassessorPage($id)
     {
-        $user = User::findOrFail($id);
-        return view('editassessor', compact('user'));
+        $userassessor = UserAssessor::findOrFail($id);
+        return view('editassessor', compact('userassessor'));
     }
     public function updateassessor(Request $request, $id)
     {

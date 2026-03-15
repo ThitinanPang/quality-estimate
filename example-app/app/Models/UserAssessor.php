@@ -8,6 +8,7 @@ class UserAssessor extends Model
 {
     protected $table = 'users_assessor';
     protected $fillable = [
+        'code_assessor',
         'prefix',
         'name',
         'subject_group',
