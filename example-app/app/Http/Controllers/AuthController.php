@@ -1284,7 +1284,7 @@ class AuthController extends Controller
         $campus = $request->campus;
 
         // ผู้ใช้ตามปี
-        $users = User::whereYear('created_at', $selectedADYear)->get();
+        $users = UserAssessor::whereYear('created_at', $selectedADYear)->get();
 
         // คณะ + หลักสูตร
         $faculties = Faculty::with([

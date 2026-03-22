@@ -49,14 +49,23 @@
     @endphp
         <div class="flex pl-[85px] pt-[10px] w-full">
             <div class="w-[1500px] h-[380px] overflow-auto">
-                <table id="myTable" class="w-[1500px] h-[390px]">
+                <table id="myTable" class="w-[1500px] h-[390px] border-collapse">
                     <thead class="bg-[#FFCE00]">
                         <tr>
                             <th class="p-2 border text-[18px] whitespace-nowrap">ลำดับที่</th>
                             <th class="px-4 min-w-[280px] border text-[18px]">หลักสูตร</th>
-                            <th class="px-4 border text-[18px] whitespace-nowrap">ระดับการศึกษา</th>
                             <th class="px-4 border text-[18px] whitespace-nowrap">คณะ/วิทยาลัย</th>
-                            <th class="px-4 border text-[18px] whitespace-nowrap">รูปแบบการประเมิน</th>
+                            <th class="px-4 border text-[18px] whitespace-nowrap">ระดับการศึกษา</th>
+                            <th class="px-4 border text-[18px] whitespace-nowrap">
+                                <div class="flex items-center justify-center gap-2">
+                                    รูปแบบการประเมิน
+                                    <a href="" onclick="openModal(); return false;">
+                                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 0C13.2848 0 15.9555 1.10625 17.9246 3.07538C19.8938 5.04451 21 7.71523 21 10.5C21 13.2848 19.8938 15.9555 17.9246 17.9246C15.9555 19.8938 13.2848 21 10.5 21C7.71523 21 5.04451 19.8938 3.07538 17.9246C1.10625 15.9555 0 13.2848 0 10.5C0 7.71523 1.10625 5.04451 3.07538 3.07538C5.04451 1.10625 7.71523 0 10.5 0ZM10.5 19.5C12.8869 19.5 15.1761 18.5518 16.864 16.864C18.5518 15.1761 19.5 12.8869 19.5 10.5C19.5 8.11305 18.5518 5.82387 16.864 4.13604C15.1761 2.44821 12.8869 1.5 10.5 1.5C8.11305 1.5 5.82387 2.44821 4.13604 4.13604C2.44821 5.82387 1.5 8.11305 1.5 10.5C1.5 12.8869 2.44821 15.1761 4.13604 16.864C5.82387 18.5518 8.11305 19.5 10.5 19.5ZM11.625 15.375C11.625 15.6734 11.5065 15.9595 11.2955 16.1705C11.0845 16.3815 10.7984 16.5 10.5 16.5C10.2016 16.5 9.91548 16.3815 9.7045 16.1705C9.49353 15.9595 9.375 15.6734 9.375 15.375C9.375 15.0766 9.49353 14.7905 9.7045 14.5795C9.91548 14.3685 10.2016 14.25 10.5 14.25C10.7984 14.25 11.0845 14.3685 11.2955 14.5795C11.5065 14.7905 11.625 15.0766 11.625 15.375ZM10.5 4.5C10.6989 4.5 10.8897 4.57902 11.0303 4.71967C11.171 4.86032 11.25 5.05109 11.25 5.25V12C11.25 12.1989 11.171 12.3897 11.0303 12.5303C10.8897 12.671 10.6989 12.75 10.5 12.75C10.3011 12.75 10.1103 12.671 9.96967 12.5303C9.82902 12.3897 9.75 12.1989 9.75 12V5.25C9.75 5.05109 9.82902 4.86032 9.96967 4.71967C10.1103 4.57902 10.3011 4.5 10.5 4.5Z" fill="black"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </th>
                             <th class="px-4 border text-[18px] whitespace-nowrap">ประธานการประเมิน</th>
                             <th class="px-4 border text-[18px]">กรรมการ</th>
                             <th class="px-4 border text-[18px] whitespace-nowrap">ผู้ฝึกประสบการณ์</th>
@@ -76,6 +85,7 @@
                                     <input type="hidden" name="courses[{{ $course->id }}][campus]" value="{{ request('campus') }}">
                                     <td class="px-4 border text-center">{{ $no++ }}</td>
                                     <td class="px-4 border ">{{ $course->name }}</td>
+                                    <td class="px-4 border whitespace-nowrap text-center">{{ $faculty->name }}</td>
                                     <td class="px-4 border text-center">
                                         @if($course->level == 1)
                                             ปริญญาตรี
@@ -88,7 +98,6 @@
                                         @endif
                                     </td>
                                     <input type="hidden" name="courses[{{ $course->id }}][education_level]" value="{{ $course->level }}">
-                                    <td class="px-4 border whitespace-nowrap text-center">{{ $faculty->name }}</td>
                                     <td class="px-4 py-4 border text-center">
                                         <select name="courses[{{ $course->id }}][assessment_type]" id="" class="border">
                                             <option value="1" class="text-center">O</option>
@@ -150,8 +159,7 @@
                                                     class="bg-white p-6 rounded-b-[14px] w-[400px] h-[114px] border shadow-lg">
                                                     <select x-model="tempUser" name="assessor_user_id"
                                                         class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
-                                                        <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) == trim($faculty->name)) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name)) as $user)
                                                             <option value="{{ $user->name }}">{{ $user->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -219,10 +227,9 @@
                                                     <select x-model="tempUser" name="assessor_user_id"
                                                         class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) == trim($faculty->name)) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name)) as $user)
                                                             <option value="{{ $user->name }}">{{ $user->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                        @endforeach                                                    </select>
                                                     <input type="hidden" name="courses[{{ $course->id }}][position]" x-model="selectedUser">
                                                     <div class="flex justify-center gap-2">
                                                         <button type="button" @click="selectedUser = tempUser; open = false"
@@ -287,10 +294,9 @@
                                                     <select x-model="tempUser" name="assessor_user_id"
                                                         class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) == trim($faculty->name)) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name)) as $user)
                                                             <option value="{{ $user->name }}">{{ $user->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                        @endforeach                                                    </select>
                                                     <input type="hidden" name="courses[{{ $course->id }}][intern]" x-model="selectedUser">
                                                     <div class="flex justify-center gap-2">
                                                         <button type="button" @click="selectedUser = tempUser; open = false"
@@ -370,10 +376,9 @@
                                                     <select x-model="tempUser" name="assessor_user_id"
                                                         class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) == trim($faculty->name)) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name)) as $user)
                                                             <option value="{{ $user->name }}">{{ $user->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                        @endforeach                                                    </select>
                                                     <input type="hidden" name="courses[{{ $course->id }}][secretary]" x-model="selectedUser">
                                                     <div class="flex justify-center gap-2">
                                                         <button type="button" @click="selectedUser = tempUser; open = false"
@@ -401,7 +406,37 @@
     <div class="w-full flex justify-center mt-4">
         <div id="pagination" class="flex gap-2"></div>
     </div>
+    <div id="modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-[16px] w-[500px] shadow-lg">
+            <!-- header -->
+            <div class="bg-[#FFCE00] px-4 py-3 flex justify-between items-center rounded-t-[16px] border-b">
+                <p class="text-[20px]">รูปแบบการตรวจประเมิน</p>
+                <a href="" onclick="closeModal()">  
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 11.4L12.9 14.3C13.0833 14.4833 13.3167 14.575 13.6 14.575C13.8833 14.575 14.1167 14.4833 14.3 14.3C14.4833 14.1167 14.575 13.8833 14.575 13.6C14.575 13.3167 14.4833 13.0833 14.3 12.9L11.4 10L14.3 7.1C14.4833 6.91667 14.575 6.68333 14.575 6.4C14.575 6.11667 14.4833 5.88333 14.3 5.7C14.1167 5.51667 13.8833 5.425 13.6 5.425C13.3167 5.425 13.0833 5.51667 12.9 5.7L10 8.6L7.1 5.7C6.91667 5.51667 6.68333 5.425 6.4 5.425C6.11667 5.425 5.88333 5.51667 5.7 5.7C5.51667 5.88333 5.425 6.11667 5.425 6.4C5.425 6.68333 5.51667 6.91667 5.7 7.1L8.6 10L5.7 12.9C5.51667 13.0833 5.425 13.3167 5.425 13.6C5.425 13.8833 5.51667 14.1167 5.7 14.3C5.88333 14.4833 6.11667 14.575 6.4 14.575C6.68333 14.575 6.91667 14.4833 7.1 14.3L10 11.4ZM10 20C8.61667 20 7.31667 19.7373 6.1 19.212C4.88334 18.6867 3.825 17.9743 2.925 17.075C2.025 16.1757 1.31267 15.1173 0.788001 13.9C0.263335 12.6827 0.000667933 11.3827 1.26582e-06 10C-0.000665401 8.61733 0.262001 7.31733 0.788001 6.1C1.314 4.88267 2.02633 3.82433 2.925 2.925C3.82367 2.02567 4.882 1.31333 6.1 0.788C7.318 0.262667 8.618 0 10 0C11.382 0 12.682 0.262667 13.9 0.788C15.118 1.31333 16.1763 2.02567 17.075 2.925C17.9737 3.82433 18.6863 4.88267 19.213 6.1C19.7397 7.31733 20.002 8.61733 20 10C19.998 11.3827 19.7353 12.6827 19.212 13.9C18.6887 15.1173 17.9763 16.1757 17.075 17.075C16.1737 17.9743 15.1153 18.687 13.9 19.213C12.6847 19.739 11.3847 20.0013 10 20ZM10 18C12.2333 18 14.125 17.225 15.675 15.675C17.225 14.125 18 12.2333 18 10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18Z" fill="black"/>
+                    </svg>
+                </a>
+            </div>
+            <!-- content -->
+            <div class="p-4 text-[16px]">
+                <p>1. การตรวจประเมินแบบหนึ่งวัน (O)</p>
+                <p>2. การตรวจประเมินแบบเต็ม (Full Assessment, 2 วัน : F)</p>
+                <p>3. การตรวจประเมินโดยมีกรรมการเป็นผู้ทรงคุณวุฒิภายนอก <br> (ตรวจประเมินฯ 2 วัน : ปธ.คนนอก)</p>
+            </div>
+        </div>
+    </div>
     <script>
+        function openModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
         function openDate(el) {
             const td = el.closest("td");
             const input = td.querySelector(".date-input");
