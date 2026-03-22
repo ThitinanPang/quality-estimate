@@ -4,6 +4,16 @@
 @section('content')
     <p class="absolute w-[500px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลผู้ดูแลระดับมหาวิทยาลัย</p>
+    {{-- ตัวอย่าง excel --}}
+    <a href="{{ route('users.template') }}"
+        class="absolute left-[540px] top-[215px] w-[174px] h-[30px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M7.75852 11.6378L2.90944 6.7887L4.26718 5.38247L6.7887 7.90399V0H8.72833V7.90399L11.2499 5.38247L12.6076 6.7887L7.75852 11.6378ZM1.93963 15.517C1.40623 15.517 0.949772 15.3273 0.570251 14.9478C0.19073 14.5682 0.000646543 14.1115 0 13.5774V10.668H1.93963V13.5774H13.5774V10.668H15.517V13.5774C15.517 14.1108 15.3273 14.5676 14.9478 14.9478C14.5682 15.3279 14.1115 15.5177 13.5774 15.517H1.93963Z"
+                fill="black" />
+        </svg>
+        เทมเพลตเพิ่มข้อมูล
+    </a>
     <form method="GET">
         <div
             class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
