@@ -492,12 +492,15 @@ class AuthController extends Controller
         ]);
         return redirect()->route('assessor');
     }
-    public function listfacultyPage()
+    public function listfacultyPage(Request $request)
     {
-        // ดึงข้อมูล faculty ทั้งหมด
-        $faculties = Faculty::all();
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
 
-        return view('listfaculty', compact('faculties'));
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $faculties = Faculty::whereYear('created_at', $selectedADYear)->get();
+
+        return view('listfaculty', compact('faculties', 'selectedThaiYear'));
     }
     public function reportPage(Request $request)
     {
