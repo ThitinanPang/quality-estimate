@@ -469,9 +469,12 @@ class AuthController extends Controller
             'email' => 'nullable|email|max:255',
             'status' => 'nullable|string|max:50',
             'role' => 'nullable|string|max:50',
+            'code_assessor' => 'nullable|string|max:100',
+            'assessor_type' => 'nullable|string|max:100',
+            'training_type' => 'nullable|string|max:100',
         ]);
 
-        $user = User::findOrFail($id);
+        $user = UserAssessor::findOrFail($id);
 
         $user->update([
             'prefix' => $request->prefix,
@@ -482,7 +485,10 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'status' => $request->status ?? $user->status,
-            'role' => $request->role,
+            'role' => $request->role ?? $user->role,
+            'code_assessor' => $request->code_assessor,
+            'assessor_type' => $request->assessor_type,
+            'training_type' => $request->training_type,
         ]);
         return redirect()->route('assessor');
     }

@@ -7,14 +7,11 @@
         <form action="{{ route('updateassessor', $userassessor->id) }}" method="POST">
             @csrf
             <div
-                class="border rounded-b-[39px] bg-[#DBDBDB] w-[900px] h-[780px] pl-[40px] pr-[40px] pt-[10px] overflow-y-auto">
+                class="border rounded-b-[39px] bg-[#DBDBDB] w-[900px] h-[840px] pl-[40px] pr-[40px] pt-[10px] overflow-y-auto">
                 <p class="mt-[9px]">ตำแหน่ง</p>
-                <select name="role" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
-                    <option value="user" {{ $userassessor->role == 'user' ? 'selected' : '' }}>user</option>
-                    <option value="admin" {{ $userassessor->role == 'admin' ? 'selected' : '' }}>admin</option>
-                    <option value="admin university" {{ $userassessor->role == 'admin university' ? 'selected' : '' }}>admin university</option>
-                </select>
-
+                <p class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">{{ $userassessor->role }}</p>
+                <p class="mt-[9px]">Code Assessor</p>
+                <input name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3" value="{{ $userassessor->code_assessor }}"></input>
                 <p class="mt-[9px]">คำนำหน้า</p>
                 <input type="text" name="prefix" value="{{ $userassessor->prefix }}"
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
@@ -35,15 +32,15 @@
                 <input type="text" name="course" value="{{ $userassessor->course }}"
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
-                <p class="mt-[9px]">Assessor Type</p>
-                <select name="role" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
-                    <option value="junior">junior</option>
-                    <option value=""></option>
-                    <option value=""></option>
+                <p  class="mt-[9px]">Assessor Type</p>
+                <select name="assessor_type" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                    <option value="junior">Junior</option>
+                    <option value="senior">Senior</option>
+                    <option value="lead">Lead</option>
                 </select>
 
                 <p class="mt-[9px]">Training Type</p>
-                <input type="text" name="Training Type" value=""
+                <input type="text" name="training_type" value="{{ $userassessor->training_type }}"
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
                 <p class="mt-[9px]">อีเมล</p>
@@ -56,13 +53,14 @@
 
                 <p class="mt-[9px]">status</p>
                 <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
-                    <option value="active" {{ $userassessor->status == 'active' ? 'selected' : '' }}>active</option>
-                    <option value="inactive" {{ $userassessor->status == 'inactive' ? 'selected' : '' }}>inactive</option>
+                    <option value="active" {{ $userassessor->status == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ $userassessor->status == 'retire' ? 'selected' : '' }}>Retire</option>
+                    <option value="inactive" {{ $userassessor->status == 'expire' ? 'selected' : '' }}>Expire</option>
                 </select>
             </div>
             <div class=" justify-center flex gap-[50px]">
-                <button onclick="{{ route('assessor') }}"
-                    class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border">ยกเลิก</button>
+                <a href="{{ route('assessor') }}"
+                    class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border flex items-center justify-center">ยกเลิก</a>
                 <button type="submit" onclick="alert('แก้ไขสำเร็จ')"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
                     บันทึก
