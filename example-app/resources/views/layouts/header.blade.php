@@ -123,8 +123,8 @@
                             {{-- การจัดการหลักสูตร --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px]">หลักสูตร AUN-QA</a>
-                                <a href="" class="block px-2 py-2 text-[15px]">หลักสูตร EdPEx</a>
+                                <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
+                                <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
                             </div>
                             <a href=""
                                 class="dropdown-btn flex items-center justify-between bg-[#D9D9D9] px-2 py-2 mt-2 text-[15px] rounded-[5px] border-2 border-gray-400">บันทึกผลการประเมิน
@@ -138,8 +138,8 @@
                             {{-- บันทึกผลกราปะเมิน --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">หลักสูตร AUN-QA</a>
-                                <a href="" class="block px-2 py-2 text-[15px]">หลักสูตร EdPEx</a>
+                                <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
+                                <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
                             </div>
                             <a href=""
                                 class="block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
@@ -167,11 +167,9 @@
                             </svg>
                             <div class="dropdown-container hidden bg-white w-full py-2">
                                 <a href="{{route('report')}}"
-                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">หลักสูตร
-                                    AUN-QA</a>
+                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับหลักสูตร</a>
                                 <a href=""
-                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">หลักสูตร
-                                    EdPEx</a>
+                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับส่วนงาน</a>
                             </div>
                         </a>
                     </li>
