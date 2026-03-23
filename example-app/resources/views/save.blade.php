@@ -10,12 +10,11 @@
                     <p class="text-[24px]">ชื่อ - นามสกุล</p>
                     <input type="text" readonly name="name" value="{{Auth::user()->name}}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
-                    <input type="hidden" name="faculty" value="{{ $faculty->name }}">
                     <p class="text-[24px]">คณะ</p>
-                    <input type="text" readonly value="{{Auth::user()->faculty}}"
+                    <input type="text" readonly name="faculty" value="{{ $faculty->name }}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                     <p class="text-[24px]">หลักสูตร</p>
-                    <input type="text" readonly value="{{Auth::user()->course}}"
+                    <input type="text" readonly name="course" value="{{$course->name}}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                 </div>
                 <div
@@ -89,9 +88,15 @@
                     <div
                         class="w-[1040px] h-[126px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
                         <p class="text-[24px]">AUN-QA {{$index + 1}}_Overall Opinion</p>
-                        <input type="text" name="overall[{{$index}}]" id="overall-opinion_{{$index}}"
-                            class="w-[78px] h-[42px] border rounded-[5px] bg-white mt-[9px] pt-1 text-[20px] text-center">
-                        </input>
+                        <div class="grid grid-cols-8 justify-items-start w-full mt-1 ">
+                            @for ($j = 1; $j <= 8; $j++)
+                                <div class="flex flex-col items-center">
+                                    <p>{{ $j == 8 ? 'N/A' : $j }}</p>
+                                    <input type="radio" name="overall[{{$index}}]" id="overall-opinion_{{$index}}" value="{{ $j == 8 ? 'na' : $j }}"
+                                        class="w-[23px] h-[22px] border rounded-[5px] bg-white">
+                                </div>
+                            @endfor
+                        </div>
                     </div>
                 @endforeach
                 <button onclick="alert('บันทึกสำเร็จ')"

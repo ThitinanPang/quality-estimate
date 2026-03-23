@@ -39,7 +39,7 @@
             <option value="ครุศาสตร์/ศึกษาศาสตร์">ครุศาสตร์/ศึกษาศาสตร์</option>
             <option value="สหสาขาวิชา">สหสาขาวิชา</option>
         </select>
-        <button type="submit" class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] text-[20px]">
+        <button type="submit" class="w-[155px] h-[37px] ml-[610px] border rounded-[9px] bg-[#FFCE00] hover:bg-white text-[20px]">
            บันทึก
         </button>
     </div>

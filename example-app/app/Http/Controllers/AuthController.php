@@ -349,8 +349,9 @@ class AuthController extends Controller
     }
     public function collectFaculty(Request $request)
     {
-        $faculty = Faculty::find($request->faculty);
-        return view('save', compact('faculty'));
+        $faculty = Faculty::where('name', $request->faculty)->first();
+        $course = Courses::find($request->course_id);
+        return view('save', compact('faculty','course'));
     }
     public function collect(Request $request)
     {
@@ -437,7 +438,7 @@ class AuthController extends Controller
     public function savePage(Request $request)
     {
         $faculty = Faculty::find($request->faculty);
-        return view('save', compact('faculty'));
+        return view('save', compact('faculty', 'user'));
     }
     public function edituserPage()
     {
