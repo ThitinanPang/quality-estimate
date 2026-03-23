@@ -19,12 +19,8 @@
                 <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
                     <p class="text-[24px] ml-[24px] py-4">หลักสูตรที่ต้องประเมิน<br>
                         คณะ :
-                        {{-- faculty_id' --}}
-                        <select name="faculty" id="" class="bg-white rounded">
-                            @foreach ($faculties as $faculty)
-                                <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
-                            @endforeach
-                        </select>
+                        {{-- คณะ --}}
+                        <span>{{ $assessment->course->faculty->name ?? '-' }}</span>
                         <br>
                         @foreach ($course_assessment as $assessment)
                             {{-- course_id --}}

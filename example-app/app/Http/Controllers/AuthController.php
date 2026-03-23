@@ -431,9 +431,8 @@ class AuthController extends Controller
     public function resultsPage()
     {
         $course_assessment = CourseAssessor::all();
-        $faculties = Faculty::orderBy('name', 'ASC')->get();
-        $users = User::all()->keyBy('name');
-        return view('results', compact('course_assessment', 'faculties', 'users'));
+        $users = UserAssessor::all()->keyBy('name');
+        return view('results', compact('course_assessment', 'users'));
     }
     public function savePage(Request $request)
     {
