@@ -40,6 +40,8 @@ Route::get('/report6/export-pdf',[AuthController::class,'exportPDFReport6'])->na
 Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('coursereport');
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
+Route::get('/listcourse',[AuthController::class,'listcoursePage'])->name('listcourse');
+
 Route::post('/import-faculty', [AuthController::class, 'importFaculty'])->name('import.faculty');
 
 Route::get('/edituser/{id}',[AuthController::class,'edit'])->name('edituser');

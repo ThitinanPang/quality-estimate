@@ -18,7 +18,7 @@
     <div class="flex ml-[90px] gap-2 mt-[10px]">
         <a href="{{ route('listfaculty') }}"
             class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">คณะ</a>
-        <a href=""
+        <a href="{{ route('listcourse') }}"
             class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
     </div>
     <form id="importForm" action="{{ route('import.faculty') }}" method="post" enctype="multipart/form-data">
@@ -63,14 +63,16 @@
                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </div>
-    <div class="absolute left-[1160px] top-[270px]">
-        <span>วิทยาเขต :</span>
-        <select name="campus" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
-            <option value="" selected disabled>เลือกข้อมูล</option>
-            <option value="บางแสน">บางแสน</option>
-            <option value="จันทบุรี">จันทบุรี</option>
-        </select>
-    </div>
+    <form action="" method="get">
+        <div class="absolute left-[1160px] top-[270px]">
+            <span>วิทยาเขต :</span>
+            <select name="campus" onchange="this.form.submit()" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+                <option value="" selected disabled>เลือกข้อมูล</option>
+                <option value="บางแสน" {{ request('campus') == 'บางแสน' ? 'selected' : '' }}>บางแสน</option>
+                <option value="จันทบุรี" {{ request('campus') == 'จันทบุรี' ? 'selected' : '' }}>จันทบุรี</option>
+            </select>
+        </div>
+    </form>
     <div class="absolute left-[1130px] top-[320px]">
         <span>กลุ่มสาขาวิชา :</span>
         <select name="subject_group" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">

@@ -498,9 +498,33 @@ class AuthController extends Controller
 
         $selectedADYear = $selectedThaiYear - 543;
 
-        $faculties = Faculty::whereYear('created_at', $selectedADYear)->get();
+        $query = Faculty::whereYear('created_at', $selectedADYear);
+
+        // filter campus
+        if ($request->campus) {
+            $query->where('campus', $request->campus);
+        }
+
+        $faculties = $query->get();
 
         return view('listfaculty', compact('faculties', 'selectedThaiYear'));
+    }
+    public function listcoursePage(Request $request)
+    {
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $query = Faculty::whereYear('created_at', $selectedADYear);
+
+        // filter campus
+        if ($request->campus) {
+            $query->where('campus', $request->campus);
+        }
+
+        $faculties = $query->get();
+
+        return view('listcourse', compact('faculties', 'selectedThaiYear'));
     }
     public function reportPage(Request $request)
     {
