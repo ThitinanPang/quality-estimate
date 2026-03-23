@@ -34,7 +34,7 @@
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
                     stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            เพิ่มคณะ
+            เพิ่มหลักสูตร
         </button>
     </form>
     <form method="GET">
@@ -66,7 +66,8 @@
     <form action="" method="get">
         <div class="absolute left-[1160px] top-[270px]">
             <span>วิทยาเขต :</span>
-            <select name="campus" onchange="this.form.submit()" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+            <select name="campus" onchange="this.form.submit()"
+                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
                 <option value="" selected disabled>เลือกข้อมูล</option>
                 <option value="บางแสน" {{ request('campus') == 'บางแสน' ? 'selected' : '' }}>บางแสน</option>
                 <option value="จันทบุรี" {{ request('campus') == 'จันทบุรี' ? 'selected' : '' }}>จันทบุรี</option>
@@ -94,22 +95,34 @@
                 <thead class="bg-[#FFCE00] h-[66px]">
                     <tr>
                         <th class="text-[24px] text-center w-[120px]">ลำดับที่</th>
-                        <th class="text-[24px] text-left pl-4">คณะภายใน มหาวิทยาลัยบูรพา</th>
+                        <th class="text-[24px] text-center w-[120px]">สถานะ</th>
+                        <th class="text-[24px] text-left pl-4">หลักสูตรภายใน มหาวิทยาลัยบูรพา</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @php $i = 1; @endphp
                     @forelse ($faculties as $index => $faculty)
-                        <tr>
-                            <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$index + 1}}</td>
-                            <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">
-                                <div class="w-full flex items-center">
-                                    {{$faculty->name}}
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($faculty->courses as $course)
+                            <tr>
+                                <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$i++}}</td>
+                                <td class="px-2 py-2 text-center text-[24px] w-[120px]">
+                                    <select name="" data-id="{{ $course->id }}"
+                                        class="w-[105px] h-[40px] rounded-[14px] border text-center status-select">
+                                        <option value="active" {{ $course->status == 'active' ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ $course->status == 'inactive' ? 'selected' : '' }}>Inactive
+                                        </option>
+                                    </select>
+                                </td>
+                                <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">
+                                    <div class="w-full flex items-center">
+                                        {{ $course->name }}
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     @empty
                         <tr>
-                            <td class="px-4 py-2 text-center" colspan="2">
+                            <td class="px-4 py-2 text-center" colspan="3">
                                 ไม่มีข้อมูล
                             </td>
                         </tr>
@@ -220,7 +233,7 @@
         });
 
         $(document).ready(function () {
-            const rowsPerPage = 9; // จำนวนแถวต่อหน้า
+            const rowsPerPage = 10; // จำนวนแถวต่อหน้า
             const $table = $('#myTable');
             const $rows = $table.find('tbody tr');
             const totalPages = Math.ceil($rows.length / rowsPerPage);
@@ -249,6 +262,51 @@
 
             // แสดงหน้าแรก
             showPage(1);
+        });
+        document.querySelectorAll('.status-select').forEach(select => {
+
+            function updateColor() {
+                if (select.value === 'active') {
+                    select.classList.remove('bg-[#D5D5D5]');
+                    select.classList.add('bg-[#FFCE00]');
+                } else {
+                    select.classList.remove('bg-[#FFCE00]');
+                    select.classList.add('bg-[#D5D5D5]');
+                }
+            }
+            // ตอนโหลดครั้งแรก
+            updateColor();
+
+            // ตอนเปลี่ยนค่า
+            select.addEventListener('change', updateColor);
+        });
+        document.querySelectorAll('.status-select').forEach(select => {
+
+            select.addEventListener('change', function () {
+
+                let courseId = this.dataset.id;
+                let status = this.value;
+
+                fetch("{{ route('course.updateStatus') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        id: courseId,
+                        status: status
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("saved");
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+
+            });
         });
     </script>
 @endsection

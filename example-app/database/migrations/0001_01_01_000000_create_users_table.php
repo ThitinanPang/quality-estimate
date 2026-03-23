@@ -37,7 +37,7 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('assessor_type')->default('junior');
             $table->string('training_type')->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'retire', 'expire'])->default('active');
             $table->timestamps();
         });
 
@@ -71,6 +71,7 @@ return new class extends Migration {
             $table->string('code')->unique(); // รหัสหลักสูตร
             $table->string('name'); // ชื่อหลักสูตร
             $table->string('level')->nullable(); //1 = ตรี/2 = โท/3 = เอก
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
 

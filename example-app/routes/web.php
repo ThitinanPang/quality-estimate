@@ -41,6 +41,7 @@ Route::get('/courseReport',[AuthController::class,'coursereportPage'])->name('co
 
 Route::get('/listfaculty',[AuthController::class,'listfacultyPage'])->name('listfaculty');
 Route::get('/listcourse',[AuthController::class,'listcoursePage'])->name('listcourse');
+Route::post('/course/update-status', [AuthController::class, 'updateStatus'])->name('course.updateStatus');
 
 Route::post('/import-faculty', [AuthController::class, 'importFaculty'])->name('import.faculty');
 
