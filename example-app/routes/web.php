@@ -66,3 +66,4 @@ Route::post('/import-assessor', [AuthController::class, 'importassessor'])->name
 Route::get('/assessor/template', [AuthController::class, 'templateAssessor'])->name('assessor.template');
 
 Route::get('/tableassessor',[AuthController::class,'tableassessorPage'])->name('tableassessor');
+Route::get('/tableassessor/save',[AuthController::class,'tableassessortosave'])->name('tableassessor.save');

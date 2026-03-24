@@ -30,7 +30,7 @@
         class="w-[1410px] h-[57px] border rounded-[50px] bg-[#DBDBDB] ml-[90px] mt-[20px] p-[30px] text-[30px]">
     <div class="flex ml-[90px] mt-[20px]">
         <div class="w-[2735px] overflow-auto">
-            <table class="w-[2735px]">
+            <table id="myTable" class="w-[2735px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
                         <th class="border text-[20px]">ลำดับที่</th>
@@ -75,22 +75,31 @@
                     @forelse ($courseassessor as $index => $row)
                         <tr>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $index + 1 }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->course->name ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->faculty->name ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $levelMap[$row->education_level] ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $typeMap[$row->assessment_type] ?? '-' }}</td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->course->name ?? '-' }}
+                            </td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->faculty->name ?? '-' }}
+                            </td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                                {{ $levelMap[$row->education_level] ?? '-' }}</td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                                {{ $typeMap[$row->assessment_type] ?? '-' }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->chairperson }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->position }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->intern }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->secretary }}</td>
-                            <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
-                                <button href="" class="w-[155px] h-[37px] border bg-[#FFCE00] hover:bg-white rounded-[5px] p-2">ประเมิน</button>
-                            </td>
+                            <form action="{{route('tableassessor.save')}}" method="get">
+                                <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
+                                    <input type="hidden" name="faculty_id" value="{{ $row->faculty->id }}">
+                                    <input type="hidden" name="course_id" value="{{ $row->course->id }}">
+                                    <button type="submit"
+                                        class="w-[155px] h-[37px] border bg-[#FFCE00] hover:bg-white rounded-[5px] p-2">ประเมิน</button>
+                                </td>
+                            </form>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="text-center text-[20px] py-4">ไม่มีข้อมูล</td>
+                            <td colspan="11" class="text-center text-[20px] py-4 border bg-[#DBDBDB]">ไม่มีข้อมูล</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -129,6 +138,64 @@
             const modal = document.getElementById('modal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+        }
+                function myFunction() {
+            var input = document.getElementById("myInput");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("myTable");
+            var tr = table.getElementsByTagName("tr");
+
+            var found = false;
+
+            // ลบ row "ไม่พบข้อมูล" เดิมก่อน
+            var oldMsg = document.getElementById("no-data-row");
+            if (oldMsg) oldMsg.remove();
+
+            for (var i = 1; i < tr.length; i++) {
+                var tds = tr[i].getElementsByTagName("td");
+                var show = false;
+
+                for (var j = 0; j < tds.length; j++) {
+                    var txtValue = tds[j].textContent || tds[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        show = true;
+                        break;
+                    }
+                }
+
+                tr[i].style.display = show ? "" : "none";
+                if (show) found = true;
+            }
+
+            // ถ้าไม่พบข้อมูล
+            if (!found) {
+                var tbody = table.querySelector("tbody");
+                var row = document.createElement("tr");
+                row.id = "no-data-row";
+
+                var cell = document.createElement("td");
+                cell.colSpan = 11;
+                cell.className = "py-4 text-center border bg-[#DBDBDB] text-[20px]";
+                cell.innerText = "ไม่พบข้อมูล";
+
+                row.appendChild(cell);
+                tbody.appendChild(row);
+            }
+        }
+        const select = document.getElementById('thai-year');
+        const currentThaiYear = new Date().getFullYear() + 543;
+        const selectedThaiYear = {{ $selectedThaiYear }};
+
+        for (let i = currentThaiYear; i >= currentThaiYear - 2; i--) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+
+            if (i == selectedThaiYear) {
+                option.selected = true;
+            }
+
+            select.appendChild(option);
         }
     </script>
 @endsection

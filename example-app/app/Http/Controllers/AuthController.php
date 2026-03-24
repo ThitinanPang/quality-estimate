@@ -1371,15 +1371,31 @@ class AuthController extends Controller
         }
         return redirect()->route('manage-assessor')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
-    public function tableassessorPage()
+    public function tableassessorPage(Request $request)
     {
         $name = auth()->user()->name;
+        // ปี พ.ศ.
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
 
-        $courseassessor = CourseAssessor::where('chairperson', $name)
-            ->orWhere('position', $name)
-            ->orWhere('intern', $name)
-            ->orWhere('secretary', $name)
+        // แปลงเป็น ค.ศ.
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $courseassessor = CourseAssessor::where(function ($query) use ($name) {
+            $query->where('chairperson', $name)
+                ->orWhere('position', $name)
+                ->orWhere('intern', $name)
+                ->orWhere('secretary', $name);
+        })
+            ->whereYear('created_at', $selectedADYear)
             ->get();
-        return view('tableassessor', compact('courseassessor'));
+        return view('tableassessor', compact('courseassessor', 'selectedThaiYear'));
+    }
+    public function tableassessortosave(Request $request)
+    {
+
+        $faculty = Faculty::find($request->faculty_id);
+        $course = Courses::find($request->course_id);
+
+        return view('save', compact('faculty', 'course'));
     }
 }

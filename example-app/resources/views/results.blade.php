@@ -71,7 +71,6 @@
                             {{-- phone_number ของ intern --}}
                             เบอร์โทร : {{ $internUser->phone_number ?? '-' }}</p>
                     </div>
-
                 @endforeach
             </div>
             <button type="submit"
