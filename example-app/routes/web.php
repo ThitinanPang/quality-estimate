@@ -67,3 +67,6 @@ Route::get('/assessor/template', [AuthController::class, 'templateAssessor'])->n
 
 Route::get('/tableassessor',[AuthController::class,'tableassessorPage'])->name('tableassessor');
 Route::get('/tableassessor/save',[AuthController::class,'tableassessortosave'])->name('tableassessor.save');
+
+Route::get('/assessmentschedule',[AuthController::class,'assessmentschedulePage'])->name('assessmentschedule');
+

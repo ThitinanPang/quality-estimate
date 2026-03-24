@@ -48,30 +48,28 @@
                         ตำแหน่ง : ประธานกรรมการ
                     </p>
                 </div>
-                @foreach ($course_assessment as $assessment)
-                    @php
-                        $positionUser = $users[$assessment->position] ?? null;
-                        $internUser = $users[$assessment->intern] ?? null;
-                    @endphp
-                    <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
-                        <p class="text-[24px] ml-[24px] py-4">กรรมการ<br>
-                            {{-- position --}}
-                            ชื่อ : {{ $assessment->position }}<br>
-                            {{-- email ของ position --}}
-                            อีเมล : {{ $positionUser->email ?? '-' }}<br>
-                            {{-- phone_number ของ position --}}
-                            เบอร์โทร : {{ $positionUser->phone_number ?? '-' }}</p>
-                    </div>
-                    <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
-                        <p class="text-[24px] ml-[24px] py-4">ผู้ฝึกประสบการณ์<br>
-                            {{-- intern --}}
-                            ชื่อ : {{ $assessment->intern }}<br>
-                            {{-- email ของ intern --}}
-                            อีเมล : {{ $internUser->email ?? '-' }}<br>
-                            {{-- phone_number ของ intern --}}
-                            เบอร์โทร : {{ $internUser->phone_number ?? '-' }}</p>
-                    </div>
-                @endforeach
+                @php
+                    $positionUser = $users[$assessment->position] ?? null;
+                    $internUser = $users[$assessment->intern] ?? null;
+                @endphp
+                <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
+                    <p class="text-[24px] ml-[24px] py-4">กรรมการ<br>
+                        {{-- position --}}
+                        ชื่อ : {{ $assessment->position }}<br>
+                        {{-- email ของ position --}}
+                        อีเมล : {{ $positionUser->email ?? '-' }}<br>
+                        {{-- phone_number ของ position --}}
+                        เบอร์โทร : {{ $positionUser->phone_number ?? '-' }}</p>
+                </div>
+                <div class="w-[958px] h-[207px] bg-[#D9D9D9] rounded-[14px] mt-[14px]">
+                    <p class="text-[24px] ml-[24px] py-4">ผู้ฝึกประสบการณ์<br>
+                        {{-- intern --}}
+                        ชื่อ : {{ $assessment->intern }}<br>
+                        {{-- email ของ intern --}}
+                        อีเมล : {{ $internUser->email ?? '-' }}<br>
+                        {{-- phone_number ของ intern --}}
+                        เบอร์โทร : {{ $internUser->phone_number ?? '-' }}</p>
+                </div>
             </div>
             <button type="submit"
                 class="border bg-[#FFCE00] text-[20px] rounded-[9px] box-border w-[155px] h-[37px] mt-[51px] mb-[20px] hover:bg-white">ประเมิน</button>

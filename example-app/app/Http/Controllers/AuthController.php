@@ -1398,4 +1398,7 @@ class AuthController extends Controller
 
         return view('save', compact('faculty', 'course'));
     }
+    public function assessmentschedulePage(){
+        return view('assessmentschedule');
+    }
 }
