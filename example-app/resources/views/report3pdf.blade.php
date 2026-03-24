@@ -24,12 +24,15 @@
 </head>
 
 <body>
-
+    @php
+        $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '1')->pluck('course_id')->toArray();
+        $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+    @endphp
     <h2>
         รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร
         รายงานที่ 3 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร ตามเกณฑ์ AUN-QA Version 4.0<br>
         (Overall Verdict) ประจำปีการศึกษา {{ $selectedThaiYear }} (ตรวจประเมินแบบหนึ่งวัน จำนวน
-        {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }} หลักสูตร)
+        {{ $totalType1All > 0 ? $totalType1All : '0' }} หลักสูตร)
     </h2>
 
     <table>
