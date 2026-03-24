@@ -13,7 +13,7 @@
 <body class="
 {{ request()->routeIs('report') ? 'overflow-x-hidden' : '' }}
 {{ request()->routeIs('manage-assessor') ? 'overflow-hidden' : '' }}
- {{ request()->routeIs('tableassessor') ? 'overflow-hidden' : '' }}
+{{ request()->routeIs('tableassessor') ? 'overflow-hidden' : '' }}
  ">
     {{-- header --}}
     <header class="h-[129px] relative bg-white border-b">
