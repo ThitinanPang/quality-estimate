@@ -26,7 +26,7 @@
             </svg>
         </div>
     </div>
-    <input type="text" readonly value="ผู้ประประเมิน : {{ Auth::user()->name }}"
+    <input type="text" readonly value="ผู้ประเมิน : {{ Auth::user()->name }}"
         class="w-[1410px] h-[57px] border rounded-[50px] bg-[#DBDBDB] ml-[90px] mt-[20px] p-[30px] text-[30px]">
     <div class="flex ml-[90px] mt-[20px]">
         <div class="w-[2735px] overflow-auto">

@@ -33,7 +33,7 @@
             </svg>
             <span class="absolute top-[300px] left-[53px] text-[40px]">บันทึกข้อมูลพื้นฐาน</span>
         </button>
-        <button type="button" onclick=""
+        <button type="button" onclick="window.location.href='{{route('report')}}'"
             class="absolute w-[427px] h-[548px] left-[1008px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
             <svg class="absolute top-[113px] left-[157px]" width="114" height="114" viewBox="0 0 114 114" fill="none"
                 xmlns="http://www.w3.org/2000/svg">

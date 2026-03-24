@@ -357,6 +357,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
+            'courses' => 'required|string',
             'criterion' => 'required|string',
             'faculty' => 'required|string',
             'result' => 'required|string',
@@ -373,6 +374,7 @@ class AuthController extends Controller
             // ],
             [
                 'name' => $request->name,
+                'courses' => $request->courses,
                 'result' => $request->result,
                 'faculty' => $request->faculty,
                 'criterion' => $request->criterion,

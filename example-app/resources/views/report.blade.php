@@ -174,6 +174,21 @@
                         </tr>
                     @else
                         @foreach ($faculties as $index => $faculty)
+                            @php
+                                $level1CourseNames = $faculty->courses->where('level', '1')->pluck('name')->toArray();
+                                $level1Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1CourseNames);
+                                $level2CourseNames = $faculty->courses->where('level', '2')->pluck('name')->toArray();
+                                $level2Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2CourseNames);
+                                $level3CourseNames = $faculty->courses->where('level', '3')->pluck('name')->toArray();
+                                $level3Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3CourseNames);
+                                // 
+                                $allLevel1CourseNames = $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray();
+                                $allLevel2CourseNames = $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray();
+                                $allLevel3CourseNames = $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray();
+                                $totalLevel1Assessments = $assessment->whereIn('courses', $allLevel1CourseNames);
+                                $totalLevel2Assessments = $assessment->whereIn('courses', $allLevel2CourseNames);
+                                $totalLevel3Assessments = $assessment->whereIn('courses', $allLevel3CourseNames);
+                            @endphp
                             <tr>
                                 <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
                                 <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
@@ -184,99 +199,101 @@
                                 <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','5')->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
                                     {{ $faculty->courses->where('level', '1')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '5')->count() ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
                                     {{ $faculty->courses->where('level', '2')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '5')->count() ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
                                     {{ $faculty->courses->where('level', '3')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '5')->count() ?: '-' }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
                             <td class="px-4 border text-[24px] text-center">
-                                {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
+                                {{ $faculties->sum(fn($f) => $f->courses->count()) }}
                             </td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','4')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','5')->count()) }}</td>                        
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
+                            {{-- รวมผลประเมินแยกตาม Result (ทุก Level รวมกัน) --}}
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 1 --}}
+                            <td class="px-4 border text-[24px] text-center">{{ count($allLevel1CourseNames) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 2 --}}
+                            <td class="px-4 border text-[24px] text-center">{{ count($allLevel2CourseNames) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 3 --}}
+                            <td class="px-4 border text-[24px] text-center">{{ count($allLevel3CourseNames) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '5')->count() ?: '0' }}</td>
                         </tr>
                         <tr>
-                        <td colspan="2" class="px-4 border text-[24px] text-center">เปอร์เซนต์ (%)</td>
-                        <td class="px-4 border text-[24px] text-center">100</td>
-                        <td class="px-4 border text-[24px] text-center">
                             @php
-                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
-                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','2')->count());
-                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
+                                $grandTotalCourses = $faculties->sum(fn($f) => $f->courses->count());
+                                $totalL1Courses = $faculties->sum(fn($f) => $f->courses->where('level', '1')->count());
+                                $totalL2Courses = $faculties->sum(fn($f) => $f->courses->where('level', '2')->count());
+                                $totalL3Courses = $faculties->sum(fn($f) => $f->courses->where('level', '3')->count());
+                                $allL1Names = $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray();
+                                $allL2Names = $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray();
+                                $allL3Names = $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray();
+                                $assessL1 = $assessment->whereIn('courses', $allL1Names);
+                                $assessL2 = $assessment->whereIn('courses', $allL2Names);
+                                $assessL3 = $assessment->whereIn('courses', $allL3Names);
+                                $calcPercent = function($count, $total) {
+                                    return $total > 0 ? round(($count / $total) * 100, 2) : 0;
+                                };
                             @endphp
-                            {{ $percentage }}
-                        </td>
-                        <td class="px-4 border text-[24px] text-center">
-                            @php
-                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
-                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','3')->count());
-                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
-                            @endphp
-                            {{ $percentage }}
-                        </td>
-                        <td class="px-4 border text-[24px] text-center">
-                            @php
-                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
-                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','4')->count());
-                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
-                            @endphp
-                            {{ $percentage }}
-                        </td>
-                        <td class="px-4 border text-[24px] text-center">
-                            @php
-                                $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
-                                $totalResult2 = $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result','5')->count());
-                                $percentage = $totalCourses > 0 ? round(($totalResult2 / $totalCourses) * 100, 2) : 0;
-                            @endphp
-                            {{ $percentage }}
-                        </td>
-                        <td class="px-4 border text-[24px] text-center">100</td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center">100</td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center">100</td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
-                        <td class="px-4 border text-[24px] text-center"></td>
+                            <td colspan="2" class="px-4 border text-[24px] text-center">เปอร์เซนต์ (%)</td>
+                            {{-- ภาพรวมทั้งหมด --}}
+                            <td class="px-4 border text-[24px] text-center">100</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessment->where('result','2')->count(), $grandTotalCourses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessment->where('result','3')->count(), $grandTotalCourses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessment->where('result','4')->count(), $grandTotalCourses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessment->where('result','5')->count(), $grandTotalCourses) }}</td>
+
+                            {{-- เปอร์เซ็นต์ Level 1 --}}
+                            <td class="px-4 border text-[24px] text-center">100</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL1->where('result','2')->count(), $totalL1Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL1->where('result','3')->count(), $totalL1Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL1->where('result','4')->count(), $totalL1Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL1->where('result','5')->count(), $totalL1Courses) }}</td>
+
+                            {{-- เปอร์เซ็นต์ Level 2 --}}
+                            <td class="px-4 border text-[24px] text-center">100</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL2->where('result','2')->count(), $totalL2Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL2->where('result','3')->count(), $totalL2Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL2->where('result','4')->count(), $totalL2Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL2->where('result','5')->count(), $totalL2Courses) }}</td>
+
+                            {{-- เปอร์เซ็นต์ Level 3 --}}
+                            <td class="px-4 border text-[24px] text-center">100</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL3->where('result','2')->count(), $totalL3Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL3->where('result','3')->count(), $totalL3Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL3->where('result','4')->count(), $totalL3Courses) }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $calcPercent($assessL3->where('result','5')->count(), $totalL3Courses) }}</td>
+                        </tr>
                     </tr>
                     @endif
                 </tbody>
@@ -312,9 +329,13 @@
             </div>
         </form>
     </div>
+    @php
+        $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '1')->pluck('course_id')->toArray();
+        $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+    @endphp
     <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 3 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
         ระดับหลักสูตร
-        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }} (ตรวจประเมินแบบหนึ่งวัน จำนวน {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }} หลักสูตร)
+        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }} (ตรวจประเมินแบบหนึ่งวัน จำนวน {{ $totalType1All > 0 ? $totalType1All : '-' }} หลักสูตร)
     </p>
     <div class="flex pl-[110px] w-full pt-[10px]">
         <div class="w-[1364px] overflow-auto overflow-y-hidden py-3">
@@ -364,60 +385,128 @@
                         </tr>
                     @else
                         @foreach ($faculties as $index => $faculty)
+                            @php
+                                $level1CourseNames = $faculty->courses->where('level', '1')->pluck('name')->toArray();
+                                $level1Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1CourseNames);
+                                $level2CourseNames = $faculty->courses->where('level', '2')->pluck('name')->toArray();
+                                $level2Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2CourseNames);
+                                $level3CourseNames = $faculty->courses->where('level', '3')->pluck('name')->toArray();
+                                $level3Assessments = $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3CourseNames);
+                                // 
+                                $allLevel1CourseNames = $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray();
+                                $allLevel2CourseNames = $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray();
+                                $allLevel3CourseNames = $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray();
+                                $totalLevel1Assessments = $assessment->whereIn('courses', $allLevel1CourseNames);
+                                $totalLevel2Assessments = $assessment->whereIn('courses', $allLevel2CourseNames);
+                                $totalLevel3Assessments = $assessment->whereIn('courses', $allLevel3CourseNames);
+                                //
+                                $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '1')->pluck('course_id')->toArray();
+                                $level1CourseNames = $faculty->courses->where('level', '1')->whereIn('id', $type1CourseIds)->pluck('name')->toArray();
+                            @endphp
                             <tr>
                                 <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
                                 <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ $faculty->courses->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment2->where('faculty', $faculty->name)->where('result','2')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment2->where('faculty', $faculty->name)->where('result','3')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment2->where('faculty', $faculty->name)->where('result','4')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment2->where('faculty', $faculty->name)->where('result','5')->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '1')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countType1 = $faculty->courses->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countType1 > 0 ? $countType1 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','2', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','3', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','4', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','5', $type1CourseIds)->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '2')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countLevel1Type1 = $faculty->courses->where('level', '1')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countLevel1Type1 > 0 ? $countLevel1Type1 : '-' }}    
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '5')->count() ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '3')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countL2 = $faculty->courses->where('level', '2')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL2 > 0 ? $countL2 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '5')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">
+                                    @php
+                                        $countL3 = $faculty->courses->where('level', '3')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL3 > 0 ? $countL3 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '5')->count() ?: '-' }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
                             <td class="px-4 border text-[24px] text-center">
-                                {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
+                                @php
+                                    $totalType1 = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+                                @endphp
+                                {{ $totalType1 > 0 ? $totalType1 : '0' }}
                             </td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment2->where('faculty', $faculty->name)->where('result','2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment2->where('faculty', $faculty->name)->where('result','3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment2->where('faculty', $faculty->name)->where('result','4')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment2->where('faculty', $faculty->name)->where('result','5')->count()) }}</td>                        
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
+                            {{-- รวมผลประเมินแยกตาม Result (ทุก Level รวมกัน) --}}
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '2', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '3', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '4', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '5', $type1CourseIds)->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 1 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL1 = $faculties->flatMap->courses
+                                        ->where('level', '1')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL1 > 0 ? $totalL1 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 2 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL2 = $faculties->flatMap->courses
+                                        ->where('level', '2')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL2 > 0 ? $totalL2 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 3 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL3 = $faculties->flatMap->courses
+                                        ->where('level', '3')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL3 > 0 ? $totalL3 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '5')->count() ?: '0' }}</td>
                         </tr>
-                    </tr>
                     @endif
                 </tbody>
             </table>
@@ -452,9 +541,13 @@
             </div>
         </form>
     </div>
+    @php
+        $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '2')->pluck('course_id')->toArray();
+        $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+    @endphp
     <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 4 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
         ระดับหลักสูตร
-        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }} (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายใน จำนวน {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }} หลักสูตร)
+        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }} (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายใน จำนวน {{ $totalType1All > 0 ? $totalType1All : '-' }} หลักสูตร)
     </p>
     <div class="flex pl-[110px] w-full pt-[10px]">
         <div class="w-[1364px] overflow-auto overflow-y-hidden py-3">
@@ -504,60 +597,121 @@
                         </tr>
                     @else
                         @foreach ($faculties as $index => $faculty)
+                            @php
+                                $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '2')->pluck('course_id')->toArray();
+                                $assessment = $assessment->whereIn('course_id', $type1CourseIds);
+                                $allLevel1CourseNames = $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray();
+                                $allLevel2CourseNames = $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray();
+                                $allLevel3CourseNames = $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray();
+                                $totalLevel1Assessments = $assessment->whereIn('courses', $allLevel1CourseNames);
+                                $totalLevel2Assessments = $assessment->whereIn('courses', $allLevel2CourseNames);
+                                $totalLevel3Assessments = $assessment->whereIn('courses', $allLevel3CourseNames);
+                                $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+                            @endphp
                             <tr>
                                 <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
                                 <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ $faculty->courses->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment3->where('faculty', $faculty->name)->where('result','2')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment3->where('faculty', $faculty->name)->where('result','3')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment3->where('faculty', $faculty->name)->where('result','4')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment3->where('faculty', $faculty->name)->where('result','5')->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '1')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countType1 = $faculty->courses->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countType1 > 0 ? $countType1 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','2', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','3', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','4', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','5', $type1CourseIds)->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '2')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countLevel1Type1 = $faculty->courses->where('level', '1')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countLevel1Type1 > 0 ? $countLevel1Type1 : '-' }}    
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '5')->count() ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '3')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countL2 = $faculty->courses->where('level', '2')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL2 > 0 ? $countL2 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '5')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">
+                                    @php
+                                        $countL3 = $faculty->courses->where('level', '3')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL3 > 0 ? $countL3 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '5')->count() ?: '-' }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
                             <td class="px-4 border text-[24px] text-center">
-                                {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
+                                @php
+                                    $totalType1 = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+                                @endphp
+                                {{ $totalType1 > 0 ? $totalType1 : '0' }}
                             </td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment3->where('faculty', $faculty->name)->where('result','2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment3->where('faculty', $faculty->name)->where('result','3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment3->where('faculty', $faculty->name)->where('result','4')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment3->where('faculty', $faculty->name)->where('result','5')->count()) }}</td>                        
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
+                            {{-- รวมผลประเมินแยกตาม Result (ทุก Level รวมกัน) --}}
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '2', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '3', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '4', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '5', $type1CourseIds)->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 1 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL1 = $faculties->flatMap->courses
+                                        ->where('level', '1')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL1 > 0 ? $totalL1 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 2 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL2 = $faculties->flatMap->courses
+                                        ->where('level', '2')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL2 > 0 ? $totalL2 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 3 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL3 = $faculties->flatMap->courses
+                                        ->where('level', '3')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL3 > 0 ? $totalL3 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '5')->count() ?: '0' }}</td>
                         </tr>
-                    </tr>
                     @endif
                 </tbody>
             </table>
@@ -592,10 +746,14 @@
             </div>
         </form>
     </div>
+    @php
+        $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '3')->pluck('course_id')->toArray();
+        $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+    @endphp
     <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 5 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
         ระดับหลักสูตร ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }}
         (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นผู้ทรงคุณวุฒิภายนอกขึ้นทะเบียนรายชื่อ<br>ที่ประชุมอธิการบดีแห่งประเทศไทย(ทปอ.)
-        จำนวน {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }} หลักสูตร)
+        จำนวน {{ $totalType1All > 0 ? $totalType1All : '0' }} หลักสูตร)
     </p>
     <div class="flex pl-[110px] w-full pt-[10px]">
         <div class="w-[1364px] overflow-auto overflow-y-hidden py-3">
@@ -645,60 +803,131 @@
                         </tr>
                     @else
                         @foreach ($faculties as $index => $faculty)
+                                @php
+                                    // 1. ดึง ID ของหลักสูตรที่เป็น Type 3 มาก่อน
+                                    $type1CourseIds = \App\Models\CourseAssessor::where('assessment_type', '3')
+                                                        ->pluck('course_id')
+                                                        ->toArray();
+
+                                    // 2. กรองตัวแปร $assessment ให้เหลือเฉพาะ Type 3 ทันที (สำคัญมาก!)
+                                    $assessment = $assessment->whereIn('course_id', $type1CourseIds);
+
+                                    // 3. หลังจากนั้นค่อยคำนวณตัวแปรอื่นๆ ข้อมูลที่ได้จะเป็น Type 3 ทั้งหมดแล้ว
+                                    $totalType1All = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+
+                                    $allLevel1CourseNames = $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray();
+                                    $allLevel2CourseNames = $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray();
+                                    $allLevel3CourseNames = $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray();
+
+                                    // ตอนนี้ตัวแปรพวกนี้จะไม่มี Type 1 ปนแล้ว เพราะ $assessment ถูกกรองไปแล้วในข้อ 2
+                                    $totalLevel1Assessments = $assessment->whereIn('courses', $allLevel1CourseNames);
+                                    $totalLevel2Assessments = $assessment->whereIn('courses', $allLevel2CourseNames);
+                                    $totalLevel3Assessments = $assessment->whereIn('courses', $allLevel3CourseNames);
+                                @endphp                           
                             <tr>
                                 <td class="px-4 border text-[24px] text-center">{{ $index + 1  }}</td>
                                 <td class="px-4 border text-[24px] whitespace-nowrap">{{ $faculty->name }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ $faculty->courses->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment4->where('faculty', $faculty->name)->where('result','2')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment4->where('faculty', $faculty->name)->where('result','3')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment4->where('faculty', $faculty->name)->where('result','4')->count()) ?: '-' }}</td>
-                                <td class="px-4 border text-[24px] text-center">{{ ($assessment4->where('faculty', $faculty->name)->where('result','5')->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '1')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countType1 = $faculty->courses->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countType1 > 0 ? $countType1 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','2', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','3', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','4', $type1CourseIds)->count()) ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ ($assessment->where('faculty', $faculty->name)->where('result','5', $type1CourseIds)->count()) ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '2')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countLevel1Type1 = $faculty->courses->where('level', '1')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countLevel1Type1 > 0 ? $countLevel1Type1 : '-' }}    
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level1Assessments->where('result', '5')->count() ?: '-' }}</td>
                                 <td class="px-4 border text-[24px] text-center">
-                                    {{ $faculty->courses->where('level', '3')->count() }}</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
-                                <td class="px-4 border text-[24px] text-center">-</td>
+                                    @php
+                                        $countL2 = $faculty->courses->where('level', '2')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL2 > 0 ? $countL2 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level2Assessments->where('result', '5')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">
+                                    @php
+                                        $countL3 = $faculty->courses->where('level', '3')->whereIn('id', $type1CourseIds)->count();
+                                    @endphp
+                                    {{ $countL3 > 0 ? $countL3 : '-' }}
+                                </td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '2')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '3')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '4')->count() ?: '-' }}</td>
+                                <td class="px-4 border text-[24px] text-center">{{ $level3Assessments->where('result', '5')->count() ?: '-' }}</td>
                             </tr>
                         @endforeach
                         <tr>
                             <td colspan="2" class="px-4 border text-[24px] text-center">รวม (จำนวนหลักสูตร)</td>
                             <td class="px-4 border text-[24px] text-center">
-                                {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
+                                @php
+                                    $totalType1 = $faculties->flatMap->courses->whereIn('id', $type1CourseIds)->count();
+                                @endphp
+                                {{ $totalType1 > 0 ? $totalType1 : '0' }}
                             </td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment4->where('faculty', $faculty->name)->where('result','2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment4->where('faculty', $faculty->name)->where('result','3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment4->where('faculty', $faculty->name)->where('result','4')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $assessment4->where('faculty', $faculty->name)->where('result','5')->count()) }}</td>                        
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '2')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center">{{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '3')->count()) }}</td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
-                            <td class="px-4 border text-[24px] text-center"></td>
+                            {{-- รวมผลประเมินแยกตาม Result (ทุก Level รวมกัน) --}}
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '2', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '3', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '4', $type1CourseIds)->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $assessment->where('result', '5', $type1CourseIds)->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 1 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL1 = $faculties->flatMap->courses
+                                        ->where('level', '1')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL1 > 0 ? $totalL1 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel1Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 2 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL2 = $faculties->flatMap->courses
+                                        ->where('level', '2')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL2 > 0 ? $totalL2 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel2Assessments->where('result', '5')->count() ?: '0' }}</td>
+
+                            {{-- รวม Level 3 --}}
+                            <td class="px-4 border text-[24px] text-center">
+                                @php
+                                    $totalL3 = $faculties->flatMap->courses
+                                        ->where('level', '3')
+                                        ->whereIn('id', $type1CourseIds)
+                                        ->count();
+                                @endphp
+                                {{ $totalL3 > 0 ? $totalL3 : '0' }}
+                            </td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '2')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '3')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '4')->count() ?: '0' }}</td>
+                            <td class="px-4 border text-[24px] text-center">{{ $totalLevel3Assessments->where('result', '5')->count() ?: '0' }}</td>
                         </tr>
-                    </tr>
                     @endif
                 </tbody>
             </table>

@@ -14,7 +14,7 @@
                     <input type="text" readonly name="faculty" value="{{ $faculty->name }}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                     <p class="text-[24px]">หลักสูตร</p>
-                    <input type="text" readonly name="course" value="{{$course->name}}"
+                    <input type="text" readonly name="courses" value="{{$course->name}}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                 </div>
                 <div
