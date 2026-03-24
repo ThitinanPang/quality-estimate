@@ -29,4 +29,8 @@ class CourseAssessor extends Model
     {
         return $this->belongsTo(Courses::class);
     }
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class);
+    }
 }

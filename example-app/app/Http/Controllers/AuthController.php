@@ -351,7 +351,7 @@ class AuthController extends Controller
     {
         $faculty = Faculty::where('name', $request->faculty)->first();
         $course = Courses::find($request->course_id);
-        return view('save', compact('faculty','course'));
+        return view('save', compact('faculty', 'course'));
     }
     public function collect(Request $request)
     {
@@ -1370,5 +1370,16 @@ class AuthController extends Controller
             ]);
         }
         return redirect()->route('manage-assessor')->with('success', 'บันทึกข้อมูลสำเร็จ');
+    }
+    public function tableassessorPage()
+    {
+        $name = auth()->user()->name;
+
+        $courseassessor = CourseAssessor::where('chairperson', $name)
+            ->orWhere('position', $name)
+            ->orWhere('intern', $name)
+            ->orWhere('secretary', $name)
+            ->get();
+        return view('tableassessor', compact('courseassessor'));
     }
 }

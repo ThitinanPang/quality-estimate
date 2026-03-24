@@ -13,6 +13,7 @@
 <body class="
 {{ request()->routeIs('report') ? 'overflow-x-hidden' : '' }}
 {{ request()->routeIs('manage-assessor') ? 'overflow-hidden' : '' }}
+ {{ request()->routeIs('tableassessor') ? 'overflow-hidden' : '' }}
  ">
     {{-- header --}}
     <header class="h-[129px] relative bg-white border-b">
@@ -141,7 +142,7 @@
                                 <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
                                 <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
                             </div>
-                            <a href=""
+                            <a href="{{ route('tableassessor') }}"
                                 class="block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
                         </div>
                     </li>
