@@ -611,36 +611,49 @@ class AuthController extends Controller
     }
     public function exportExcel(Request $request)
     {
-        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+        $selectedThaiYear = $request->year_report1 ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
 
         $faculties = $this->getReportData($selectedADYear);
-
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->mergeCells('A1:A2');
+        $sheet->mergeCells('B1:B2');
+        $sheet->mergeCells('C1:C2');
+        $sheet->mergeCells('F1:F2');
+        $sheet->mergeCells('D1:E1');
         $sheet->setCellValue('A1', 'ที่');
         $sheet->setCellValue('B1', 'ส่วนงานคณะ/วิทยาลัย');
         $sheet->setCellValue('C1', 'จำนวนหลักสูตร');
-        $sheet->setCellValue('D1', 'เป็นไปตามเกณฑ์');
-        $sheet->setCellValue('E1', 'ไม่เป็นไปตามเกณฑ์');
+        $sheet->setCellValue('D1', 'ผลการประเมินองค์ประกอบที่ 1 (การกำกับมาตรฐาน)');
+        $sheet->setCellValue('F1', 'หมายเหตุ');
+        $sheet->setCellValue('D2', 'เป็นไปตามเกณฑ์');
+        $sheet->setCellValue('E2', 'ไม่เป็นไปตามเกณฑ์');
+        $sheet->getStyle('A1:F2')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:F2')->getAlignment()->setVertical('center');
+        $sheet->getStyle('A1:F2')->getFont()->setBold(true);
 
-        $row = 2;
+        $row = 3;
+        if ($faculties->sum('courses_count') == 0) {
+            $sheet->mergeCells("A{$row}:F{$row}");
+            $sheet->setCellValue("A{$row}", 'ไม่มีข้อมูล');
+            $sheet->getStyle("A{$row}")->getAlignment()->setHorizontal('center');
+        } else {
+            foreach ($faculties as $index => $faculty) {
+                $sheet->setCellValue('A' . $row, $index + 1);
+                $sheet->setCellValue('B' . $row, $faculty->name);
+                $sheet->setCellValue('C' . $row, $faculty->courses_count ?: '-');
+                $sheet->setCellValue('D' . $row, $faculty->total_pass ?: '-');
+                $sheet->setCellValue('E' . $row, $faculty->total_fail ?: '-');
+                $row++;
+            }
 
-        foreach ($faculties as $index => $faculty) {
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $faculty->name);
-            $sheet->setCellValue('C' . $row, $faculty->courses_count ?: '-');
-            $sheet->setCellValue('D' . $row, $faculty->total_pass ?: '-');
-            $sheet->setCellValue('E' . $row, $faculty->total_fail ?: '-');
-            $row++;
+            $sheet->setCellValue('B' . $row, 'รวม');
+            $sheet->setCellValue('C' . $row, $faculties->sum('courses_count'));
+            $sheet->setCellValue('D' . $row, $faculties->sum('total_pass'));
+            $sheet->setCellValue('E' . $row, $faculties->sum('total_fail'));
         }
-
-        $sheet->setCellValue('B' . $row, 'รวม');
-        $sheet->setCellValue('C' . $row, $faculties->sum('courses_count'));
-        $sheet->setCellValue('D' . $row, $faculties->sum('total_pass'));
-        $sheet->setCellValue('E' . $row, $faculties->sum('total_fail'));
-
         $writer = new Xlsx($spreadsheet);
 
         $response = new StreamedResponse(function () use ($writer) {
@@ -663,7 +676,7 @@ class AuthController extends Controller
     }
     public function exportPDF(Request $request)
     {
-        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+        $selectedThaiYear = $request->year_report1 ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
 
         $faculties = $this->getReportData($selectedADYear);
@@ -688,116 +701,130 @@ class AuthController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // HEADER ROW 1
+        // --- HEADER ROW 1 ---
         $sheet->setCellValue('A1', 'ที่');
-        $sheet->setCellValue('B1', 'คณะ/วิทยาลัย');
+        $sheet->mergeCells('A1:A3');
+        $sheet->setCellValue('B1', 'ส่วนงานคณะ/วิทยาลัย');
+        $sheet->mergeCells('B1:B3');
 
-        $sheet->setCellValue('C1', 'ภาพรวม');
-        $sheet->mergeCells('C1:G1');
+        $groups = [
+            'C' => 'ภาพรวมทั้งคณะ/วิทยาลัย',
+            'H' => 'ระดับปริญญาตรี',
+            'M' => 'ระดับปริญญาโท',
+            'R' => 'ระดับปริญญาเอก'
+        ];
 
-        $sheet->setCellValue('H1', 'ปริญญาตรี');
-        $sheet->mergeCells('H1:L1');
+        foreach ($groups as $col => $title) {
+            $sheet->setCellValue($col . '1', $title);
+            $endCol = chr(ord($col) + 4);
+            $sheet->mergeCells("{$col}1:{$endCol}1");
 
-        $sheet->setCellValue('M1', 'ปริญญาโท');
-        $sheet->mergeCells('M1:Q1');
+            // ROW 2: จำนวนหลักสูตร & Overall Verdict
+            $sheet->setCellValue($col . '2', "จำนวน\nหลักสูตร");
+            $sheet->mergeCells($col . '2:' . $col . '3');
 
-        $sheet->setCellValue('R1', 'ปริญญาเอก');
-        $sheet->mergeCells('R1:V1');
+            $verdictStart = chr(ord($col) + 1);
+            $verdictEnd = chr(ord($col) + 4);
+            $sheet->setCellValue($verdictStart . '2', 'Overall Verdict');
+            $sheet->mergeCells("{$verdictStart}2:{$verdictEnd}2");
 
-        // HEADER ROW 2
-        $sheet->setCellValue('C2', 'จำนวน');
-        $sheet->mergeCells('D2:G2');
-
-        $sheet->setCellValue('H2', 'จำนวน');
-        $sheet->mergeCells('I2:L2');
-
-        $sheet->setCellValue('M2', 'จำนวน');
-        $sheet->mergeCells('N2:Q2');
-
-        $sheet->setCellValue('R2', 'จำนวน');
-        $sheet->mergeCells('S2:V2');
-
-        // HEADER ROW 3
-        $headers = ['2', '3', '4', '5'];
-
-        foreach ($headers as $i => $h) {
-            $sheet->setCellValue(chr(68 + $i) . '3', $h);
-            $sheet->setCellValue(chr(73 + $i) . '3', $h);
-            $sheet->setCellValue(chr(78 + $i) . '3', $h);
-            $sheet->setCellValue(chr(83 + $i) . '3', $h);
+            // ROW 3: 2, 3, 4, 5
+            $headers = ['2', '3', '4', '5'];
+            foreach ($headers as $i => $h) {
+                $sheet->setCellValue(chr(ord($verdictStart) + $i) . '3', $h);
+            }
         }
 
         $row = 4;
+        if ($faculties->sum('courses_count') == 0) {
+            $sheet->mergeCells("A{$row}:V{$row}");
+            $sheet->setCellValue("A{$row}", 'ไม่มีข้อมูล');
+        } else {
+            foreach ($faculties as $index => $faculty) {
+                $sheet->setCellValue('A' . $row, $index + 1);
+                $sheet->setCellValue('B' . $row, $faculty->name);
 
-        foreach ($faculties as $index => $faculty) {
+                // Logic แยก Level เหมือนใน Blade
+                $levels = [
+                    'overall' => ['courses' => $faculty->courses, 'col' => 'C'],
+                    'l1' => ['courses' => $faculty->courses->where('level', '1'), 'col' => 'H'],
+                    'l2' => ['courses' => $faculty->courses->where('level', '2'), 'col' => 'M'],
+                    'l3' => ['courses' => $faculty->courses->where('level', '3'), 'col' => 'R'],
+                ];
 
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $faculty->name);
+                foreach ($levels as $key => $data) {
+                    $courseNames = $data['courses']->pluck('name')->toArray();
+                    $filteredAssess = $assessment->where('faculty', $faculty->name);
 
-            $totalCourses = $faculty->courses->count();
+                    // ถ้าไม่ใช่ overall ให้กรองด้วย whereIn names
+                    if ($key !== 'overall') {
+                        $filteredAssess = $filteredAssess->whereIn('courses', $courseNames);
+                    }
 
-            $sheet->setCellValue('C' . $row, $totalCourses);
+                    $sheet->setCellValue($data['col'] . $row, $data['courses']->count());
+                    $sheet->setCellValue(chr(ord($data['col']) + 1) . $row, $filteredAssess->where('result', '2')->count() ?: '-');
+                    $sheet->setCellValue(chr(ord($data['col']) + 2) . $row, $filteredAssess->where('result', '3')->count() ?: '-');
+                    $sheet->setCellValue(chr(ord($data['col']) + 3) . $row, $filteredAssess->where('result', '4')->count() ?: '-');
+                    $sheet->setCellValue(chr(ord($data['col']) + 4) . $row, $filteredAssess->where('result', '5')->count() ?: '-');
+                }
+                $row++;
+            }
 
-            $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->where('result', '2')->count());
-            $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->where('result', '3')->count());
-            $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
-            $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
+            // --- แถวรวม (TOTAL) ---
+            $sheet->setCellValue('A' . $row, 'รวม (จำนวนหลักสูตร)');
+            $sheet->mergeCells("A{$row}:B{$row}");
 
-            $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
-            $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
-            $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
+            $totalSections = [
+                'C' => ['level' => null, 'assess' => $assessment],
+                'H' => ['level' => '1', 'assess' => null],
+                'M' => ['level' => '2', 'assess' => null],
+                'R' => ['level' => '3', 'assess' => null],
+            ];
 
+            foreach ($totalSections as $col => $config) {
+                $allNames = $faculties->flatMap->courses;
+                if ($config['level']) {
+                    $allNames = $allNames->where('level', $config['level']);
+                }
+                $namesArray = $allNames->pluck('name')->toArray();
+                $currentAssess = $config['assess'] ?? $assessment->whereIn('courses', $namesArray);
+
+                $sheet->setCellValue($col . $row, count($namesArray));
+                $sheet->setCellValue(chr(ord($col) + 1) . $row, $currentAssess->where('result', '2')->count());
+                $sheet->setCellValue(chr(ord($col) + 2) . $row, $currentAssess->where('result', '3')->count());
+                $sheet->setCellValue(chr(ord($col) + 3) . $row, $currentAssess->where('result', '4')->count());
+                $sheet->setCellValue(chr(ord($col) + 4) . $row, $currentAssess->where('result', '5')->count());
+            }
+            $totalRow = $row; // เก็บเลขแถวไว้ทำ Percent
             $row++;
+
+            // --- แถวเปอร์เซ็นต์ (%) ---
+            $sheet->setCellValue('A' . $row, 'เปอร์เซนต์ (%)');
+            $sheet->mergeCells("A{$row}:B{$row}");
+
+            foreach (['C', 'H', 'M', 'R'] as $col) {
+                $totalCount = $sheet->getCell($col . $totalRow)->getValue();
+                $sheet->setCellValue($col . $row, 100);
+
+                for ($i = 1; $i <= 4; $i++) {
+                    $val = $sheet->getCell(chr(ord($col) + $i) . $totalRow)->getValue();
+                    $percent = $totalCount > 0 ? round(($val / $totalCount) * 100, 2) : 0;
+                    $sheet->setCellValue(chr(ord($col) + $i) . $row, $percent);
+                }
+            }
         }
 
-        /* ----------- รวม ----------- */
-
-        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
-        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
-        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
-        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
-        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
-
-        $sheet->setCellValue('A' . $row, 'รวม');
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-
-        $sheet->setCellValue('C' . $row, $totalCourses);
-        $sheet->setCellValue('D' . $row, $total2);
-        $sheet->setCellValue('E' . $row, $total3);
-        $sheet->setCellValue('F' . $row, $total4);
-        $sheet->setCellValue('G' . $row, $total5);
-
-        $row++;
-
-        /* ----------- เปอร์เซนต์ ----------- */
-
-        $sheet->setCellValue('A' . $row, 'เปอร์เซนต์ (%)');
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-
-        $sheet->setCellValue('C' . $row, 100);
-
-        $sheet->setCellValue('D' . $row, $totalCourses ? round(($total2 / $totalCourses) * 100, 2) : 0);
-        $sheet->setCellValue('E' . $row, $totalCourses ? round(($total3 / $totalCourses) * 100, 2) : 0);
-        $sheet->setCellValue('F' . $row, $totalCourses ? round(($total4 / $totalCourses) * 100, 2) : 0);
-        $sheet->setCellValue('G' . $row, $totalCourses ? round(($total5 / $totalCourses) * 100, 2) : 0);
-
-        /* ----------- export ----------- */
+        // Styling เบื้องต้นให้ดูง่าย
+        $sheet->getStyle('A1:V' . $row)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:V3')->getFont()->setBold(true);
 
         $writer = new Xlsx($spreadsheet);
-
         $response = new StreamedResponse(function () use ($writer) {
             $writer->save('php://output');
         });
 
-        $response->headers->set(
-            'Content-Type',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        );
-
-        $response->headers->set(
-            'Content-Disposition',
-            'attachment;filename="report2_' . $selectedThaiYear . '.xlsx"'
-        );
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', 'attachment;filename="report2_' . $selectedThaiYear . '.xlsx"');
 
         return $response;
     }
@@ -825,92 +852,125 @@ class AuthController extends Controller
         $faculties = Faculty::with('courses')->get();
         $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
 
+        // ดึง ID ของหลักสูตรที่เป็นการตรวจแบบที่ 1 (เหมือนใน Blade)
+        $type1CourseIds = CourseAssessor::where('assessment_type', '1')
+            ->pluck('course_id')
+            ->toArray();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // HEADER ROW 1
+        // --- การตั้งค่า Header (ปรับตามโครงสร้าง Blade) ---
+        // แถวที่ 1
         $sheet->setCellValue('A1', 'ที่');
-        $sheet->setCellValue('B1', 'คณะ/วิทยาลัย');
-
-        $sheet->setCellValue('C1', 'ภาพรวม');
+        $sheet->setCellValue('B1', 'ส่วนงานคณะ/วิทยาลัย');
+        $sheet->setCellValue('C1', 'ภาพรวมทั้งคณะ/วิทยาลัย');
         $sheet->mergeCells('C1:G1');
-
-        $sheet->setCellValue('H1', 'ปริญญาตรี');
+        $sheet->setCellValue('H1', 'ระดับปริญญาตรี');
         $sheet->mergeCells('H1:L1');
-
-        $sheet->setCellValue('M1', 'ปริญญาโท');
+        $sheet->setCellValue('M1', 'ระดับปริญญาโท');
         $sheet->mergeCells('M1:Q1');
-
-        $sheet->setCellValue('R1', 'ปริญญาเอก');
+        $sheet->setCellValue('R1', 'ระดับปริญญาเอก');
         $sheet->mergeCells('R1:V1');
 
-        // HEADER ROW 2
-        $sheet->setCellValue('C2', 'จำนวน');
+        // แถวที่ 2
+        $sheet->setCellValue('C2', 'จำนวนหลักสูตร');
         $sheet->mergeCells('D2:G2');
-
-        $sheet->setCellValue('H2', 'จำนวน');
+        $sheet->setCellValue('D2', 'Overall Verdict');
+        $sheet->setCellValue('H2', 'จำนวนหลักสูตร');
         $sheet->mergeCells('I2:L2');
-
-        $sheet->setCellValue('M2', 'จำนวน');
+        $sheet->setCellValue('I2', 'Overall Verdict');
+        $sheet->setCellValue('M2', 'จำนวนหลักสูตร');
         $sheet->mergeCells('N2:Q2');
-
-        $sheet->setCellValue('R2', 'จำนวน');
+        $sheet->setCellValue('N2', 'Overall Verdict');
+        $sheet->setCellValue('R2', 'จำนวนหลักสูตร');
         $sheet->mergeCells('S2:V2');
+        $sheet->setCellValue('S2', 'Overall Verdict');
 
-        // HEADER ROW 3
-        $headers = ['2', '3', '4', '5'];
-
-        foreach ($headers as $i => $h) {
-            $sheet->setCellValue(chr(68 + $i) . '3', $h);
-            $sheet->setCellValue(chr(73 + $i) . '3', $h);
-            $sheet->setCellValue(chr(78 + $i) . '3', $h);
-            $sheet->setCellValue(chr(83 + $i) . '3', $h);
+        // แถวที่ 3 (หัวข้อตัวเลข 2 3 4 5)
+        $subHeaders = ['2', '3', '4', '5'];
+        foreach ($subHeaders as $i => $h) {
+            $sheet->setCellValue(chr(68 + $i) . '3', $h); // D, E, F, G
+            $sheet->setCellValue(chr(73 + $i) . '3', $h); // I, J, K, L
+            $sheet->setCellValue(chr(78 + $i) . '3', $h); // N, O, P, Q
+            $sheet->setCellValue(chr(83 + $i) . '3', $h); // S, T, U, V
         }
 
         $row = 4;
+        if ($assessment->count() == 0) {
+            $sheet->mergeCells("A{$row}:V{$row}");
+            $sheet->setCellValue("A{$row}", 'ไม่มีข้อมูล');
+            $sheet->getStyle("A{$row}")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        } else {
+            foreach ($faculties as $index => $faculty) {
+                $coursesType1 = $faculty->courses->whereIn('id', $type1CourseIds);
 
-        foreach ($faculties as $index => $faculty) {
+                $level1Names = $coursesType1->where('level', '1')->pluck('name')->toArray();
+                $level2Names = $coursesType1->where('level', '2')->pluck('name')->toArray();
+                $level3Names = $coursesType1->where('level', '3')->pluck('name')->toArray();
 
-            $sheet->setCellValue('A' . $row, $index + 1);
-            $sheet->setCellValue('B' . $row, $faculty->name);
+                $sheet->setCellValue('A' . $row, $index + 1);
+                $sheet->setCellValue('B' . $row, $faculty->name);
 
-            $totalCourses = $faculty->courses->count();
+                // --- ภาพรวมคณะ ---
+                $sheet->setCellValue('C' . $row, $coursesType1->count() ?: '-');
+                $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $coursesType1->pluck('name'))->where('result', '2')->count() ?: '-');
+                $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $coursesType1->pluck('name'))->where('result', '3')->count() ?: '-');
+                $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $coursesType1->pluck('name'))->where('result', '4')->count() ?: '-');
+                $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $coursesType1->pluck('name'))->where('result', '5')->count() ?: '-');
 
-            $sheet->setCellValue('C' . $row, $totalCourses);
+                // --- ปริญญาตรี (Level 1) ---
+                $sheet->setCellValue('H' . $row, count($level1Names) ?: '-');
+                $sheet->setCellValue('I' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1Names)->where('result', '2')->count() ?: '-');
+                $sheet->setCellValue('J' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1Names)->where('result', '3')->count() ?: '-');
+                $sheet->setCellValue('K' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1Names)->where('result', '4')->count() ?: '-');
+                $sheet->setCellValue('L' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level1Names)->where('result', '5')->count() ?: '-');
 
-            $sheet->setCellValue('D' . $row, $assessment->where('faculty', $faculty->name)->where('result', '2')->count());
-            $sheet->setCellValue('E' . $row, $assessment->where('faculty', $faculty->name)->where('result', '3')->count());
-            $sheet->setCellValue('F' . $row, $assessment->where('faculty', $faculty->name)->where('result', '4')->count());
-            $sheet->setCellValue('G' . $row, $assessment->where('faculty', $faculty->name)->where('result', '5')->count());
+                // --- ปริญญาโท (Level 2) ---
+                $sheet->setCellValue('M' . $row, count($level2Names) ?: '-');
+                $sheet->setCellValue('N' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2Names)->where('result', '2')->count() ?: '-');
+                $sheet->setCellValue('O' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2Names)->where('result', '3')->count() ?: '-');
+                $sheet->setCellValue('P' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2Names)->where('result', '4')->count() ?: '-');
+                $sheet->setCellValue('Q' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level2Names)->where('result', '5')->count() ?: '-');
 
-            $sheet->setCellValue('H' . $row, $faculty->courses->where('level', '1')->count());
-            $sheet->setCellValue('M' . $row, $faculty->courses->where('level', '2')->count());
-            $sheet->setCellValue('R' . $row, $faculty->courses->where('level', '3')->count());
+                // --- ปริญญาเอก (Level 3) ---
+                $sheet->setCellValue('R' . $row, count($level3Names) ?: '-');
+                $sheet->setCellValue('S' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3Names)->where('result', '2')->count() ?: '-');
+                $sheet->setCellValue('T' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3Names)->where('result', '3')->count() ?: '-');
+                $sheet->setCellValue('U' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3Names)->where('result', '4')->count() ?: '-');
+                $sheet->setCellValue('V' . $row, $assessment->where('faculty', $faculty->name)->whereIn('courses', $level3Names)->where('result', '5')->count() ?: '-');
 
-            $row++;
+                $row++;
+            }
+
+            // --- แถวรวม (Total) ---
+            $allCoursesType1 = $faculties->flatMap->courses->whereIn('id', $type1CourseIds);
+            $allLevel1Names = $allCoursesType1->where('level', '1')->pluck('name')->toArray();
+            $allLevel2Names = $allCoursesType1->where('level', '2')->pluck('name')->toArray();
+            $allLevel3Names = $allCoursesType1->where('level', '3')->pluck('name')->toArray();
+            $allCourseNames = $allCoursesType1->pluck('name')->toArray();
+            $sheet->setCellValue('A' . $row, 'รวม (จำนวนหลักสูตร)');
+            $sheet->mergeCells('A' . $row . ':B' . $row);
+            $sheet->setCellValue('C' . $row, $allCoursesType1->count() ?: '0');
+            $sheet->setCellValue('D' . $row, $assessment->whereIn('courses', $allCourseNames)->where('result', '2')->count() ?: '0');
+            $sheet->setCellValue('E' . $row, $assessment->whereIn('courses', $allCourseNames)->where('result', '3')->count() ?: '0');
+            $sheet->setCellValue('F' . $row, $assessment->whereIn('courses', $allCourseNames)->where('result', '4')->count() ?: '0');
+            $sheet->setCellValue('G' . $row, $assessment->whereIn('courses', $allCourseNames)->where('result', '5')->count() ?: '0');
+            $sheet->setCellValue('H' . $row, count($allLevel1Names) ?: '0');
+            $sheet->setCellValue('I' . $row, $assessment->whereIn('courses', $allLevel1Names)->where('result', '2')->count() ?: '0');
+            $sheet->setCellValue('J' . $row, $assessment->whereIn('courses', $allLevel1Names)->where('result', '3')->count() ?: '0');
+            $sheet->setCellValue('K' . $row, $assessment->whereIn('courses', $allLevel1Names)->where('result', '4')->count() ?: '0');
+            $sheet->setCellValue('L' . $row, $assessment->whereIn('courses', $allLevel1Names)->where('result', '5')->count() ?: '0');
+            $sheet->setCellValue('M' . $row, count($allLevel2Names) ?: '0');
+            $sheet->setCellValue('N' . $row, $assessment->whereIn('courses', $allLevel2Names)->where('result', '2')->count() ?: '0');
+            $sheet->setCellValue('O' . $row, $assessment->whereIn('courses', $allLevel2Names)->where('result', '3')->count() ?: '0');
+            $sheet->setCellValue('P' . $row, $assessment->whereIn('courses', $allLevel2Names)->where('result', '4')->count() ?: '0');
+            $sheet->setCellValue('Q' . $row, $assessment->whereIn('courses', $allLevel2Names)->where('result', '5')->count() ?: '0');
+            $sheet->setCellValue('R' . $row, count($allLevel3Names) ?: '0');
+            $sheet->setCellValue('S' . $row, $assessment->whereIn('courses', $allLevel3Names)->where('result', '2')->count() ?: '0');
+            $sheet->setCellValue('T' . $row, $assessment->whereIn('courses', $allLevel3Names)->where('result', '3')->count() ?: '0');
+            $sheet->setCellValue('U' . $row, $assessment->whereIn('courses', $allLevel3Names)->where('result', '4')->count() ?: '0');
+            $sheet->setCellValue('V' . $row, $assessment->whereIn('courses', $allLevel3Names)->where('result', '5')->count() ?: '0');
         }
-
-        /* ----------- รวม ----------- */
-
-        $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
-        $total2 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '2')->count());
-        $total3 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '3')->count());
-        $total4 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '4')->count());
-        $total5 = $faculties->sum(fn($f) => $assessment->where('faculty', $f->name)->where('result', '5')->count());
-
-        $sheet->setCellValue('A' . $row, 'รวม');
-        $sheet->mergeCells('A' . $row . ':B' . $row);
-
-        $sheet->setCellValue('C' . $row, $totalCourses);
-        $sheet->setCellValue('D' . $row, $total2);
-        $sheet->setCellValue('E' . $row, $total3);
-        $sheet->setCellValue('F' . $row, $total4);
-        $sheet->setCellValue('G' . $row, $total5);
-
-        $row++;
-
-        /* ----------- export ----------- */
-
         $writer = new Xlsx($spreadsheet);
 
         $response = new StreamedResponse(function () use ($writer) {
@@ -935,12 +995,19 @@ class AuthController extends Controller
         $selectedADYear = $selectedThaiYear - 543;
 
         $faculties = Faculty::with('courses')->get();
+        // 1. ดึง ID หลักสูตรที่เป็นการตรวจแบบที่ 1 เท่านั้น
+        $type1CourseIds = CourseAssessor::where('assessment_type', '1')
+            ->pluck('course_id')
+            ->toArray();
+
+        // 2. ดึงข้อมูลการประเมินเฉพาะปีที่เลือก
         $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
 
         $pdf = SnappyPdf::loadView('report3pdf', [
             'faculties' => $faculties,
             'assessment' => $assessment,
-            'selectedThaiYear' => $selectedThaiYear
+            'selectedThaiYear' => $selectedThaiYear,
+            'type1CourseIds' => $type1CourseIds
         ]);
 
         return $pdf->download('report3_' . $selectedThaiYear . '.pdf');

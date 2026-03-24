@@ -25,7 +25,8 @@
 
 <body>
 
-    <span>รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร <br> รายงานที่ 1 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตรองค์ประกอบที่ 1 การกำกับมาตรฐาน</span>
+    <span>รายงานสรุปผลการตรวจประเมินภายใน ระดับหลักสูตร <br> รายงานที่ 1 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
+        ระดับหลักสูตรองค์ประกอบที่ 1 การกำกับมาตรฐาน</span>
 
     <table>
         <thead>
@@ -43,24 +44,31 @@
         </thead>
 
         <tbody>
-            @foreach ($faculties as $index => $faculty)
+            {{-- เช็คว่าผลรวมจำนวนหลักสูตรเป็น 0 หรือไม่ --}}
+            @if($faculties->sum('courses_count') == 0)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $faculty->name }}</td>
-                    <td>{{ $faculty->courses_count }}</td>
-                    <td>{{ $faculty->total_pass }}</td>
-                    <td>{{ $faculty->total_fail }}</td>
+                    <td colspan="6" style="text-align: center;">ไม่มีข้อมูล</td>
+                </tr>
+            @else
+                @foreach ($faculties as $index => $faculty)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $faculty->name }}</td>
+                        <td>{{ $faculty->courses_count }}</td>
+                        <td>{{ $faculty->total_pass }}</td>
+                        <td>{{ $faculty->total_fail }}</td>
+                        <td></td>
+                    </tr>
+                @endforeach
+
+                <tr>
+                    <td colspan="2">รวม</td>
+                    <td>{{ $faculties->sum('courses_count') }}</td>
+                    <td>{{ $faculties->sum('total_pass') }}</td>
+                    <td>{{ $faculties->sum('total_fail') }}</td>
                     <td></td>
                 </tr>
-            @endforeach
-
-            <tr>
-                <td colspan="2">รวม</td>
-                <td>{{ $faculties->sum('courses_count') }}</td>
-                <td>{{ $faculties->sum('total_pass') }}</td>
-                <td>{{ $faculties->sum('total_fail') }}</td>
-                <td></td>
-            </tr>
+            @endif
         </tbody>
     </table>
 </body>
