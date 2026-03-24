@@ -86,7 +86,7 @@
                                 class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
                             <a href="{{ route('manage-assessor') }}"
                                 class="{{ request()->routeIs('manage-assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
-                            <a href="#"
+                            <a href="{{ route('assessmentschedule') }}"
                                 class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางผู้ประเมิน</a>
                         </div>
                     </li>

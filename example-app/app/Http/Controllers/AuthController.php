@@ -1398,7 +1398,15 @@ class AuthController extends Controller
 
         return view('save', compact('faculty', 'course'));
     }
-    public function assessmentschedulePage(){
-        return view('assessmentschedule');
+    public function assessmentschedulePage(Request $request)
+    {
+        $selectedThaiYear = $request->thai_year ?? (date('Y') + 543);
+        $selectedADYear = $selectedThaiYear - 543;
+
+        $courses = Courses::all();
+        $courseassessor = CourseAssessor::with(['course.faculty'])
+            ->whereYear('created_at', $selectedADYear)
+            ->get();
+        return view('assessmentschedule', compact('selectedThaiYear', 'courseassessor', 'courses'));
     }
 }
