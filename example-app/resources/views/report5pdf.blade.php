@@ -99,13 +99,14 @@
             @else
                 @foreach ($faculties as $index => $faculty)
                     @php
-                        // กรองหลักสูตรของคณะเฉพาะที่เป็น Type 3 (ตามที่ส่งมาจาก Controller)
+                        // 1. กรองหลักสูตรที่เป็น Type 3 ของคณะนี้
                         $facultyCourses = $faculty->courses->whereIn('id', $type1CourseIds);
 
-                        // แยกกลุ่มตาม Level
-                        $l1Ids = $facultyCourses->where('level', '1')->pluck('id')->toArray();
-                        $l2Ids = $facultyCourses->where('level', '2')->pluck('id')->toArray();
-                        $l3Ids = $facultyCourses->where('level', '3')->pluck('id')->toArray();
+                        // 2. ดึง "ชื่อหลักสูตร" แยกตามระดับ (เหมือนใน Excel)
+                        $l1Names = $facultyCourses->where('level', '1')->pluck('name')->toArray();
+                        $l2Names = $facultyCourses->where('level', '2')->pluck('name')->toArray();
+                        $l3Names = $facultyCourses->where('level', '3')->pluck('name')->toArray();
+                        $allNames = $facultyCourses->pluck('name')->toArray(); // ทั้งคณะ
                     @endphp
                     <tr>
                         <td style="text-align:center">{{ $index + 1 }}</td>
@@ -113,100 +114,81 @@
 
                         {{-- ภาพรวมทั้งคณะ --}}
                         <td style="text-align:center">{{ $facultyCourses->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '2')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '3')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '4')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '5')->count() ?: '-' }}</td>
+                        @for ($i = 2; $i <= 5; $i++)
+                            <td style="text-align:center">
+                                {{ $assessment->where('faculty', $faculty->name)->whereIn('courses', $allNames)->where('result', (string) $i)->count() ?: '-' }}
+                            </td>
+                        @endfor
 
                         {{-- ระดับปริญญาตรี (Level 1) --}}
-                        <td style="text-align:center">{{ count($l1Ids) ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l1Ids)->where('result', '2')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l1Ids)->where('result', '3')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l1Ids)->where('result', '4')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l1Ids)->where('result', '5')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ count($l1Names) ?: '-' }}</td>
+                        @for ($i = 2; $i <= 5; $i++)
+                            <td style="text-align:center">
+                                {{ $assessment->where('faculty', $faculty->name)->whereIn('courses', $l1Names)->where('result', (string) $i)->count() ?: '-' }}
+                            </td>
+                        @endfor
 
                         {{-- ระดับปริญญาโท (Level 2) --}}
-                        <td style="text-align:center">{{ count($l2Ids) ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l2Ids)->where('result', '2')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l2Ids)->where('result', '3')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l2Ids)->where('result', '4')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l2Ids)->where('result', '5')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ count($l2Names) ?: '-' }}</td>
+                        @for ($i = 2; $i <= 5; $i++)
+                            <td style="text-align:center">
+                                {{ $assessment->where('faculty', $faculty->name)->whereIn('courses', $l2Names)->where('result', (string) $i)->count() ?: '-' }}
+                            </td>
+                        @endfor
 
                         {{-- ระดับปริญญาเอก (Level 3) --}}
-                        <td style="text-align:center">{{ count($l3Ids) ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l3Ids)->where('result', '2')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l3Ids)->where('result', '3')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l3Ids)->where('result', '4')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->whereIn('course_id', $l3Ids)->where('result', '5')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ count($l3Names) ?: '-' }}</td>
+                        @for ($i = 2; $i <= 5; $i++)
+                            <td style="text-align:center">
+                                {{ $assessment->where('faculty', $faculty->name)->whereIn('courses', $l3Names)->where('result', (string) $i)->count() ?: '-' }}
+                            </td>
+                        @endfor
                     </tr>
                 @endforeach
 
                 {{-- แถวสรุปรวม (Footer) --}}
                 @php
-                    // ดึง ID ทั้งหมดแยกตาม Level เพื่อใช้คำนวณแถวสุดท้าย
-                    $allType1Courses = $faculties->flatMap->courses->whereIn('id', $type1CourseIds);
-                    $allL1Ids = $allType1Courses->where('level', '1')->pluck('id')->toArray();
-                    $allL2Ids = $allType1Courses->where('level', '2')->pluck('id')->toArray();
-                    $allL3Ids = $allType1Courses->where('level', '3')->pluck('id')->toArray();
+                    // 1. ดึงรายชื่อหลักสูตร Type 3 ของทุกคณะแยกตามระดับ (ดึงเป็น Name เพื่อใช้กรอง Collection)
+                    $allL1Names = $faculties->flatMap->courses->where('level', '1')->whereIn('id', $type1CourseIds)->pluck('name')->toArray();
+                    $allL2Names = $faculties->flatMap->courses->where('level', '2')->whereIn('id', $type1CourseIds)->pluck('name')->toArray();
+                    $allL3Names = $faculties->flatMap->courses->where('level', '3')->whereIn('id', $type1CourseIds)->pluck('name')->toArray();
+
+                    // 2. รวมรายชื่อหลักสูตรทั้งหมด
+                    $allType1Names = array_merge($allL1Names, $allL2Names, $allL3Names);
+
+                    // 3. กรอง Assessment เฉพาะหลักสูตรที่อยู่ในรายการ Type 3 เท่านั้น
+                    $summaryOverall = $assessment->whereIn('courses', $allType1Names);
+                    $summaryL1 = $assessment->whereIn('courses', $allL1Names);
+                    $summaryL2 = $assessment->whereIn('courses', $allL2Names);
+                    $summaryL3 = $assessment->whereIn('courses', $allL3Names);
                 @endphp
+
                 <tr style="background-color: #f2f2f2; font-weight: bold;">
                     <td colspan="2" style="text-align:center">รวม (จำนวนหลักสูตร)</td>
 
-                    {{-- รวมภาพรวม --}}
-                    <td style="text-align:center">{{ $assessment->count() }}</td>
-                    <td style="text-align:center">{{ $assessment->where('result', '2')->count() }}</td>
-                    <td style="text-align:center">{{ $assessment->where('result', '3')->count() }}</td>
-                    <td style="text-align:center">{{ $assessment->where('result', '4')->count() }}</td>
-                    <td style="text-align:center">{{ $assessment->where('result', '5')->count() }}</td>
+                    {{-- รวมภาพรวมทั้งมหาวิทยาลัย --}}
+                    <td style="text-align:center">{{ count($allType1Names) }}</td>
+                    @for ($i = 2; $i <= 5; $i++)
+                        <td style="text-align:center">{{ $summaryOverall->where('result', (string) $i)->count() }}</td>
+                    @endfor
 
-                    {{-- รวม ป.ตรี --}}
-                    <td style="text-align:center">{{ count($allL1Ids) }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL1Ids)->where('result', '2')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL1Ids)->where('result', '3')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL1Ids)->where('result', '4')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL1Ids)->where('result', '5')->count() }}</td>
+                    {{-- รวม ป.ตรี (Level 1) --}}
+                    <td style="text-align:center">{{ count($allL1Names) }}</td>
+                    @for ($i = 2; $i <= 5; $i++)
+                        <td style="text-align:center">{{ $summaryL1->where('result', (string) $i)->count() }}</td>
+                    @endfor
 
-                    {{-- รวม ป.โท --}}
-                    <td style="text-align:center">{{ count($allL2Ids) }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL2Ids)->where('result', '2')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL2Ids)->where('result', '3')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL2Ids)->where('result', '4')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL2Ids)->where('result', '5')->count() }}</td>
+                    {{-- รวม ป.โท (Level 2) --}}
+                    <td style="text-align:center">{{ count($allL2Names) }}</td>
+                    @for ($i = 2; $i <= 5; $i++)
+                        <td style="text-align:center">{{ $summaryL2->where('result', (string) $i)->count() }}</td>
+                    @endfor
 
-                    {{-- รวม ป.เอก --}}
-                    <td style="text-align:center">{{ count($allL3Ids) }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL3Ids)->where('result', '2')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL3Ids)->where('result', '3')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL3Ids)->where('result', '4')->count() }}</td>
-                    <td style="text-align:center">
-                        {{ $assessment->whereIn('course_id', $allL3Ids)->where('result', '5')->count() }}</td>
+                    {{-- รวม ป.เอก (Level 3) --}}
+                    <td style="text-align:center">{{ count($allL3Names) }}</td>
+                    @for ($i = 2; $i <= 5; $i++)
+                        <td style="text-align:center">{{ $summaryL3->where('result', (string) $i)->count() }}</td>
+                    @endfor
                 </tr>
             @endif
         </tbody>

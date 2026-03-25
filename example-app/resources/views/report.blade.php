@@ -686,7 +686,7 @@
     @endphp
     <p class="text-[24px] w-full text-left ml-[110px] mt-2">รายงานที่ 4 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน
         ระดับหลักสูตร
-        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport3 }} (ตรวจประเมินแบบเต็ม (2วัน)
+        ตามเกณฑ์ AUN-QA Version 4.0 (Overall Verdict) <br> ประจำปีการศึกษา {{ $yearReport4 }} (ตรวจประเมินแบบเต็ม (2วัน)
         ประธานกรรมการเป็นบุคลภายใน จำนวน {{ $totalType1All > 0 ? $totalType1All : '-' }} หลักสูตร)
     </p>
     <div class="flex pl-[110px] w-full pt-[10px]">
