@@ -836,10 +836,17 @@ class AuthController extends Controller
         $faculties = Faculty::with('courses')->get();
         $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
 
+        $allCourseNamesByLevel = [
+            '1' => $faculties->flatMap->courses->where('level', '1')->pluck('name')->toArray(),
+            '2' => $faculties->flatMap->courses->where('level', '2')->pluck('name')->toArray(),
+            '3' => $faculties->flatMap->courses->where('level', '3')->pluck('name')->toArray(),
+        ];
+
         $pdf = SnappyPdf::loadView('report2pdf', [
             'faculties' => $faculties,
             'assessment' => $assessment,
-            'selectedThaiYear' => $selectedThaiYear
+            'selectedThaiYear' => $selectedThaiYear,
+            'allCourseNamesByLevel' => $allCourseNamesByLevel
         ]);
 
         return $pdf->download('report2_' . $selectedThaiYear . '.pdf');

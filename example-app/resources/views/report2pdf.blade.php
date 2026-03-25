@@ -86,150 +86,139 @@
         </thead>
 
         <tbody>
-
             @if($assessment->count() == 0)
-
                 <tr>
                     <td colspan="22" style="text-align:center;">ไม่มีข้อมูล</td>
                 </tr>
-
             @else
-
                 @foreach ($faculties as $index => $faculty)
+                    @php
+                        $l1Names = $faculty->courses->where('level', '1')->pluck('name')->toArray();
+                        $l2Names = $faculty->courses->where('level', '2')->pluck('name')->toArray();
+                        $l3Names = $faculty->courses->where('level', '3')->pluck('name')->toArray();
 
+                        $l1Assess = $assessment->where('faculty', $faculty->name)->whereIn('courses', $l1Names);
+                        $l2Assess = $assessment->where('faculty', $faculty->name)->whereIn('courses', $l2Names);
+                        $l3Assess = $assessment->where('faculty', $faculty->name)->whereIn('courses', $l3Names);
+
+                        $facAssess = $assessment->where('faculty', $faculty->name);
+                    @endphp
                     <tr>
-
                         <td style="text-align:center">{{ $index + 1 }}</td>
-
                         <td>{{ $faculty->name }}</td>
-
                         <td style="text-align:center">{{ $faculty->courses->count() }}</td>
+                        <td style="text-align:center">{{ $facAssess->where('result', '2')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $facAssess->where('result', '3')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $facAssess->where('result', '4')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $facAssess->where('result', '5')->count() ?: '-' }}</td>
 
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '2')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '3')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '4')->count() ?: '-' }}</td>
-                        <td style="text-align:center">
-                            {{ $assessment->where('faculty', $faculty->name)->where('result', '5')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ count($l1Names) }}</td>
+                        <td style="text-align:center">{{ $l1Assess->where('result', '2')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l1Assess->where('result', '3')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l1Assess->where('result', '4')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l1Assess->where('result', '5')->count() ?: '-' }}</td>
 
-                        <td style="text-align:center">{{ $faculty->courses->where('level', '1')->count() }}</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
+                        <td style="text-align:center">{{ count($l2Names) }}</td>
+                        <td style="text-align:center">{{ $l2Assess->where('result', '2')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l2Assess->where('result', '3')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l2Assess->where('result', '4')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l2Assess->where('result', '5')->count() ?: '-' }}</td>
 
-                        <td style="text-align:center">{{ $faculty->courses->where('level', '2')->count() }}</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-
-                        <td style="text-align:center">{{ $faculty->courses->where('level', '3')->count() }}</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-                        <td style="text-align:center">-</td>
-
+                        <td style="text-align:center">{{ count($l3Names) }}</td>
+                        <td style="text-align:center">{{ $l3Assess->where('result', '2')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l3Assess->where('result', '3')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l3Assess->where('result', '4')->count() ?: '-' }}</td>
+                        <td style="text-align:center">{{ $l3Assess->where('result', '5')->count() ?: '-' }}</td>
                     </tr>
-
                 @endforeach
 
+                @php
+                    // คำนวณยอดรวม (Grand Totals)
+                    $totalCourses = $faculties->sum(fn($f) => $f->courses->count());
+                    $totalL1Courses = count($allCourseNamesByLevel['1']);
+                    $totalL2Courses = count($allCourseNamesByLevel['2']);
+                    $totalL3Courses = count($allCourseNamesByLevel['3']);
 
-                <tr>
+                    $allL1 = $assessment->whereIn('courses', $allCourseNamesByLevel['1']);
+                    $allL2 = $assessment->whereIn('courses', $allCourseNamesByLevel['2']);
+                    $allL3 = $assessment->whereIn('courses', $allCourseNamesByLevel['3']);
 
+                    // Helper Function สำหรับคำนวณ %
+                    $calcPercent = function ($count, $total) {
+                        return $total > 0 ? round(($count / $total) * 100, 2) : 0;
+                    };
+                @endphp
+
+                <tr style="background-color: #f2f2f2; font-weight: bold;">
                     <td colspan="2" style="text-align:center">รวม (จำนวนหลักสูตร)</td>
+                    <td style="text-align:center">{{ $totalCourses }}</td>
+                    <td style="text-align:center">{{ $assessment->where('result', '2')->count() }}</td>
+                    <td style="text-align:center">{{ $assessment->where('result', '3')->count() }}</td>
+                    <td style="text-align:center">{{ $assessment->where('result', '4')->count() }}</td>
+                    <td style="text-align:center">{{ $assessment->where('result', '5')->count() }}</td>
 
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $faculty->courses->count()) }}
-                    </td>
+                    <td style="text-align:center">{{ $totalL1Courses }}</td>
+                    <td style="text-align:center">{{ $allL1->where('result', '2')->count() }}</td>
+                    <td style="text-align:center">{{ $allL1->where('result', '3')->count() }}</td>
+                    <td style="text-align:center">{{ $allL1->where('result', '4')->count() }}</td>
+                    <td style="text-align:center">{{ $allL1->where('result', '5')->count() }}</td>
 
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result', '2')->count()) }}
-                    </td>
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result', '3')->count()) }}
-                    </td>
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result', '4')->count()) }}
-                    </td>
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $assessment->where('faculty', $faculty->name)->where('result', '5')->count()) }}
-                    </td>
+                    <td style="text-align:center">{{ $totalL2Courses }}</td>
+                    <td style="text-align:center">{{ $allL2->where('result', '2')->count() }}</td>
+                    <td style="text-align:center">{{ $allL2->where('result', '3')->count() }}</td>
+                    <td style="text-align:center">{{ $allL2->where('result', '4')->count() }}</td>
+                    <td style="text-align:center">{{ $allL2->where('result', '5')->count() }}</td>
 
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '1')->count()) }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '2')->count()) }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                    <td style="text-align:center">
-                        {{ $faculties->sum(fn($faculty) => $faculty->courses->where('level', '3')->count()) }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
+                    <td style="text-align:center">{{ $totalL3Courses }}</td>
+                    <td style="text-align:center">{{ $allL3->where('result', '2')->count() }}</td>
+                    <td style="text-align:center">{{ $allL3->where('result', '3')->count() }}</td>
+                    <td style="text-align:center">{{ $allL3->where('result', '4')->count() }}</td>
+                    <td style="text-align:center">{{ $allL3->where('result', '5')->count() }}</td>
                 </tr>
 
-
-                <tr>
-
+                <tr style="background-color: #f9f9f9;">
                     <td colspan="2" style="text-align:center">เปอร์เซนต์ (%)</td>
+                    <td style="text-align:center">100</td>
+                    <td style="text-align:center">
+                        {{ $calcPercent($assessment->where('result', '2')->count(), $totalCourses) }}</td>
+                    <td style="text-align:center">
+                        {{ $calcPercent($assessment->where('result', '3')->count(), $totalCourses) }}</td>
+                    <td style="text-align:center">
+                        {{ $calcPercent($assessment->where('result', '4')->count(), $totalCourses) }}</td>
+                    <td style="text-align:center">
+                        {{ $calcPercent($assessment->where('result', '5')->count(), $totalCourses) }}</td>
 
                     <td style="text-align:center">100</td>
-
-                    @php
-                        $totalCourses = $faculties->sum(fn($faculty) => $faculty->courses->count());
-                    @endphp
-
-                    <td style="text-align:center">
-                        {{ $totalCourses ? round(($assessment->where('result', '2')->count() / $totalCourses) * 100, 2) : 0 }}
+                    <td style="text-align:center">{{ $calcPercent($allL1->where('result', '2')->count(), $totalL1Courses) }}
                     </td>
-
-                    <td style="text-align:center">
-                        {{ $totalCourses ? round(($assessment->where('result', '3')->count() / $totalCourses) * 100, 2) : 0 }}
+                    <td style="text-align:center">{{ $calcPercent($allL1->where('result', '3')->count(), $totalL1Courses) }}
                     </td>
-
-                    <td style="text-align:center">
-                        {{ $totalCourses ? round(($assessment->where('result', '4')->count() / $totalCourses) * 100, 2) : 0 }}
+                    <td style="text-align:center">{{ $calcPercent($allL1->where('result', '4')->count(), $totalL1Courses) }}
                     </td>
-
-                    <td style="text-align:center">
-                        {{ $totalCourses ? round(($assessment->where('result', '5')->count() / $totalCourses) * 100, 2) : 0 }}
+                    <td style="text-align:center">{{ $calcPercent($allL1->where('result', '5')->count(), $totalL1Courses) }}
                     </td>
 
                     <td style="text-align:center">100</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="text-align:center">{{ $calcPercent($allL2->where('result', '2')->count(), $totalL2Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL2->where('result', '3')->count(), $totalL2Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL2->where('result', '4')->count(), $totalL2Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL2->where('result', '5')->count(), $totalL2Courses) }}
+                    </td>
 
                     <td style="text-align:center">100</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                    <td style="text-align:center">100</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
+                    <td style="text-align:center">{{ $calcPercent($allL3->where('result', '2')->count(), $totalL3Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL3->where('result', '3')->count(), $totalL3Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL3->where('result', '4')->count(), $totalL3Courses) }}
+                    </td>
+                    <td style="text-align:center">{{ $calcPercent($allL3->where('result', '5')->count(), $totalL3Courses) }}
+                    </td>
                 </tr>
-
             @endif
-
         </tbody>
 
     </table>
