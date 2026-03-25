@@ -1418,23 +1418,45 @@ class AuthController extends Controller
 
         return $response;
     }
-    public function exportPDFReport6(Request $request)
-    {
-        $selectedThaiYear = $request->year_report6 ?? (date('Y') + 543);
-        $selectedADYear = $selectedThaiYear - 543;
+public function exportPDFReport6(Request $request)
+{
+    $selectedThaiYear = $request->year_report6 ?? (date('Y') + 543);
+    $selectedADYear = $selectedThaiYear - 543;
 
-        $faculties = Faculty::with('courses')->get();
-        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+    // ให้ตรงกับหน้า report6
+    $assessmentData = Assessment::whereYear('created_at', $selectedADYear)->get();
 
-        $pdf = SnappyPdf::loadView('report6pdf', [
-            'faculties' => $faculties,
-            'assessment' => $assessment,
-            'selectedThaiYear' => $selectedThaiYear
-        ]);
+    $totalRecords = $assessmentData->count();
 
-        return $pdf->download('report6_' . $selectedThaiYear . '.pdf');
+    $stats = [];
+    for ($i = 0; $i < 8; $i++) {
+        for ($level = 1; $level <= 5; $level++) {
+            $stats[$i][$level] = 0;
+        }
     }
-    public function editcoursePage($facultyId)
+
+    foreach ($assessmentData as $item) {
+        $overall = is_array($item->overall) ? $item->overall : json_decode($item->overall, true);
+
+        if ($overall) {
+            foreach ($overall as $index => $score) {
+                $level = (int) $score;
+                if ($index >= 0 && $index < 8 && $level >= 1 && $level <= 5) {
+                    $stats[$index][$level]++;
+                }
+            }
+        }
+    }
+
+    $pdf = SnappyPdf::loadView('report6pdf', [
+        'assessmentData' => $assessmentData,
+        'totalRecords' => $totalRecords,
+        'stats' => $stats,
+        'selectedThaiYear' => $selectedThaiYear
+    ]);
+
+    return $pdf->download('report6_' . $selectedThaiYear . '.pdf');
+}    public function editcoursePage($facultyId)
     {
         $faculty = Faculty::findOrFail($facultyId);
         return view('editcourse', compact('faculty'));
