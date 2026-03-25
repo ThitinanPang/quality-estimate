@@ -87,7 +87,7 @@
 
         <tbody>
 
-            @if($faculties->sum('courses_count') == 0)
+            @if($assessment->count() == 0)
 
                 <tr>
                     <td colspan="22" style="text-align:center;">ไม่มีข้อมูล</td>

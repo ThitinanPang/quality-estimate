@@ -736,7 +736,7 @@ class AuthController extends Controller
         }
 
         $row = 4;
-        if ($faculties->sum('courses_count') == 0) {
+        if ($assessment->count() == 0) {
             $sheet->mergeCells("A{$row}:V{$row}");
             $sheet->setCellValue("A{$row}", 'ไม่มีข้อมูล');
         } else {
