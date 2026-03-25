@@ -552,20 +552,41 @@ class AuthController extends Controller
         $yearReport4AD = $yearReport4 - 543;
         $yearReport5AD = $yearReport5 - 543;
         $yearReport6AD = $yearReport6 - 543;
-        // query ข้อมูล
         $faculties = $this->getReportData($yearReport1AD);
-
-        $assessment = Assessment::whereYear('created_at', $yearReport2AD)->get();
-        $assessment2 = Assessment::whereYear('created_at', $yearReport3AD)->get();
-        $assessment3 = Assessment::whereYear('created_at', $yearReport4AD)->get();
-        $assessment4 = Assessment::whereYear('created_at', $yearReport5AD)->get();
-        $assessment5 = Assessment::whereYear('created_at', $yearReport6AD)->get();
+        $assessment = Assessment::whereYear('created_at', $yearReport2AD)->get(); //2
+        $assessment2 = Assessment::whereYear('created_at', $yearReport3AD)->get(); //3
+        $assessment3 = Assessment::whereYear('created_at', $yearReport4AD)->get(); //4
+        $assessment4 = Assessment::whereYear('created_at', $yearReport5AD)->get(); //5
+        $assessment5 = Assessment::whereYear('created_at', $yearReport6AD)->get(); //6
 
         $ft = Faculty::with('courses')->withCount('courses')->get();
+        $assess = Assessment::all();
+        $totalRecords = $assess->count();
+        $stats = [];
+        for ($i = 0; $i < 8; $i++) {
+            for ($level = 1; $level <= 5; $level++) {
+                $stats[$i][$level] = 0;
+            }
+        }
+
+        foreach ($assess as $item) {
+            $overall = is_array($item->overall) ? $item->overall : json_decode($item->overall, true);
+
+            if ($overall) {
+                foreach ($overall as $index => $score) {
+                    $level = (int) $score;
+                    if ($level >= 1 && $level <= 5) {
+                        $stats[$index][$level]++;
+                    }
+                }
+            }
+        }
 
         return view('report', compact(
             'faculties',
             'ft',
+            'stats',
+            'totalRecords',
             'assessment',
             'assessment2',
             'assessment3',
@@ -1315,79 +1336,85 @@ class AuthController extends Controller
         $selectedThaiYear = $request->year_report6 ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
 
-        $assessment = Assessment::whereYear('created_at', $selectedADYear)->get();
+        // ให้ตรงกับรายงานหน้าเว็บ: ใช้เฉพาะปีที่เลือก
+        $assessmentData = Assessment::whereYear('created_at', $selectedADYear)->get();
+
+        $totalRecords = $assessmentData->count();
+
+        $stats = [];
+        for ($i = 0; $i < 8; $i++) {
+            for ($level = 1; $level <= 5; $level++) {
+                $stats[$i][$level] = 0;
+            }
+        }
+
+        foreach ($assessmentData as $item) {
+            $overall = is_array($item->overall) ? $item->overall : json_decode($item->overall, true);
+
+            if ($overall) {
+                foreach ($overall as $index => $score) {
+                    $level = (int) $score;
+                    if ($index >= 0 && $index < 8 && $level >= 1 && $level <= 5) {
+                        $stats[$index][$level]++;
+                    }
+                }
+            }
+        }
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('รายงานที่ 6');
 
-        /* -------- HEADER ROW 1 -------- */
-
+        /* -------- HEADER -------- */
         $sheet->setCellValue('A1', 'Rating Scale');
         $sheet->mergeCells('A1:A2');
-
         $sheet->setCellValue('B1', 'Programme');
         $sheet->mergeCells('B1:E1');
-
         $sheet->setCellValue('F1', 'Resource');
         $sheet->mergeCells('F1:H1');
-
         $sheet->setCellValue('I1', 'Results');
 
-
-        /* -------- HEADER ROW 2 -------- */
-
-        $sheet->setCellValue('B2', 'AUN-QA 1');
-        $sheet->setCellValue('C2', 'AUN-QA 2');
-        $sheet->setCellValue('D2', 'AUN-QA 3');
-        $sheet->setCellValue('E2', 'AUN-QA 4');
-        $sheet->setCellValue('F2', 'AUN-QA 5');
-        $sheet->setCellValue('G2', 'AUN-QA 6');
-        $sheet->setCellValue('H2', 'AUN-QA 7');
-        $sheet->setCellValue('I2', 'AUN-QA 8');
-
-
-        /* -------- DATA -------- */
-
-        $levels = [5, 4, 3, 2, 1];
-        $row = 3;
-
-        foreach ($levels as $level) {
-
-            $sheet->setCellValue('A' . $row, 'ระดับ ' . $level);
-
-            for ($i = 1; $i <= 8; $i++) {
-
-                $count = $assessment
-                    ->where('aun_qa', $i)
-                    ->where('result', $level)
-                    ->count();
-
-                $column = chr(65 + $i);
-
-                $sheet->setCellValue($column . $row, $count);
-            }
-
-            $row++;
+        for ($i = 1; $i <= 8; $i++) {
+            $column = chr(66 + ($i - 1)); // B ถึง I
+            $sheet->setCellValue($column . '2', 'AUN-QA ' . $i);
         }
 
+        /* -------- DATA -------- */
+        $row = 3;
 
-        /* -------- EXPORT -------- */
+        if ($totalRecords == 0) {
+            $sheet->setCellValue('A3', 'ไม่มีข้อมูล');
+            $sheet->mergeCells('A3:I3');
+        } else {
+            for ($level = 5; $level >= 1; $level--) {
+                $sheet->setCellValue('A' . $row, 'ระดับ ' . $level);
+
+                for ($i = 0; $i < 8; $i++) {
+                    $count = $stats[$i][$level] ?? 0;
+                    $percentage = ($totalRecords > 0) ? ($count / $totalRecords) * 100 : 0;
+                    $column = chr(66 + $i);
+
+                    $sheet->setCellValue($column . $row, $count > 0 ? number_format($percentage, 0) : '-');
+                }
+
+                $row++;
+            }
+
+            $sheet->setCellValue('A' . $row, '');
+            for ($i = 0; $i < 8; $i++) {
+                $column = chr(66 + $i);
+                $sheet->setCellValue($column . $row, '100');
+            }
+        }
 
         $writer = new Xlsx($spreadsheet);
-
         $response = new StreamedResponse(function () use ($writer) {
             $writer->save('php://output');
         });
 
-        $response->headers->set(
-            'Content-Type',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        );
-
-        $response->headers->set(
-            'Content-Disposition',
-            'attachment;filename="report6_' . $selectedThaiYear . '.xlsx"'
-        );
+        $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $response->headers->set('Content-Disposition', 'attachment;filename="report6_' . $selectedThaiYear . '.xlsx"');
+        $response->headers->set('Cache-Control', 'max-age=0');
 
         return $response;
     }
