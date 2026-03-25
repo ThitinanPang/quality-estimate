@@ -4,7 +4,7 @@
     <div class="flex ml-[90px] mt-[70px]">
         <p class="text-[36px]">ข้อมูลหลักสูตร</p>
         {{-- ตัวอย่าง excel --}}
-        <a href="{{ route('assessor.template') }}"
+        <a href="{{ route('faculty.template') }}"
             class="w-[174px] h-[30px] mt-[15px] ml-[20px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

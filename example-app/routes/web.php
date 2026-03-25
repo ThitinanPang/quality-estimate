@@ -64,6 +64,8 @@ Route::post('/course-assessor/store',[AuthController::class,'storemanageassessor
 Route::get('/users/template', [AuthController::class, 'templateUser'])->name('users.template');
 Route::post('/import-assessor', [AuthController::class, 'importassessor'])->name('import.assessor');
 Route::get('/assessor/template', [AuthController::class, 'templateAssessor'])->name('assessor.template');
+Route::get('/faulty/template', [AuthController::class, 'templateFaculty'])->name('faculty.template');
+
 
 Route::get('/tableassessor',[AuthController::class,'tableassessorPage'])->name('tableassessor');
 Route::get('/tableassessor/save',[AuthController::class,'tableassessortosave'])->name('tableassessor.save');

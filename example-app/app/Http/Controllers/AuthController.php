@@ -264,6 +264,28 @@ class AuthController extends Controller
         $writer->save("php://output");
         exit;
     }
+    public function templateFaculty()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // HEADER
+        $sheet->setCellValue('A1', 'คณะ');
+        $sheet->setCellValue('B1', 'ระดับการศึกษา (1-3)');
+        $sheet->setCellValue('C1', 'รหัสหลักสูตร');
+        $sheet->setCellValue('D1', 'ชื่อหลักสูตร');
+        $sheet->setCellValue('E1', 'วิทยาเขต');
+
+        $writer = new Xlsx($spreadsheet);
+
+        $fileName = 'faculty_template.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+
+        $writer->save("php://output");
+        exit;
+    }
     public function edit($id)
     {
         $user = User::findOrFail($id);
