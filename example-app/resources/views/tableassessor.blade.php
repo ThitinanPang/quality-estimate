@@ -33,11 +33,11 @@
             <table id="myTable" class="w-[2735px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
-                        <th class="border text-[20px]">ลำดับที่</th>
-                        <th class="border text-[20px]">หลักสูตร</th>
-                        <th class="border text-[20px]">คณะ/วิทยาลัย</th>
-                        <th class="border text-[20px]">ระดับการศึกษา</th>
-                        <th class="border text-[20px]">
+                        <th class="border text-[20px] px-4 py-2">ลำดับที่</th>
+                        <th class="border text-[20px] px-4 py-2">หลักสูตร</th>
+                        <th class="border text-[20px] px-4 py-2">คณะ/วิทยาลัย</th>
+                        <th class="border text-[20px] px-4 py-2">ระดับการศึกษา</th>
+                        <th class="border text-[20px] px-4 py-2">
                             <div class="flex items-center justify-center gap-2">
                                 รูปแบบการประเมิน
                                 <a href="" onclick="openModal(); return false;">
@@ -50,12 +50,12 @@
                                 </a>
                             </div>
                         </th>
-                        <th class="border text-[20px]">ประธานการประเมิน</th>
-                        <th class="border text-[20px]">กรรมการ</th>
-                        <th class="border text-[20px]">ผู้ฝึกประสบการณ์</th>
-                        <th class="border text-[20px]">วันตรวจประเมิน</th>
-                        <th class="border text-[20px]">เลขา</th>
-                        <th class="border text-[20px] w-[8%]">ประเมิน</th>
+                        <th class="border text-[20px] px-4 py-2">ประธานการประเมิน</th>
+                        <th class="border text-[20px] px-4 py-2">กรรมการ</th>
+                        <th class="border text-[20px] px-4 py-2">ผู้ฝึกประสบการณ์</th>
+                        <th class="border text-[20px] px-4 py-2">วันตรวจประเมิน</th>
+                        <th class="border text-[20px] px-4 py-2">เลขา</th>
+                        <th class="border text-[20px] px-4 py-2">ประเมิน</th>
                     </tr>
                 </thead>
                 <tbody>

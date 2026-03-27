@@ -5,7 +5,8 @@
     <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
         ข้อมูลผู้ประเมิน</p>
     {{-- ตัวอย่าง excel --}}
-    <a href="{{ route('assessor.template') }}" class="absolute left-[330px] top-[215px]  w-[174px] h-[30px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
+    <a href="{{ route('assessor.template') }}"
+        class="absolute left-[330px] top-[215px]  w-[174px] h-[30px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M7.75852 11.6378L2.90944 6.7887L4.26718 5.38247L6.7887 7.90399V0H8.72833V7.90399L11.2499 5.38247L12.6076 6.7887L7.75852 11.6378ZM1.93963 15.517C1.40623 15.517 0.949772 15.3273 0.570251 14.9478C0.19073 14.5682 0.000646543 14.1115 0 13.5774V10.668H1.93963V13.5774H13.5774V10.668H15.517V13.5774C15.517 14.1108 15.3273 14.5676 14.9478 14.9478C14.5682 15.3279 14.1115 15.5177 13.5774 15.517H1.93963Z"
@@ -68,7 +69,8 @@
         $selectedThaiYear = $_GET['thai_year'] ?? (date('Y') + 543);
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
-        $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type FROM users_assessor WHERE YEAR(created_at) = $selectedADYear";
+        $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type 
+        FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
 
         $result = $conn->query($sql);
 
@@ -217,20 +219,29 @@
             let tbody = table.querySelector("tbody");
             let rows = Array.from(tbody.querySelectorAll("tr"));
 
-            rows.sort(function (a, b) {
+            // กรองเอาแถว "ไม่มีข้อมูล" ออกก่อนทำการ sort (ถ้ามี)
+            let filteredRows = rows.filter(row => row.id !== "no-data-row" && row.cells.length > 1);
 
-                let nameA = a.children[2].innerText.trim();
-                let nameB = b.children[2].innerText.trim();
+            filteredRows.sort(function (a, b) {
+                // ใช้ index [3] เพื่อดึงข้อมูลจากคอลัมน์ "ชื่อ - นามสกุล"
+                let nameA = a.children[3].innerText.trim();
+                let nameB = b.children[3].innerText.trim();
 
                 if (order === "asc") {
                     return nameA.localeCompare(nameB, 'th');
                 } else {
                     return nameB.localeCompare(nameA, 'th');
                 }
-
             });
 
-            rows.forEach(row => tbody.appendChild(row));
+            // นำแถวที่เรียงแล้วใส่กลับเข้าไปใน tbody
+            filteredRows.forEach(row => tbody.appendChild(row));
+
+            // ถ้าคุณใช้ Pagination ของ jQuery ด้านล่างด้วย 
+            // อย่าลืมเรียกฟังก์ชันแสดงหน้าแรกใหม่เพื่อให้แถวที่ sort แล้วอัปเดตตามหน้า
+            if (typeof showPage === "function") {
+                showPage(1);
+            }
 
         });
 
