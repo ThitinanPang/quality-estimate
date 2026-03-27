@@ -23,7 +23,19 @@ return new class extends Migration {
             $table->enum('status', ['active', 'retire', 'expire'])->default('active');
             $table->timestamps();
         });
-
+        DB::table('users')->insert([
+            'prefix' => 'นาย',
+            'name' => 'ฐิตินันท์ วัชรมงคลกุล',
+            'subject_group' => 'วิศวกรรมซอฟต์แวร์',
+            'faculty' => 'คณะวิทยาการสารสนเทศ',
+            'course' => null,
+            'role' => 'admin university',
+            'email' => '65160217@go.buu.ac.th',
+            'phone_number' => '0847337787',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         Schema::create('users_assessor', function (Blueprint $table) {
             $table->id();
             $table->string('code_assessor')->nullable();

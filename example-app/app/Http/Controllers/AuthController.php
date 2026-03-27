@@ -310,7 +310,6 @@ class AuthController extends Controller
         return view('edituser', compact('user'));
     }
 
-    // อัปเดตข้อมูล
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -325,21 +324,44 @@ class AuthController extends Controller
             'role' => 'nullable|string|max:50',
         ]);
 
-        $user = User::findOrFail($id);
+        return DB::transaction(function () use ($request, $id) {
+            $user = User::findOrFail($id);
+            if ($request->role === 'assessor') {
+                // 1. สร้างข้อมูลใหม่ในตาราง users_assessor
+                UserAssessor::updateOrCreate([
+                    'code_assessor' => $request->code_assessor,
+                    'prefix' => $request->prefix,
+                    'name' => $request->name,
+                    'subject_group' => $request->subject_group,
+                    'faculty' => $request->faculty,
+                    'course' => $request->course,
+                    'role' => 'assessor',
+                    'email' => $request->email,
+                    'phone_number' => $request->phone_number,
+                    'status' => $request->status ?? 'active',
+                    'assessor_type' => 'junior',
+                    'training_type' => $request->training_type,
+                ]);
+                // 2. ลบข้อมูลจากตาราง users
+                $user->delete();
+                return redirect()->route('user')->with('success', 'ย้ายข้อมูลไปยังกลุ่มผู้ประเมินเรียบร้อยแล้ว');
+            } else {
+                // อัปเดตข้อมูลปกติในตารางเดิม
+                $user->update([
+                    'prefix' => $request->prefix,
+                    'name' => $request->name,
+                    'faculty' => $request->faculty,
+                    'subject_group' => $request->subject_group,
+                    'course' => $request->course,
+                    'phone_number' => $request->phone_number,
+                    'email' => $request->email,
+                    'status' => $request->status ?? $user->status,
+                    'role' => $request->role,
+                ]);
 
-        $user->update([
-            'prefix' => $request->prefix,
-            'name' => $request->name,
-            'faculty' => $request->faculty,
-            'subject_group' => $request->subject_group,
-            'course' => $request->course,
-            'phone_number' => $request->phone_number,
-            'email' => $request->email,
-            'status' => $request->status ?? $user->status,
-            'role' => $request->role,
-        ]);
-
-        return redirect()->route('user')->with('success', 'อัปเดตข้อมูลเรียบร้อยแล้ว');
+                return redirect()->route('user')->with('success', 'อัปเดตข้อมูลเรียบร้อยแล้ว');
+            }
+        });
     }
     public function importFaculty(Request $request)
     {
