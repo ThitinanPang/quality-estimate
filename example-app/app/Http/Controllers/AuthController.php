@@ -33,22 +33,35 @@ class AuthController extends Controller
 
     public function checkLogin(Request $request)
     {
+        // 1. Validation: รับค่าเป็น String (รองรับทั้งตัวเลขและอีเมล)
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'string'],
             'password' => 'required|min:6',
         ], [
-            'email.email' => 'รูปแบบ email ไม่ถูกต้อง',
-            'email.required' => 'กรุณากรอก email',
+            'email.required' => 'กรุณากรอกรหัสนิสิตหรืออีเมลมหาวิทยาลัย',
             'password.required' => 'กรุณากรอกรหัสผ่าน',
             'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
         ]);
 
-        $username = explode('@', $request->email)[0];
+        $input = $request->email;
+
+        // 2. เช็ค Security: ถ้ามีการใส่ @ ต้องเป็น domain ของมหาลัยเท่านั้น
+        if (str_contains($input, '@')) {
+            if (!str_ends_with($input, '@go.buu.ac.th')) {
+                return back()->withErrors([
+                    'email' => 'ไม่อนุญาตให้ใช้ Gmail หรืออีเมลภายนอก'
+                ])->withInput();
+            }
+        }
+
+        // 3. เตรียมข้อมูลสำหรับ LDAP
+        // ตัดเอาแค่ username/รหัสนิสิต (เช่น 65160217) ไม่ว่าจะกรอกมาแบบไหน
+        $username = explode('@', $input)[0];
         $ldapUsername = 'BUU\\' . $username;
         $ldapPassword = $request->password;
 
         try {
-            // สร้าง connection ใหม่ด้วย username/password ที่ผู้ใช้กรอก
+            // 4. สร้าง Connection และพยายาม Bind
             $connection = new Connection([
                 'hosts' => [config('app.ldap_host_2')],
                 'base_dn' => config('app.ldap_base_dn'),
@@ -60,47 +73,52 @@ class AuthController extends Controller
             $connection->connect();
             $connection->auth()->bind();
 
-            // ดึงข้อมูลผู้ใช้จาก LDAP
-            $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
-            $email = $ldapUser['mail'][0] ?? $request->email;
-            $existingUser = User::where('email', $email)->first();
+            // 5. ค้นหาข้อมูลผู้ใช้จาก LDAP หลังจาก Login ผ่านแล้ว
+            $ldapUser = $connection->query()
+                ->where('samaccountname', '=', $username)
+                ->first();
 
-            // สร้างหรืออัปเดต user ใน DB
+            if (!$ldapUser) {
+                return back()->withErrors(['email' => 'ไม่พบข้อมูลผู้ใช้ในฐานข้อมูลมหาวิทยาลัย']);
+            }
+            // ดึง Email จริงจาก LDAP หรือสร้าง Format มาตรฐาน
+            $userEmail = $ldapUser['mail'][0] ?? $username . '@go.buu.ac.th';
+
+            // 6. จัดการข้อมูลใน Database ของระบบเรา
+            $existingUser = User::where('email', $userEmail)->first();
+            $displayName = $existingUser ? $existingUser->name : ($ldapUser['displayname'][0] ?? $username);
             $user = User::updateOrCreate(
-                ['email' => $email],
+                ['email' => $userEmail],
                 [
-                    'role' => $existingUser->role ?? 'user', // ถ้ามี user เดิม ใช้ role เดิม, ถ้าไม่มีกำหนด default
+                    'name' => $displayName,
+                    'role' => $existingUser->role ?? 'user', // รักษา Role เดิมไว้ถ้ามี
                     'status' => 'active',
                 ]
             );
 
-            // ทำให้ Laravel Auth รู้จักผู้ใช้
-            Auth::login($user);
-
-            // ถ้า role ยังว่าง ให้ปิดการเข้าใช้งาน
+            // 7. ตรวจสอบสิทธิ์ (Role)
             if (empty($user->role)) {
                 Auth::logout();
-                return back()->withErrors([
-                    'email' => 'บัญชีนี้ไม่มีสิทธิ์เข้าใช้งาน',
-                ]);
+                return back()->withErrors(['email' => 'บัญชีนี้ยังไม่ได้รับสิทธิ์ให้เข้าใช้งานระบบ']);
             }
 
-            // redirect ตาม role
-            if ($user->role == 'admin') {
-                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-            } elseif ($user->role == 'user') {
-                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-            } elseif ($user->role == 'admin university') {
-                return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-            }
+            // 8. สั่ง Login เข้าสู่ระบบ Laravel
+            Auth::login($user);
 
-            logger('LDAP bind success: ' . $ldapUsername);
+            logger('LDAP Login Successful: ' . $username);
+
+            // 9. Redirect ตามความเหมาะสม
+            return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
 
         } catch (\LdapRecord\Auth\BindException $e) {
-            logger('LDAP bind failed: ' . $e->getMessage());
-            return back()->withErrors([
-                'email' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
-            ]);
+            // กรณีรหัสผ่านผิด หรือ User ไม่มีอยู่จริงใน LDAP
+            logger('LDAP Auth Failed: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'รหัสนิสิตหรือรหัสผ่านไม่ถูกต้อง'])->withInput();
+
+        } catch (\Exception $e) {
+            // กรณี Server LDAP ล่ม หรือ Config ผิด
+            logger('LDAP System Error: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'ระบบพิสูจน์ตัวตนขัดข้อง กรุณาลองใหม่ภายหลัง']);
         }
     }
     public function store(Request $request)
@@ -1619,5 +1637,14 @@ class AuthController extends Controller
             ->whereYear('created_at', $selectedADYear)
             ->get();
         return view('assessmentschedule', compact('selectedThaiYear', 'courseassessor', 'courses'));
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout(); // ลบการ Login ในระบบ
+
+        $request->session()->invalidate(); // ทำลาย Session
+        $request->session()->regenerateToken(); // สร้าง CSRF Token ใหม่เพื่อความปลอดภัย
+
+        return redirect('/login')->with('success', 'ออกจากระบบเรียบร้อยแล้ว');
     }
 }

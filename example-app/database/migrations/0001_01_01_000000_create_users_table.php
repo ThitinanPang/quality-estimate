@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('role')->default('user');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'retire', 'expire'])->default('active');
             $table->timestamps();
         });
 

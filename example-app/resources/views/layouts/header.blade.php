@@ -177,8 +177,13 @@
                 @endif
             @endauth
             <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] h-[56px] mt-[16px] ml-[16px] mr-[16px]">
-                <a href="{{route('login')}}" class="relative flex items-center whitespace-nowrap mb-0">
-                    <svg class="menu-icon" width="22" height="22" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                    @csrf
+                </form>
+                <a href="javascript:void(0)" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                class="relative flex items-center whitespace-nowrap mb-0">
+                    <svg class="menu-icon" width="22" height="22" viewBox="0 0 16 16" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M16 2.25C16 1.65326 15.7629 1.08097 15.341 0.65901C14.919 0.237053 14.3467 0 13.75 0H8.25C7.65326 0 7.08097 0.237053 6.65901 0.65901C6.23705 1.08097 6 1.65326 6 2.25V4.25C6 4.44891 6.07902 4.63968 6.21967 4.78033C6.36032 4.92098 6.55109 5 6.75 5C6.94891 5 7.13968 4.92098 7.28033 4.78033C7.42098 4.63968 7.5 4.44891 7.5 4.25V2.25C7.5 2.05109 7.57902 1.86032 7.71967 1.71967C7.86032 1.57902 8.05109 1.5 8.25 1.5H13.75C13.9489 1.5 14.1397 1.57902 14.2803 1.71967C14.421 1.86032 14.5 2.05109 14.5 2.25V13.75C14.5 13.9489 14.421 14.1397 14.2803 14.2803C14.1397 14.421 13.9489 14.5 13.75 14.5H8.25C8.05109 14.5 7.86032 14.421 7.71967 14.2803C7.57902 14.1397 7.5 13.9489 7.5 13.75V11.75C7.5 11.5511 7.42098 11.3603 7.28033 11.2197C7.13968 11.079 6.94891 11 6.75 11C6.55109 11 6.36032 11.079 6.21967 11.2197C6.07902 11.3603 6 11.5511 6 11.75V13.75C6 14.3467 6.23705 14.919 6.65901 15.341C7.08097 15.7629 7.65326 16 8.25 16H13.75C14.3467 16 14.919 15.7629 15.341 15.341C15.7629 14.919 16 14.3467 16 13.75V2.25Z"
                             fill="black" />
