@@ -57,7 +57,7 @@
             @auth
                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'admin university')
                     <li class="relative hover:bg-[#FFCE00] rounded-lg w-[224px] mt-[16px] ml-[16px] mr-[16px]">
-                        <a class="relative flex items-center whitespace-nowrap dropdown-btn">
+                        <a id="save-result-btn" class="relative flex items-center whitespace-nowrap dropdown-btn">
                             <div class="">
                                 <svg class="menu-icon" width="25" height="25" viewBox="0 0 25 25" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -92,7 +92,7 @@
                     </li>
 
                     <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
-                        <a href="" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
+                        <a href="" id="save-result-btn" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                             <svg class="menu-icon" width="27" height="29" viewBox="0 0 27 29" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -113,7 +113,7 @@
                         </a>
                         <div class="dropdown-container hidden bg-white w-full py-2">
                             <a href=""
-                                class="dropdown-btn flex items-center justify-between bg-[#D9D9D9] px-2 py-2 text-[15px] rounded-[5px] border-2 border-gray-400">การจัดการหัวข้อการประเมิน
+                                class="dropdown-btn flex items-center justify-between px-2 py-2 text-[15px] rounded-[5px]">การจัดการหัวข้อการประเมิน
                                 <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -128,7 +128,7 @@
                                 <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
                             </div>
                             <a href=""
-                                class="dropdown-btn flex items-center justify-between bg-[#D9D9D9] px-2 py-2 mt-2 text-[15px] rounded-[5px] border-2 border-gray-400">บันทึกผลการประเมิน
+                                class="dropdown-btn flex items-center justify-between px-2 py-2 mt-2 text-[15px] rounded-[5px]">บันทึกผลการประเมิน
                                 <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -136,19 +136,19 @@
                                         fill="black" />
                                 </svg>
                             </a>
-                            {{-- บันทึกผลกราปะเมิน --}}
+                            {{-- บันทึกผลการปะเมิน --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
                                 <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
                                 <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
                             </div>
                             <a href="{{ route('tableassessor') }}"
-                                class="block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
+                                class="{{ request()->routeIs('tableassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
                         </div>
                     </li>
 
                     <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
-                        <a href="" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
+                        <a href="" id="save-result-btn" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                             <svg class="menu-icon" width="25" height="28" viewBox="0 0 22 26" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -168,7 +168,7 @@
                             </svg>
                             <div class="dropdown-container hidden bg-white w-full py-2">
                                 <a href="{{route('report')}}"
-                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับหลักสูตร</a>
+                                    class="{{ request()->routeIs('report') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับหลักสูตร</a>
                                 <a href=""
                                     class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับส่วนงาน</a>
                             </div>
@@ -180,8 +180,9 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                     @csrf
                 </form>
-                <a href="javascript:void(0)" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                class="relative flex items-center whitespace-nowrap mb-0">
+                <a href="javascript:void(0)"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    class="relative flex items-center whitespace-nowrap mb-0">
                     <svg class="menu-icon" width="22" height="22" viewBox="0 0 16 16" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -203,30 +204,41 @@
 <script>
     var dropdowns = document.querySelectorAll(".dropdown-btn");
 
-    dropdowns.forEach(function (dropdown) {
-        dropdown.addEventListener("click", function (event) {
-            event.preventDefault();
+dropdowns.forEach(function (dropdown) {
+    dropdown.addEventListener("click", function (event) {
+        event.preventDefault();
 
-            var dropdownContainer = dropdown.nextElementSibling;
+        var dropdownContainer = dropdown.nextElementSibling;
+        dropdownContainer.classList.toggle("hidden");
 
-            // เปิด / ปิด dropdown
-            dropdownContainer.classList.toggle("hidden");
+        var parentLi = dropdown.closest("li");
+        parentLi.classList.toggle("h-auto");
 
-            // ปรับความสูง li
-            var parentLi = dropdown.closest("li");
-            parentLi.classList.toggle("h-auto");
+        const activeClasses = ["bg-[#D9D9D9]", "border-2", "border-gray-400"];
 
-            // ⭐ เพิ่มส่วนนี้เข้าไป
-            if (dropdownContainer.classList.contains("hidden")) {
-                dropdown.classList.remove("rounded-t-[5px]");
-                dropdown.classList.add("rounded-[5px]");
+        // ⭐ เช็คว่าปุ่มที่คลิกไม่ใช่ปุ่ม "บันทึกผลการประเมิน" (ที่มีสีค้างอยู่แล้ว)
+        const isManagementBtn = (dropdown.id !== 'save-result-btn');
+
+        if (isManagementBtn) {
+            // Logic สำหรับปุ่ม "จัดการหัวข้อการประเมิน" (ปุ่มบน)
+            if (!dropdownContainer.classList.contains("hidden")) {
+                dropdown.classList.add(...activeClasses);
+                dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
             } else {
-                dropdown.classList.remove("rounded-[5px]");
-                dropdown.classList.add("rounded-t-[5px]");
+                dropdown.classList.remove(...activeClasses);
+                dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
             }
-
-        });
+        } else {
+            // Logic สำหรับปุ่ม "บันทึกผลการประเมิน" (ปุ่มล่าง - ที่มีสีอยู่แล้ว)
+            // แค่เปลี่ยนมุมมนเวลาเปิด/ปิดเท่านั้น ไม่ไปลบสีพื้นหลัง
+            if (!dropdownContainer.classList.contains("hidden")) {
+                dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
+            } else {
+                dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
+            }
+        }
     });
+});
 
     const sidebar = document.getElementById("sidebar");
     const homeIcon = document.querySelectorAll(".menu-icon");
