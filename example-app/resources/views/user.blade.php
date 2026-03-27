@@ -41,7 +41,7 @@
     </div>
     <div class="flex">
         <button onclick="window.location.href='{{route('user')}}'"
-            class="w-[135px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[85px] mt-[150px]">ผู้ใช้ทั่วไป</button>
+            class="{{ request()->routeIs('user') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[135px] h-[38px] rounded-[5px] hover:bg-[#BEBEBE] text-[20px] ml-[85px] mt-[150px]">ผู้ใช้ทั่วไป</button>
         <button onclick="window.location.href='{{route('faculty')}}'"
             class="w-[233px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับคณะ</button>
         <button onclick="window.location.href='{{route('university')}}'"

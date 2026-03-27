@@ -11,7 +11,8 @@
                 <p class="mt-[9px]">ตำแหน่ง</p>
                 <p class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">{{ $userassessor->role }}</p>
                 <p class="mt-[9px]">Code Assessor</p>
-                <input name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3" value="{{ $userassessor->code_assessor }}"></input>
+                <input name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3"
+                    value="{{ $userassessor->code_assessor }}"></input>
                 <p class="mt-[9px]">คำนำหน้า</p>
                 <input type="text" name="prefix" value="{{ $userassessor->prefix }}"
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
@@ -32,11 +33,12 @@
                 <input type="text" name="course" value="{{ $userassessor->course }}"
                     class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
-                <p  class="mt-[9px]">Assessor Type</p>
+                <p class="mt-[9px]">Assessor Type</p>
                 <select name="assessor_type" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                     <option value="junior">Junior</option>
                     <option value="senior">Senior</option>
                     <option value="lead">Lead</option>
+                    <option value="lead">Novice</option>
                 </select>
 
                 <p class="mt-[9px]">Training Type</p>

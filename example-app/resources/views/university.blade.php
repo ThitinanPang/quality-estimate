@@ -46,7 +46,7 @@
         <button onclick="window.location.href='{{route('faculty')}}'"
             class="w-[233px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับคณะ</button>
         <button onclick="window.location.href='{{route('university')}}'"
-            class="w-[305px] h-[38px] rounded-[5px] bg-[#D9D9D9] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับมหาวิทยาลัย</button>
+            class="{{ request()->routeIs('university') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[305px] h-[38px] rounded-[5px] hover:bg-[#BEBEBE] text-[20px] ml-[10px] mt-[150px]">ผู้ดูแลระดับมหาวิทยาลัย</button>
     </div>
     <form id="importForm" action="{{ route('import.users') }}" method="post" enctype="multipart/form-data">
         @csrf

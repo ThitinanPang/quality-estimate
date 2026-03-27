@@ -48,7 +48,7 @@
                     <input type="text" name="phone_number" value="{{ $user->phone_number }}"
                         class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
-                    <p class="mt-[9px]">status</p>
+                    <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
                         <option value="inactive" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
@@ -86,6 +86,7 @@
                         <option value="junior">Junior</option>
                         <option value="senior">Senior</option>
                         <option value="lead">Lead</option>
+                        <option value="lead">Novice</option>
                     </select>
 
                     <p class="mt-[9px]">Training Type</p>
@@ -100,7 +101,7 @@
                     <input type="text" name="phone_number" value="{{ $user->phone_number }}"
                         class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
-                    <p class="mt-[9px]">status</p>
+                    <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
                         <option value="inactive" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
