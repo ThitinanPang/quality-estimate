@@ -1575,7 +1575,8 @@ class AuthController extends Controller
         // คณะ + หลักสูตร
         $faculties = Faculty::with([
             'courses' => function ($query) use ($selectedADYear) {
-                $query->whereYear('created_at', $selectedADYear);
+                // โหลดข้อมูลการประเมินที่บันทึกไว้แล้วขึ้นมาด้วย
+                $query->with(['courseAssessor'])->whereYear('created_at', $selectedADYear);
             }
         ])
             ->when($campus, function ($query) use ($campus) {
@@ -1605,20 +1606,22 @@ class AuthController extends Controller
             ) {
                 continue;
             }
-            CourseAssessor::create([
-                'course_id' => $data['course_id'],
-                'user_id' => auth()->id(),
-                'faculty_id' => $data['faculty_id'] ?? null,
-                'campus' => $data['campus'] ?? null,
-                'subject_group' => $subject_group,
-                'education_level' => $data['education_level'] ?? null,
-                'assessment_type' => $data['assessment_type'] ?? null,
-                'chairperson' => $data['chairperson'] ?? null,
-                'position' => $data['position'] ?? null,
-                'intern' => $data['intern'] ?? null,
-                'assessment_date' => $data['assessment_date'] ?? null,
-                'secretary' => $data['secretary'] ?? null,
-            ]);
+            CourseAssessor::updateOrCreate(
+                ['course_id' => $data['course_id']],
+                [
+                    'user_id' => auth()->id(),
+                    'faculty_id' => $data['faculty_id'] ?? null,
+                    'campus' => $data['campus'] ?? null,
+                    'subject_group' => $subject_group,
+                    'education_level' => $data['education_level'] ?? null,
+                    'assessment_type' => $data['assessment_type'] ?? null,
+                    'chairperson' => $data['chairperson'] ?? null,
+                    'position' => $data['position'] ?? null,
+                    'intern' => $data['intern'] ?? null,
+                    'assessment_date' => $data['assessment_date'] ?? null,
+                    'secretary' => $data['secretary'] ?? null,
+                ]
+            );
         }
         return redirect()->route('manage-assessor')->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
