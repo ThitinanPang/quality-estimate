@@ -39,13 +39,13 @@
                     </select>
                 </div>
                 <div
-                    class="w-[1040px] h-[220px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
+                    class="w-[1040px] h-auto bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] p-[20px] pl-[40px]">
                     <p class="text-[24px]">Strength</p>
-                    <input type="text" name="strength" id=""
-                        class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]">
+                    <textarea type="text" name="strength" id=""
+                        class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]"></textarea>
                     <p class="text-[24px] mt-[9px]">Area for Improvement</p>
-                    <input type="text" name="improvement" id=""
-                        class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]">
+                    <textarea type="text" name="improvement" id=""
+                        class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]"></textarea>
                 </div>
                 @php
                     // เก็บชื่อหัวข้อหลัก AUN-QA ไว้ใน array
@@ -88,7 +88,7 @@
                     <div
                         class="w-[1040px] h-[126px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
                         <p class="text-[24px]">AUN-QA {{$index + 1}}_Overall Opinion</p>
-                        <div class="grid grid-cols-8 justify-items-start w-full mt-1 ">
+                        <div class="grid grid-cols-8 justify-items-start w-full mt-1 pl-[40px]">
                             @for ($j = 1; $j <= 8; $j++)
                                 <div class="flex flex-col items-center">
                                     <p>{{ $j == 8 ? 'N/A' : $j }}</p>

@@ -10,6 +10,8 @@
             @php
                 $firstAssessment = $course_assessment->first();
                 $courses = $course_assessment->pluck('course')->filter();
+                // กำหนดค่าเริ่มต้นให้กับ $assessment จากรายการแรก
+                $assessment = $firstAssessment;
             @endphp
             <div
                 class="w-[1008px] h-auto p-3 left-[322px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] rounded-b-[15px] border flex flex-col items-center justify-center">
@@ -29,9 +31,7 @@
                             หลักสูตร :
                             <select name="course_id" id="courseSelect" class="bg-white rounded px-2 py-1">
                                 @foreach($courses as $course)
-                                    @php
-                                        $assessment = $course_assessment->firstWhere('course_id', $course->id);
-                                    @endphp
+                                    @php $assessment = $course_assessment->firstWhere('course_id', $course->id); @endphp
                                     <option value="{{ $course->id }}" data-type="{{ $assessment->assessment_type ?? '' }}">
                                         {{ $course->name }}
                                     </option>
@@ -39,12 +39,16 @@
                             </select>
                             <br>
                         @else
+                            @php $alone = $course_assessment->first(); @endphp
                             หลักสูตร : {{ $courses->first()->name ?? '-' }}<br>
                             <input type="hidden" name="course_id" value="{{ $courses->first()->id }}">
+
+                            {{-- เพิ่มกรงนี้เพื่อให้ JS หาค่าเจอแม้ไม่มี Select --}}
+                            <input type="hidden" id="courseSelect" data-type="{{ $alone->assessment_type ?? '' }}">
                         @endif
-                        {{-- assessment_type --}}
-                        ประเภทการประเมิน :
-                        <span id="assessmentTypeText"></span><br>
+
+                        {{-- ส่วนแสดงผล --}}
+                        ประเภทการประเมิน : <span id="assessmentTypeText"></span><br>
                         ตำแหน่ง : ประธานกรรมการ
                     </p>
                 </div>
@@ -77,12 +81,20 @@
     </form>
     <script>
         function updateAssessmentType() {
-            const select = document.getElementById('courseSelect');
-            const selected = select.options[select.selectedIndex];
-            const type = selected.getAttribute('data-type');
+            const element = document.getElementById('courseSelect');
+            if (!element) return; // ป้องกัน Error ถ้าหา Element ไม่เจอ
+
+            let type = '';
+
+            // เช็คว่าเป็น Select หรือ Input
+            if (element.tagName === 'SELECT') {
+                const selected = element.options[element.selectedIndex];
+                type = selected ? selected.getAttribute('data-type') : '';
+            } else {
+                type = element.getAttribute('data-type');
+            }
 
             let text = '-';
-
             if (type === '1') text = 'แบบ 1 วัน (O)';
             else if (type === '2') text = 'แบบเต็ม (F)';
             else if (type === '3') text = 'แบบ 2 วัน (ปธ.คนนอก)';
@@ -90,10 +102,13 @@
             document.getElementById('assessmentTypeText').innerText = text;
         }
 
-        // โหลดครั้งแรก
-        updateAssessmentType();
+        // เรียกตอนโหลดหน้า
+        window.onload = updateAssessmentType;
 
-        // เปลี่ยนตอนเลือก
-        document.getElementById('courseSelect').addEventListener('change', updateAssessmentType);
+        // ผูก Event เฉพาะเมื่อเป็น Select
+        const courseSelect = document.getElementById('courseSelect');
+        if (courseSelect && courseSelect.tagName === 'SELECT') {
+            courseSelect.addEventListener('change', updateAssessmentType);
+        }
     </script>
 @endsection
