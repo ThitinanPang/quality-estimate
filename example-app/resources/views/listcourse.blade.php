@@ -107,10 +107,10 @@
                                 <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$i++}}</td>
                                 <td class="px-2 py-2 text-center text-[24px] w-[120px]">
                                     <select name="" data-id="{{ $course->id }}"
-                                        class="w-[105px] h-[40px] rounded-[14px] border text-center status-select">
-                                        <option value="active" {{ $course->status == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option value="inactive" {{ $course->status == 'inactive' ? 'selected' : '' }}>Inactive
-                                        </option>
+                                        class="w-auto h-[40px] rounded-[14px] border text-center status-select">
+                                        <option class="bg-white" value="active" {{ $course->status == 'active' ? 'selected' : '' }}>Active</option>
+                                        <option class="bg-white" value="closed" {{ $course->status == 'closed' ? 'selected' : '' }}>Closed</option>
+                                        <option class="bg-white" value="suspended" {{ $course->status == 'suspended' ? 'selected' : '' }}>Suspended</option>
                                     </select>
                                 </td>
                                 <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">

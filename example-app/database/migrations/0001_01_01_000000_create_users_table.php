@@ -75,6 +75,116 @@ return new class extends Migration {
             $table->string('campus')->nullable(); //วิทยาเขต
             $table->timestamps();
         });
+        DB::table('faculty')->insert([
+            [
+                'name' => 'คณะดนตรีและการแสดง',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะแพทยศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะโลจิสติกส์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะวิทยาศาสตร์การกีฬา',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะศึกษาศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'วิทยาลัยนานาชาติ',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะเภสัชศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะมนุษยศาสตร์และสังคมศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะวิทยาการสารสนเทศ',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะวิศวกรรมศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะสาธารณสุขศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะพยาบาลศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะรัฐศาสตร์และนิติศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะวิทยาศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะศิลปกรรมศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะสหเวชศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะบริหารธุรกิจ',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'คณะทันตแพทยศาสตร์',
+                'campus' => 'บางแสน',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
 
         // ตาราง courses
         Schema::create('courses', function (Blueprint $table) {
@@ -83,7 +193,7 @@ return new class extends Migration {
             $table->string('code')->unique(); // รหัสหลักสูตร
             $table->string('name'); // ชื่อหลักสูตร
             $table->string('level')->nullable(); //1 = ตรี/2 = โท/3 = เอก
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->enum('status', ['active', 'closed' , 'suspended'])->default('active');
             $table->timestamps();
         });
 
