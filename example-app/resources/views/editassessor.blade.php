@@ -38,7 +38,7 @@
                     <option value="junior">Junior</option>
                     <option value="senior">Senior</option>
                     <option value="lead">Lead</option>
-                    <option value="lead">Novice</option>
+                    <option value="novice">Novice</option>
                 </select>
 
                 <p class="mt-[9px]">Training Type</p>
