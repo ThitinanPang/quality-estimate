@@ -19,7 +19,7 @@
         <a href="{{ route('listfaculty') }}"
             class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">คณะ</a>
         <a href="{{ route('listcourse') }}"
-            class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
+            class="{{ request()->routeIs('listcourse') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[135px] h-[38px] text-[20px] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
     </div>
     <form id="importForm" action="{{ route('import.faculty') }}" method="post" enctype="multipart/form-data">
         @csrf

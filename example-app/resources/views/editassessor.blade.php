@@ -56,8 +56,8 @@
                 <p class="mt-[9px]">status</p>
                 <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                     <option value="active" {{ $userassessor->status == 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="inactive" {{ $userassessor->status == 'retire' ? 'selected' : '' }}>Retire</option>
-                    <option value="inactive" {{ $userassessor->status == 'expire' ? 'selected' : '' }}>Expire</option>
+                    <option value="retire" {{ $userassessor->status == 'retire' ? 'selected' : '' }}>Retire</option>
+                    <option value="expire" {{ $userassessor->status == 'expire' ? 'selected' : '' }}>Expire</option>
                 </select>
             </div>
             <div class=" justify-center flex gap-[50px]">

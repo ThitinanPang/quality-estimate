@@ -17,7 +17,7 @@
     </div>
     <div class="flex ml-[90px] gap-2 mt-[10px]">
         <a href="{{ route('listfaculty') }}"
-            class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">คณะ</a>
+            class="{{ request()->routeIs('listfaculty') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[135px] h-[38px] text-[20px] rounded-[5px] flex items-center justify-center">คณะ</a>
         <a href="{{ route('listcourse') }}"
             class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
     </div>
@@ -220,7 +220,7 @@
         });
 
         $(document).ready(function () {
-            const rowsPerPage = 9; // จำนวนแถวต่อหน้า
+            const rowsPerPage = ; // จำนวนแถวต่อหน้า
             const $table = $('#myTable');
             const $rows = $table.find('tbody tr');
             const totalPages = Math.ceil($rows.length / rowsPerPage);

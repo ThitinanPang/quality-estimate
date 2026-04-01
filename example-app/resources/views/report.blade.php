@@ -1344,9 +1344,9 @@
             </div>
         </div>
         <div class="h-[50px]"></div>
-        <div id="publishModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div id="publishModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 ">
             <div class="bg-white rounded-[16px] w-[450px] shadow-xl overflow-hidden">
-                <div class="bg-[#FFCE00] px-6 py-4 flex justify-between items-center">
+                <div class="bg-[#FFCE00] px-6 py-4 flex items-center justify-center gap-5">
                     <h3 class="text-[22px] font-bold">ตั้งค่าสิทธิ์การเข้าถึงรายงาน</h3>
                     <button onclick="closePublishModal()" class="text-black text-2xl">&times;</button>
                 </div>

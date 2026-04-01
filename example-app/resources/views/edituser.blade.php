@@ -13,7 +13,7 @@
                 <p class="mt-[9px]">ตำแหน่ง</p>
                 <select name="role" id="roleSelector" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>user</option>
-                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>admin</option>
+                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>admin faculty</option>
                     <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>admin
                         university</option>
                     <option value="assessor" {{ $user->role == 'assessor' ? 'selected' : '' }}>assessor</option>
@@ -104,8 +104,8 @@
                     <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
-                        <option value="inactive" {{ $user->status == 'expire' ? 'selected' : '' }}>Expire</option>
+                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
+                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expire</option>
                     </select>
                     <div class="h-[20px]"></div>
                 </div>
