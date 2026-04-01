@@ -438,7 +438,20 @@ class AuthController extends Controller
     {
         $faculty = Faculty::where('name', $request->faculty)->first();
         $course = Courses::find($request->course_id);
-        return view('save', compact('faculty', 'course'));
+        $user = Auth::user();
+
+        // เพิ่มส่วนนี้เพื่อดึงข้อมูลเดิมมาแสดง
+        $existingAssessment = Assessment::where('name', $user->name)
+            ->where('faculty', $faculty->name)
+            ->where('courses', $course->name)
+            ->first();
+
+        // ดึงข้อมูล assessor (ถ้าต้องใช้เช็คสิทธิ์ canEdit ในหน้า save)
+        $courseAssessor = CourseAssessor::where('faculty_id', $faculty->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        return view('save', compact('faculty', 'course', 'existingAssessment', 'courseAssessor'));
     }
     public function collect(Request $request)
     {
@@ -455,15 +468,14 @@ class AuthController extends Controller
         ]);
         // บันทึกข้อมูลลงฐานข้อมูล
         Assessment::updateOrCreate(
-            // [
-            //     'name' => $request->name,
-            //     'result' => $request->result,
-            // ],
             [
                 'name' => $request->name,
-                'courses' => $request->courses,
-                'result' => $request->result,
                 'faculty' => $request->faculty,
+                'courses' => $request->courses,
+            ],
+            [
+                // 2. ข้อมูลที่ต้องการบันทึก/อัปเดต
+                'result' => $request->result,
                 'criterion' => $request->criterion,
                 'strength' => $request->strength,
                 'improvement' => $request->improvement,
@@ -526,12 +538,20 @@ class AuthController extends Controller
     }
     public function savePage(Request $request)
     {
-        $faculty = Faculty::find($request->faculty);
+        $faculty = Faculty::find($request->faculty_id);
         $course = Courses::find($request->course_id);
+        $user = Auth::user();
+
         $courseAssessor = CourseAssessor::where('faculty_id', $request->faculty_id)
             ->where('course_id', $request->course_id)
             ->first();
-        return view('save', compact('faculty', 'user', 'course', 'courseAssessor'));
+
+        // ดึงข้อมูลเดิมจากฐานข้อมูล (ถ้ามี) โดยเช็คจาก ชื่อ, คณะ, และหลักสูตร
+        $existingAssessment = Assessment::where('name', $user->name)
+            ->where('faculty', $faculty->name)
+            ->where('courses', $course->name)
+            ->first();
+        return view('save', compact('faculty', 'user', 'course', 'courseAssessor', 'existingAssessment'));
     }
     public function edituserPage()
     {
@@ -1677,11 +1697,23 @@ class AuthController extends Controller
     }
     public function tableassessortosave(Request $request)
     {
-
         $faculty = Faculty::find($request->faculty_id);
         $course = Courses::find($request->course_id);
+        $user = Auth::user();
 
-        return view('save', compact('faculty', 'course'));
+        // 1. ดึงข้อมูลการประเมินเดิม (ถ้ามี)
+        $existingAssessment = Assessment::where('name', $user->name)
+            ->where('faculty', $faculty->name)
+            ->where('courses', $course->name)
+            ->first();
+
+        // 2. ดึงข้อมูลผู้ประเมินหลักสูตร (เพื่อใช้เช็คสิทธิ์ canEdit ใน Blade)
+        $courseAssessor = CourseAssessor::where('faculty_id', $request->faculty_id)
+            ->where('course_id', $request->course_id)
+            ->first();
+
+        // ส่งตัวแปรทั้งหมดไปที่ View
+        return view('save', compact('faculty', 'course', 'existingAssessment', 'courseAssessor'));
     }
     public function assessmentschedulePage(Request $request)
     {
