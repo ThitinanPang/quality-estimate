@@ -70,7 +70,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type 
-        FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
+                                FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
 
         $result = $conn->query($sql);
 
@@ -81,7 +81,19 @@
             <thead class="bg-[#FFCE00]">
                 <tr>
                     <th class="px-4 py-2 border-b text-center align-middle">เลือกรายการ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Code Assessor</th>
+                    <th class="px-4 py-2 border-b text-center align-middle">
+                        <div class="flex items-center justify-center gap-2">
+                            Code Assessor
+                            <a href="javascript:void(0)" onclick="sortTableByCode()" id="codeSortBtn" data-order="asc">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M5.8125 1.99542H13.125M5.8125 1.99542C5.8125 2.32573 5.69397 2.64251 5.483 2.87607C5.27202 3.10963 4.98587 3.24084 4.6875 3.24084C4.38913 3.24084 4.10298 3.10963 3.892 2.87607C3.68103 2.64251 3.5625 2.32573 3.5625 1.99542M5.8125 1.99542C5.8125 1.66512 5.69397 1.34834 5.483 1.11478C5.27202 0.881214 4.98587 0.75 4.6875 0.75C4.38913 0.75 4.10298 0.881214 3.892 1.11478C3.68103 1.34834 3.5625 1.66512 3.5625 1.99542M3.5625 1.99542H0.75M5.8125 11.9588H13.125M5.8125 11.9588C5.8125 12.2891 5.69397 12.6059 5.483 12.8394C5.27202 13.073 4.98587 13.2042 4.6875 13.2042C4.38913 13.2042 4.10298 13.073 3.892 12.8394C3.68103 12.6059 3.5625 12.2891 3.5625 11.9588M5.8125 11.9588C5.8125 11.6285 5.69397 11.3117 5.483 11.0782C5.27202 10.8446 4.98587 10.7134 4.6875 10.7134C4.38913 10.7134 4.10298 10.8446 3.892 11.0782C3.68103 11.3117 3.5625 11.6285 3.5625 11.9588M3.5625 11.9588H0.75M10.3125 6.97711H13.125M10.3125 6.97711C10.3125 7.30742 10.194 7.6242 9.98299 7.85776C9.77202 8.09132 9.48587 8.22253 9.1875 8.22253C8.88913 8.22253 8.60298 8.09132 8.392 7.85776C8.18103 7.6242 8.0625 7.30742 8.0625 6.97711M10.3125 6.97711C10.3125 6.64681 10.194 6.33003 9.98299 6.09647C9.77202 5.8629 9.48587 5.73169 9.1875 5.73169C8.88913 5.73169 8.60298 5.8629 8.392 6.09647C8.18103 6.33003 8.0625 6.64681 8.0625 6.97711M8.0625 6.97711H0.75"
+                                        stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </th>
                     <th class="px-4 py-2 border-b text-center align-middle">คำนำหน้า</th>
                     <th class="px-4 py-2 border-b text-center align-middle">ชื่อ - นามสกุล</th>
                     <th class="px-4 py-2 border-b text-center align-middle">
@@ -276,5 +288,46 @@
             // แสดงหน้าแรก
             showPage(1);
         });
+        function sortTableByCode() {
+            let table = document.getElementById("myTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.querySelectorAll("tr"));
+            let btn = document.getElementById("codeSortBtn");
+            let order = btn.getAttribute("data-order");
+
+            // 1. กรองแถวที่ไม่ใช่ข้อมูล (เช่น แถว "ไม่พบข้อมูล")
+            let dataRows = rows.filter(row => row.id !== "no-data-row" && row.cells.length > 1);
+
+            // 2. ตรรกะการเรียงลำดับ
+            dataRows.sort(function (a, b) {
+                let codeA = a.children[1].innerText.trim(); // Index 1 คือ Code Assessor
+                let codeB = b.children[1].innerText.trim();
+
+                if (order === "asc") {
+                    return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
+                } else {
+                    return codeB.localeCompare(codeA, undefined, { numeric: true, sensitivity: 'base' });
+                }
+            });
+
+            // 3. ใส่แถวที่เรียงแล้วกลับลงไป และจัดการสีสลับแถว (Zebra Stripes)
+            dataRows.forEach((row, index) => {
+                // ลบคลาสสีเดิมออกก่อน
+                row.classList.remove('bg-white', 'bg-[#DBDBDB]');
+
+                // ใส่สีใหม่ตามลำดับ index (สลับสีเหมือนใน Loop PHP)
+                let newColor = (index % 2 === 0) ? 'bg-white' : 'bg-[#DBDBDB]';
+                row.classList.add(newColor);
+
+                tbody.appendChild(row);
+            });
+            // 4. สลับสถานะ Order สำหรับการกดครั้งถัดไป
+            btn.setAttribute("data-order", order === "asc" ? "desc" : "asc");
+
+            // 5. อัปเดต Pagination (เรียกฟังก์ชันเดิมที่คุณมี)
+            if (typeof showPage === "function") {
+                location.reload; // หรือเรียก showPage(1) หากเขียน logic pagination ไว้รองรับ dynamic DOM
+            }
+        }
     </script>
 @endsection
