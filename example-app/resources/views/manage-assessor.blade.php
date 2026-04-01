@@ -150,7 +150,7 @@
                                                 <div @click.away="open = false" class="bg-white p-6 rounded-b-[14px] w-[400px] h-[114px] border shadow-lg">
                                                     <select x-model="tempUser" class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && $u->assessor_type == 'lead') as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && $u->assessor_type == 'lead' && $u->status == 'active') as $user)
                                                             <template x-if="!isTaken('{{ $user->name }}', 'chairperson')">
                                                                 <option value="{{ $user->name }}">{{ $user->name }}</option>
                                                             </template>
@@ -188,7 +188,7 @@
                                                 <div @click.away="open = false" class="bg-white p-6 rounded-b-[14px] w-[400px] h-[114px] border shadow-lg">
                                                     <select x-model="tempUser" class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && in_array($u->assessor_type, ['senior', 'lead'])) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && in_array($u->assessor_type, ['senior', 'lead']) && $u->status == 'active') as $user)
                                                             <template x-if="!isTaken('{{ $user->name }}', 'position')">
                                                                 <option value="{{ $user->name }}">{{ $user->name }}</option>
                                                             </template>
@@ -226,7 +226,7 @@
                                                 <div @click.away="open = false" class="bg-white p-6 rounded-b-[14px] w-[400px] h-[114px] border shadow-lg">
                                                     <select x-model="tempUser" class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && in_array($u->assessor_type, ['junior', 'novice'])) as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && in_array($u->assessor_type, ['junior', 'novice']) && $u->status == 'active') as $user)
                                                             <template x-if="!isTaken('{{ $user->name }}', 'intern')">
                                                                 <option value="{{ $user->name }}">{{ $user->name }}</option>
                                                             </template>
@@ -273,7 +273,7 @@
                                                 <div @click.away="open = false" class="bg-white p-6 rounded-b-[14px] w-[400px] h-[114px] border shadow-lg">
                                                     <select x-model="tempUser" class="w-full p-2 border mb-4 bg-[#DBDBDB] rounded-[14px]">
                                                         <option value="">เลือกผู้ประเมิน</option>
-                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && $u->assessor_type != 'junior') as $user)
+                                                        @foreach($users->filter(fn($u) => trim($u->faculty) != trim($faculty->name) && $u->assessor_type != 'junior' && $u->status == 'active') as $user)
                                                             <template x-if="!isTaken('{{ $user->name }}', 'secretary')">
                                                                 <option value="{{ $user->name }}">{{ $user->name }}</option>
                                                             </template>
