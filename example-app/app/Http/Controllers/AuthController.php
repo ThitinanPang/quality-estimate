@@ -23,6 +23,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -504,9 +505,9 @@ class AuthController extends Controller
         $faculty = Faculty::find($request->faculty);
         $course = Courses::find($request->course_id);
         $courseAssessor = CourseAssessor::where('faculty_id', $request->faculty_id)
-                        ->where('course_id', $request->course_id)
-                        ->first();
-        return view('save', compact('faculty', 'user','course', 'courseAssessor'));
+            ->where('course_id', $request->course_id)
+            ->first();
+        return view('save', compact('faculty', 'user', 'course', 'courseAssessor'));
     }
     public function edituserPage()
     {
@@ -604,7 +605,8 @@ class AuthController extends Controller
     }
     public function reportPage(Request $request)
     {
-
+        $accessFile = Storage::get('report_access.json');
+        $publishedRoles = $accessFile ? json_decode($accessFile, true) : [];
         $yearReport1 = $request->year_report1 ?? (date('Y') + 543);
         $yearReport2 = $request->year_report2 ?? (date('Y') + 543);
         $yearReport3 = $request->year_report3 ?? (date('Y') + 543);
@@ -664,6 +666,7 @@ class AuthController extends Controller
             'yearReport4',
             'yearReport5',
             'yearReport6',
+            'publishedRoles'
         ));
     }
     private function getReportData($year)
@@ -1675,5 +1678,21 @@ class AuthController extends Controller
         $request->session()->regenerateToken(); // สร้าง CSRF Token ใหม่เพื่อความปลอดภัย
 
         return redirect('/login')->with('success', 'ออกจากระบบเรียบร้อยแล้ว');
+    }
+    public function updatePublishStatus(Request $request)
+    {
+        $allowedRoles = $request->roles; // จะได้เป็น array ['assessor', 'admin_faculty']
+
+        return back()->with('success', 'บันทึกสถานะการเผยแพร่เรียบร้อยแล้ว');
+    }
+    public function updatePublish(Request $request)
+    {
+        // รับ array ของ roles จาก checkbox (เช่น ['admin', 'assessor'])
+        $roles = $request->input('roles', []);
+
+        // บันทึกลงไฟล์ JSON ใน storage/app/
+        Storage::put('report_access.json', json_encode($roles));
+
+        return back()->with('success', 'ปรับปรุงการเผยแพร่เรียบร้อยแล้ว');
     }
 }

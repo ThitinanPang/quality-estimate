@@ -74,7 +74,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tableassessor/save', [AuthController::class, 'tableassessortosave'])->name('tableassessor.save');
 
     Route::get('/assessmentschedule', [AuthController::class, 'assessmentschedulePage'])->name('assessmentschedule');
-
+    Route::post('/report/share', [AuthController::class, 'updatePublishStatus'])->name('report.publish.update');
+    Route::post('/report/publish', [AuthController::class, 'updatePublish'])->name('report.publish.update');
     // ออกจากระบบ
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
