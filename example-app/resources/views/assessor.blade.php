@@ -70,7 +70,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type 
-                                FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
+                                        FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
 
         $result = $conn->query($sql);
 
@@ -257,108 +257,108 @@
 
         });
 
-$(document).ready(function () {
-    const rowsPerPage = 6;
-    const $table = $('#myTable');
-    const $pagination = $('#pagination');
+        $(document).ready(function () {
+            const rowsPerPage = 6;
+            const $table = $('#myTable');
+            const $pagination = $('#pagination');
 
-    // ฟังก์ชันหลักสำหรับจัดการ Pagination
-    window.updatePagination = function() {
-        const filter = $('#myInput').val().toUpperCase();
-        
-        // ลบแถว "ไม่พบข้อมูล" ออกก่อน
-        $('#no-data-row').remove();
+            // ฟังก์ชันหลักสำหรับจัดการ Pagination
+            window.updatePagination = function () {
+                const filter = $('#myInput').val().toUpperCase();
 
-        // 1. ดึงแถวปัจจุบันจากตารางจริงเสมอ (เพื่อให้รองรับการ Sort ที่เพิ่งทำไป)
-        const $currentRows = $table.find('tbody tr:not(#no-data-row)');
+                // ลบแถว "ไม่พบข้อมูล" ออกก่อน
+                $('#no-data-row').remove();
 
-        // 2. กรองแถวตามคำค้นหา (Search)
-        const $filteredRows = $currentRows.filter(function() {
-            const text = $(this).text().toUpperCase();
-            return text.indexOf(filter) > -1;
+                // 1. ดึงแถวปัจจุบันจากตารางจริงเสมอ (เพื่อให้รองรับการ Sort ที่เพิ่งทำไป)
+                const $currentRows = $table.find('tbody tr:not(#no-data-row)');
+
+                // 2. กรองแถวตามคำค้นหา (Search)
+                const $filteredRows = $currentRows.filter(function () {
+                    const text = $(this).text().toUpperCase();
+                    return text.indexOf(filter) > -1;
+                });
+
+                // 3. จัดการกรณีไม่พบข้อมูล
+                if ($filteredRows.length === 0) {
+                    $table.find('tbody').append('<tr id="no-data-row"><td colspan="10" class="px-4 py-2 border-b text-center">ไม่พบข้อมูล</td></tr>');
+                    $pagination.empty();
+                    $currentRows.hide();
+                    return;
+                }
+
+                // 4. คำนวณหน้า
+                const totalPages = Math.ceil($filteredRows.length / rowsPerPage);
+                $pagination.empty();
+
+                for (let i = 1; i <= totalPages; i++) {
+                    $pagination.append(
+                        `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
+                    );
+                }
+
+                // 5. ฟังก์ชันแสดงหน้า
+                function showPage(page) {
+                    const start = (page - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+
+                    // ซ่อนทุกแถวก่อน (เฉพาะแถวข้อมูล)
+                    $currentRows.hide();
+
+                    // แสดงเฉพาะแถวที่ผ่านการกรองและอยู่ในช่วง Index ของหน้านั้นๆ
+                    $filteredRows.slice(start, end).show();
+
+                    // จัดการสีของแถวให้สลับกันสวยงาม (Zebra Stripes) หลังการ Filter/Sort
+                    $filteredRows.filter(':visible').each(function (index) {
+                        $(this).removeClass('bg-white bg-[#DBDBDB]')
+                            .addClass(index % 2 === 0 ? 'bg-white' : 'bg-[#DBDBDB]');
+                    });
+
+                    // Highlight ปุ่มหน้าปัจจุบัน
+                    $pagination.find('button').removeClass('bg-[#FFCE00] text-black');
+                    $pagination.find(`button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
+                }
+
+                // ผูกเหตุการณ์คลิกปุ่ม
+                $pagination.off('click').on('click', 'button', function () {
+                    showPage($(this).data('page'));
+                });
+
+                // แสดงหน้าแรก
+                showPage(1);
+            };
+
+            // เชื่อมโยงกับฟังก์ชัน Search เดิม
+            window.myFunction = function () {
+                window.updatePagination();
+            };
+
+            // เรียกใช้งานครั้งแรก
+            window.updatePagination();
         });
 
-        // 3. จัดการกรณีไม่พบข้อมูล
-        if ($filteredRows.length === 0) {
-            $table.find('tbody').append('<tr id="no-data-row"><td colspan="10" class="px-4 py-2 border-b text-center">ไม่พบข้อมูล</td></tr>');
-            $pagination.empty();
-            $currentRows.hide();
-            return;
-        }
+        // ส่วนของฟังก์ชัน Sort (ต้องเรียก updatePagination ปิดท้ายเสมอ)
+        function sortTableByCode() {
+            let table = document.getElementById("myTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.querySelectorAll("tr:not(#no-data-row)"));
+            let btn = document.getElementById("codeSortBtn");
+            let order = btn.getAttribute("data-order");
 
-        // 4. คำนวณหน้า
-        const totalPages = Math.ceil($filteredRows.length / rowsPerPage);
-        $pagination.empty();
-
-        for (let i = 1; i <= totalPages; i++) {
-            $pagination.append(
-                `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
-            );
-        }
-
-        // 5. ฟังก์ชันแสดงหน้า
-        function showPage(page) {
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-
-            // ซ่อนทุกแถวก่อน (เฉพาะแถวข้อมูล)
-            $currentRows.hide();
-            
-            // แสดงเฉพาะแถวที่ผ่านการกรองและอยู่ในช่วง Index ของหน้านั้นๆ
-            $filteredRows.slice(start, end).show();
-
-            // จัดการสีของแถวให้สลับกันสวยงาม (Zebra Stripes) หลังการ Filter/Sort
-            $filteredRows.filter(':visible').each(function(index) {
-                $(this).removeClass('bg-white bg-[#DBDBDB]')
-                       .addClass(index % 2 === 0 ? 'bg-white' : 'bg-[#DBDBDB]');
+            rows.sort(function (a, b) {
+                let codeA = a.children[1].innerText.trim();
+                let codeB = b.children[1].innerText.trim();
+                return order === "asc"
+                    ? codeA.localeCompare(codeB, undefined, { numeric: true })
+                    : codeB.localeCompare(codeA, undefined, { numeric: true });
             });
 
-            // Highlight ปุ่มหน้าปัจจุบัน
-            $pagination.find('button').removeClass('bg-[#FFCE00] text-black');
-            $pagination.find(`button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
+            rows.forEach(row => tbody.appendChild(row));
+            btn.setAttribute("data-order", order === "asc" ? "desc" : "asc");
+
+            // สำคัญ: เมื่อ Sort เสร็จ ต้องสั่งให้แบ่งหน้าใหม่
+            if (typeof window.updatePagination === "function") {
+                window.updatePagination();
+            }
         }
-
-        // ผูกเหตุการณ์คลิกปุ่ม
-        $pagination.off('click').on('click', 'button', function () {
-            showPage($(this).data('page'));
-        });
-
-        // แสดงหน้าแรก
-        showPage(1);
-    };
-
-    // เชื่อมโยงกับฟังก์ชัน Search เดิม
-    window.myFunction = function() {
-        window.updatePagination();
-    };
-
-    // เรียกใช้งานครั้งแรก
-    window.updatePagination();
-});
-
-// ส่วนของฟังก์ชัน Sort (ต้องเรียก updatePagination ปิดท้ายเสมอ)
-function sortTableByCode() {
-    let table = document.getElementById("myTable");
-    let tbody = table.querySelector("tbody");
-    let rows = Array.from(tbody.querySelectorAll("tr:not(#no-data-row)"));
-    let btn = document.getElementById("codeSortBtn");
-    let order = btn.getAttribute("data-order");
-
-    rows.sort(function (a, b) {
-        let codeA = a.children[1].innerText.trim();
-        let codeB = b.children[1].innerText.trim();
-        return order === "asc" 
-            ? codeA.localeCompare(codeB, undefined, { numeric: true }) 
-            : codeB.localeCompare(codeA, undefined, { numeric: true });
-    });
-
-    rows.forEach(row => tbody.appendChild(row));
-    btn.setAttribute("data-order", order === "asc" ? "desc" : "asc");
-
-    // สำคัญ: เมื่อ Sort เสร็จ ต้องสั่งให้แบ่งหน้าใหม่
-    if (typeof window.updatePagination === "function") {
-        window.updatePagination();
-    }
-}
     </script>
 @endsection
