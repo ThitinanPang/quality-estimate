@@ -257,77 +257,108 @@
 
         });
 
-        $(document).ready(function () {
-            const rowsPerPage = 6; // จำนวนแถวต่อหน้า
-            const $table = $('#myTable');
-            const $rows = $table.find('tbody tr');
-            const totalPages = Math.ceil($rows.length / rowsPerPage);
+$(document).ready(function () {
+    const rowsPerPage = 6;
+    const $table = $('#myTable');
+    const $pagination = $('#pagination');
 
-            function showPage(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                $rows.hide().slice(start, end).show();
-                // highlight ปุ่มที่เลือก
-                $('#pagination button').removeClass('bg-[#FFCE00] text-white');
-                $(`#pagination button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
-            }
+    // ฟังก์ชันหลักสำหรับจัดการ Pagination
+    window.updatePagination = function() {
+        const filter = $('#myInput').val().toUpperCase();
+        
+        // ลบแถว "ไม่พบข้อมูล" ออกก่อน
+        $('#no-data-row').remove();
 
-            // สร้างปุ่มหน้า
-            for (let i = 1; i <= totalPages; i++) {
-                $('#pagination').append(
-                    `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
-                );
-            }
+        // 1. ดึงแถวปัจจุบันจากตารางจริงเสมอ (เพื่อให้รองรับการ Sort ที่เพิ่งทำไป)
+        const $currentRows = $table.find('tbody tr:not(#no-data-row)');
 
-            // กดปุ่มเปลี่ยนหน้า
-            $('#pagination').on('click', 'button', function () {
-                const page = $(this).data('page');
-                showPage(page);
-            });
-
-            // แสดงหน้าแรก
-            showPage(1);
+        // 2. กรองแถวตามคำค้นหา (Search)
+        const $filteredRows = $currentRows.filter(function() {
+            const text = $(this).text().toUpperCase();
+            return text.indexOf(filter) > -1;
         });
-        function sortTableByCode() {
-            let table = document.getElementById("myTable");
-            let tbody = table.querySelector("tbody");
-            let rows = Array.from(tbody.querySelectorAll("tr"));
-            let btn = document.getElementById("codeSortBtn");
-            let order = btn.getAttribute("data-order");
 
-            // 1. กรองแถวที่ไม่ใช่ข้อมูล (เช่น แถว "ไม่พบข้อมูล")
-            let dataRows = rows.filter(row => row.id !== "no-data-row" && row.cells.length > 1);
-
-            // 2. ตรรกะการเรียงลำดับ
-            dataRows.sort(function (a, b) {
-                let codeA = a.children[1].innerText.trim(); // Index 1 คือ Code Assessor
-                let codeB = b.children[1].innerText.trim();
-
-                if (order === "asc") {
-                    return codeA.localeCompare(codeB, undefined, { numeric: true, sensitivity: 'base' });
-                } else {
-                    return codeB.localeCompare(codeA, undefined, { numeric: true, sensitivity: 'base' });
-                }
-            });
-
-            // 3. ใส่แถวที่เรียงแล้วกลับลงไป และจัดการสีสลับแถว (Zebra Stripes)
-            dataRows.forEach((row, index) => {
-                // ลบคลาสสีเดิมออกก่อน
-                row.classList.remove('bg-white', 'bg-[#DBDBDB]');
-
-                // ใส่สีใหม่ตามลำดับ index (สลับสีเหมือนใน Loop PHP)
-                let newColor = (index % 2 === 0) ? 'bg-white' : 'bg-[#DBDBDB]';
-                row.classList.add(newColor);
-
-                tbody.appendChild(row);
-            });
-            // 4. สลับสถานะ Order สำหรับการกดครั้งถัดไป
-            btn.setAttribute("data-order", order === "asc" ? "desc" : "asc");
-
-            // 5. อัปเดต Pagination (เรียกฟังก์ชันเดิมที่คุณมี)
-            if (typeof showPage === "function") {
-                location.reload; // หรือเรียก showPage(1) หากเขียน logic pagination ไว้รองรับ dynamic DOM
-            }
+        // 3. จัดการกรณีไม่พบข้อมูล
+        if ($filteredRows.length === 0) {
+            $table.find('tbody').append('<tr id="no-data-row"><td colspan="10" class="px-4 py-2 border-b text-center">ไม่พบข้อมูล</td></tr>');
+            $pagination.empty();
+            $currentRows.hide();
+            return;
         }
+
+        // 4. คำนวณหน้า
+        const totalPages = Math.ceil($filteredRows.length / rowsPerPage);
+        $pagination.empty();
+
+        for (let i = 1; i <= totalPages; i++) {
+            $pagination.append(
+                `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
+            );
+        }
+
+        // 5. ฟังก์ชันแสดงหน้า
+        function showPage(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            // ซ่อนทุกแถวก่อน (เฉพาะแถวข้อมูล)
+            $currentRows.hide();
+            
+            // แสดงเฉพาะแถวที่ผ่านการกรองและอยู่ในช่วง Index ของหน้านั้นๆ
+            $filteredRows.slice(start, end).show();
+
+            // จัดการสีของแถวให้สลับกันสวยงาม (Zebra Stripes) หลังการ Filter/Sort
+            $filteredRows.filter(':visible').each(function(index) {
+                $(this).removeClass('bg-white bg-[#DBDBDB]')
+                       .addClass(index % 2 === 0 ? 'bg-white' : 'bg-[#DBDBDB]');
+            });
+
+            // Highlight ปุ่มหน้าปัจจุบัน
+            $pagination.find('button').removeClass('bg-[#FFCE00] text-black');
+            $pagination.find(`button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
+        }
+
+        // ผูกเหตุการณ์คลิกปุ่ม
+        $pagination.off('click').on('click', 'button', function () {
+            showPage($(this).data('page'));
+        });
+
+        // แสดงหน้าแรก
+        showPage(1);
+    };
+
+    // เชื่อมโยงกับฟังก์ชัน Search เดิม
+    window.myFunction = function() {
+        window.updatePagination();
+    };
+
+    // เรียกใช้งานครั้งแรก
+    window.updatePagination();
+});
+
+// ส่วนของฟังก์ชัน Sort (ต้องเรียก updatePagination ปิดท้ายเสมอ)
+function sortTableByCode() {
+    let table = document.getElementById("myTable");
+    let tbody = table.querySelector("tbody");
+    let rows = Array.from(tbody.querySelectorAll("tr:not(#no-data-row)"));
+    let btn = document.getElementById("codeSortBtn");
+    let order = btn.getAttribute("data-order");
+
+    rows.sort(function (a, b) {
+        let codeA = a.children[1].innerText.trim();
+        let codeB = b.children[1].innerText.trim();
+        return order === "asc" 
+            ? codeA.localeCompare(codeB, undefined, { numeric: true }) 
+            : codeB.localeCompare(codeA, undefined, { numeric: true });
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+    btn.setAttribute("data-order", order === "asc" ? "desc" : "asc");
+
+    // สำคัญ: เมื่อ Sort เสร็จ ต้องสั่งให้แบ่งหน้าใหม่
+    if (typeof window.updatePagination === "function") {
+        window.updatePagination();
+    }
+}
     </script>
 @endsection
