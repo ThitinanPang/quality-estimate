@@ -70,7 +70,7 @@
         $selectedADYear = $selectedThaiYear - 543;
         // 2. ดึงข้อมูลจาก DB  
         $sql = "SELECT id, code_assessor,prefix, name, faculty, status, email, phone_number,assessor_type,training_type 
-                                        FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
+                                                        FROM users_assessor WHERE YEAR(created_at) = $selectedADYear ORDER BY LEFT(code_assessor, 2) ASC, code_assessor ASC";
 
         $result = $conn->query($sql);
 
@@ -360,5 +360,33 @@
                 window.updatePagination();
             }
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            // แจ้งเตือนกรณีมีข้อมูลซ้ำ (แสดงเป็นรายการ)
+            @if(session('warning_list'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'พบข้อมูลอยู่ในระบบแล้ว',
+                    html: `
+                            <div style="font-family: 'Kanit', sans-serif;">
+                                <p style="margin-bottom: 10px;">รายชื่อต่อไปนี้มีข้อมูลอยู่ในระบบหลักแล้ว จึงไม่ถูกเพิ่ม:</p>
+                                {!! session('warning_list') !!}
+                            </div>
+                        `,
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#FFCE00'
+                });
+            @endif
+
+            // แจ้งเตือนกรณีสำเร็จ
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ',
+                    text: "{{ session('success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            @endif
+        });
     </script>
 @endsection

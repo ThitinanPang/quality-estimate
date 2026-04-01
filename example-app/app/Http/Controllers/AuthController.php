@@ -199,26 +199,37 @@ class AuthController extends Controller
         ]);
 
         $file = $request->file('excel_file');
-
-        // โหลดไฟล์ Excel
         $spreadsheet = IOFactory::load($file->getPathname());
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray();
-        // ข้าม row แรก (header)
+
+        $existingInSystem = []; // เก็บรายชื่อที่ซ้ำในตาราง users
+
         foreach ($rows as $index => $row) {
             if ($index === 0)
                 continue;
-            $email = trim($row[6] ?? '');
-            if ($email == '') {
-                continue;
-            }
-            $phone = $row[7] ?? null;
 
+            $email = trim($row[6] ?? '');
+            if ($email == '')
+                continue;
+
+            // 1. ตรวจสอบในตาราง users (ตารางหลัก)
+            $userInMainTable = User::where('email', $email)->first();
+
+            if ($userInMainTable) {
+                // ห้ามแก้ไขบรรทัดนี้ตามคำขอ
+                $existingInSystem[] = "{$userInMainTable->name} ({$userInMainTable->role})";
+                continue; // ข้ามการ Insert/Update ของคนนี้ไป
+            }
+
+            // 2. ถ้าไม่ซ้ำในตารางหลัก ให้ทำการ Update หรือ Create ในตาราง Assessor ตามปกติ
+            $phone = $row[7] ?? null;
             if ($phone) {
                 $phone = preg_replace('/[^0-9]/', '', $phone);
             }
+
             UserAssessor::updateOrCreate(
-                ['email' => $email], // ใช้ email เป็น unique key
+                ['email' => $email],
                 [
                     'code_assessor' => $row[0] ?? null,
                     'prefix' => $row[1] ?? null,
@@ -231,6 +242,19 @@ class AuthController extends Controller
                 ]
             );
         }
+
+        // 3. จัดการการแจ้งเตือน
+        if (count($existingInSystem) > 0) {
+            // ปรับการจัดรูปแบบข้อความให้อ่านง่ายด้วย HTML List
+            $htmlList = "<ul style='text-align: left; margin-left: 20px;'>";
+            foreach ($existingInSystem as $item) {
+                $htmlList .= "<li>" . $item . "</li>";
+            }
+            $htmlList .= "</ul>";
+
+            return redirect()->route('assessor')->with('warning_list', $htmlList);
+        }
+
         return redirect()->route('assessor')->with('success', 'นำเข้าข้อมูลสำเร็จ');
     }
     public function templateUser()
