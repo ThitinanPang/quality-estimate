@@ -86,7 +86,7 @@
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->chairperson }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->position }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->intern }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date }}</td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date ? \Carbon\Carbon::parse($row->assessment_date)->addYears(543)->format('d/m/Y') : '-' }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->secretary }}</td>
                             <form action="{{route('tableassessor.save')}}" method="get">
                                 <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
