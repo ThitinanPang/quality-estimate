@@ -502,7 +502,11 @@ class AuthController extends Controller
     public function savePage(Request $request)
     {
         $faculty = Faculty::find($request->faculty);
-        return view('save', compact('faculty', 'user'));
+        $course = Courses::find($request->course_id);
+        $courseAssessor = CourseAssessor::where('faculty_id', $request->faculty_id)
+                        ->where('course_id', $request->course_id)
+                        ->first();
+        return view('save', compact('faculty', 'user','course', 'courseAssessor'));
     }
     public function edituserPage()
     {

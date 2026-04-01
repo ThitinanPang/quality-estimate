@@ -92,7 +92,13 @@
                                 <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
                                     <input type="hidden" name="faculty_id" value="{{ $row->faculty->id }}">
                                     <input type="hidden" name="course_id" value="{{ $row->course->id }}">
-                                    @if(Auth::user()->name === $row->chairperson)
+                                    @php
+                                        $userName = Auth::user()->name;
+                                        $isType3 = ($row->assessment_type == 3);
+                                        $canAssess = ($isType3 && $userName === $row->position) || (!$isType3 && $userName === $row->chairperson);
+                                        $disabledText = $isType3 ? 'เฉพาะกรรมการ' : 'เฉพาะประธานการประเมิน';
+                                    @endphp
+                                    @if($canAssess)
                                         <button type="submit"
                                             class="w-[155px] h-[37px] border bg-[#FFCE00] hover:bg-white rounded-[5px] p-2">
                                             ประเมิน
@@ -100,7 +106,7 @@
                                     @else
                                         <button type="button" disabled
                                             class="w-auto h-[37px] border bg-[#FFCE00] cursor-not-allowed rounded-[5px] p-2">
-                                            เฉพาะประธานการประเมิน
+                                            {{ $disabledText }}
                                         </button>
                                     @endif
                                 </td>

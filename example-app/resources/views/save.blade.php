@@ -1,7 +1,30 @@
 @extends('layouts.header')
 
 @section('content')
-    <div class="{{ auth()->user()->role == 'admin' ? 'pointer-events-none opacity-50' : '' }}">
+    @php
+        $userName = Auth::user()->name;
+        $role = Auth::user()->role;
+        $canEdit = false;
+
+        // ตรวจสอบว่ามีข้อมูล Assessor หรือไม่
+        if (isset($courseAssessor)) {
+            $isType3 = ($courseAssessor->assessment_type == 3);
+
+            if ($role === 'assessor') {
+                if ($isType3) {
+                    // ประเภท 3: ต้องเป็น กรรมการ (position) ถึงจะแก้ได้
+                    $canEdit = ($userName === $courseAssessor->position);
+                } else {
+                    // ประเภทอื่นๆ: ต้องเป็น ประธาน (chairperson) ถึงจะแก้ได้
+                    $canEdit = ($userName === $courseAssessor->chairperson);
+                }
+            }
+        }
+
+        // ถ้าเป็น admin หรือ ไม่มีสิทธิ์แก้ไข (canEdit เป็น false) ให้ล็อคหน้าจอ
+        $isDisabled = ($role === 'admin' || !$canEdit);
+    @endphp
+    <div class="{{ $isDisabled ? 'pointer-events-none opacity-50' : '' }}">
         <form action="{{route('save.collect')}}" method="POST">
             @csrf
             <div class="flex flex-col items-center justify-center">
