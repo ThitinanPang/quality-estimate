@@ -121,7 +121,7 @@
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['name'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['faculty'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['status'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle capitalize">{{ $row['status'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['email'] }}</td>
                             <td class="px-4 py-2 border-b text-center align-middle">{{ $row['phone_number'] }}</td>
                         </tr>

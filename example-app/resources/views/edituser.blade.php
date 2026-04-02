@@ -12,11 +12,11 @@
 
                 <p class="mt-[9px]">ตำแหน่ง</p>
                 <select name="role" id="roleSelector" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
-                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>user</option>
-                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>admin faculty</option>
-                    <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>admin
-                        university</option>
-                    <option value="assessor" {{ $user->role == 'assessor' ? 'selected' : '' }}>assessor</option>
+                    <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin Faculty</option>
+                    <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>Admin
+                        University</option>
+                    <option value="assessor" {{ $user->role == 'assessor' ? 'selected' : '' }}>Assessor</option>
                 </select>
 
                 <div id="form-user">
@@ -51,9 +51,10 @@
                     <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
-                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expire</option>
+                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
+                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
                     </select>
+                    <div class="h-[20px]"></div>
                 </div>
                 {{-- role assessor --}}
                 <div id="form-assessor" class="hidden">
@@ -104,8 +105,8 @@
                     <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retire</option>
-                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expire</option>
+                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
+                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
                     </select>
                     <div class="h-[20px]"></div>
                 </div>
@@ -128,19 +129,39 @@
         const formAssessor = document.getElementById('form-assessor');
         const formContainer = document.getElementById('formContainer');
 
+        function setInputsDisabled(container, isDisabled) {
+            const inputs = container.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.disabled = isDisabled;
+            });
+        }
+
         function toggleFields() {
-            if (roleSelector.value === 'assessor') {
+            const isAssessor = roleSelector.value === 'assessor';
+
+            if (isAssessor) {
                 formUser.classList.add('hidden');
                 formAssessor.classList.remove('hidden');
                 formContainer.style.height = "840px";
+
+                setInputsDisabled(formUser, true);
+                setInputsDisabled(formAssessor, false);
             } else {
                 formUser.classList.remove('hidden');
                 formAssessor.classList.add('hidden');
                 formContainer.style.height = "650px";
+
+                setInputsDisabled(formUser, false);
+                setInputsDisabled(formAssessor, true);
             }
         }
 
+        // --- ส่วนที่สำคัญมาก: ต้องเพิ่มบรรทัดข้างล่างนี้ ---
+
+        // 1. ทำงานทันทีเมื่อโหลดหน้าเว็บเสร็จ
+        document.addEventListener('DOMContentLoaded', toggleFields);
+
+        // 2. ทำงานทุกครั้งที่เปลี่ยนค่าใน Select
         roleSelector.addEventListener('change', toggleFields);
-        window.onload = toggleFields;
     </script>
 @endsection

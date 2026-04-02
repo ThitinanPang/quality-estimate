@@ -380,7 +380,7 @@ class AuthController extends Controller
                     'course' => $request->course,
                     'phone_number' => $request->phone_number,
                     'email' => $request->email,
-                    'status' => $request->status ?? $user->status,
+                    'status' => $request->status,
                     'role' => $request->role,
                 ]);
 
