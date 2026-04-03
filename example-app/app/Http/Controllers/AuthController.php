@@ -114,7 +114,7 @@ class AuthController extends Controller
         } catch (\LdapRecord\Auth\BindException $e) {
             // กรณีรหัสผ่านผิด หรือ User ไม่มีอยู่จริงใน LDAP
             logger('LDAP Auth Failed: ' . $e->getMessage());
-            return back()->withErrors(['email' => 'รหัสนิสิตหรือรหัสผ่านไม่ถูกต้อง'])->withInput();
+            return back()->withErrors(['email' => 'อีเมลหรือรหัสผ่านไม่ถูกต้อง'])->withInput();
 
         } catch (\Exception $e) {
             // กรณี Server LDAP ล่ม หรือ Config ผิด
@@ -355,7 +355,7 @@ class AuthController extends Controller
                 // 1. สร้างข้อมูลใหม่ในตาราง users_assessor
                 UserAssessor::updateOrCreate([
                     'code_assessor' => $request->code_assessor,
-                    'prefix' => $request->prefix,
+                    'prefix' => $request->assessor_prefix,
                     'name' => $request->name,
                     'subject_group' => $request->subject_group,
                     'faculty' => $request->faculty,

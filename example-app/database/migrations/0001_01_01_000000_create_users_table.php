@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('role')->default('user');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();
-            $table->enum('status', ['active', 'retire', 'expire'])->default('active');
+            $table->enum('status', ['active', 'retired', 'expired'])->default('active');
             $table->timestamps();
         });
         DB::table('users')->insert([
@@ -49,10 +49,25 @@ return new class extends Migration {
             $table->string('phone_number')->nullable();
             $table->string('assessor_type')->default('junior');
             $table->string('training_type')->nullable();
-            $table->enum('status', ['active', 'retire', 'expire'])->default('active');
+            $table->enum('status', ['active', 'retired', 'expired'])->default('active');
             $table->timestamps();
         });
-
+        DB::table('users_assessor')->insert([
+            'code_assessor' => '69-000',
+            'prefix' => 'นาย',
+            'name' => 'ฐิตินันท์ วัชรมงคลกุล',
+            'subject_group' => 'วิศวกรรมซอฟต์แวร์',
+            'faculty' => 'คณะวิทยาการสารสนเทศ',
+            'course' => null,
+            'role' => 'assessor',
+            'email' => '65160217@go.buu.ac.th',
+            'phone_number' => '0847337787',
+            'assessor_type' => 'junior',
+            'training_type' => 'AUN 69',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

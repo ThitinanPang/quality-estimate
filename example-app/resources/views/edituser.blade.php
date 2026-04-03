@@ -51,8 +51,8 @@
                     <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
-                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
+                        <option value="retired" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
+                        <option value="expired" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
                     </select>
                     <div class="h-[20px]"></div>
                 </div>
@@ -105,8 +105,8 @@
                     <p class="mt-[9px]">สถานะ</p>
                     <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="retire" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
-                        <option value="expire" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
+                        <option value="retired" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
+                        <option value="expired" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
                     </select>
                     <div class="h-[20px]"></div>
                 </div>

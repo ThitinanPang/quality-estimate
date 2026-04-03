@@ -124,8 +124,8 @@
                             {{-- การจัดการหลักสูตร --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
-                                <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
+                                <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
+                                <a href="" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับส่วนงาน</a>
                             </div>
                             <a href=""
                                 class="dropdown-btn flex items-center justify-between px-2 py-2 mt-2 text-[15px] rounded-[5px]">บันทึกผลการประเมิน
@@ -139,8 +139,8 @@
                             {{-- บันทึกผลการปะเมิน --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('results')}}" class="block px-2 py-2 text-[15px]">ระดับหลักสูตร</a>
-                                <a href="" class="block px-2 py-2 text-[15px]">ระดับส่วนงาน</a>
+                                <a href="{{route('results')}}" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
+                                <a href="" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับส่วนงาน</a>
                             </div>
                             <a href="{{ route('tableassessor') }}"
                                 class="{{ request()->routeIs('tableassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
@@ -170,7 +170,7 @@
                                 <a href="{{route('report')}}"
                                     class="{{ request()->routeIs('report') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับหลักสูตร</a>
                                 <a href=""
-                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับส่วนงาน</a>
+                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative ">ระดับส่วนงาน</a>
                             </div>
                         </a>
                     </li>

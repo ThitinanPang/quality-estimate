@@ -185,7 +185,7 @@
                 // reset ค่าให้เลือกไฟล์เดิมได้อีก
                 this.value = "";
             }
-            alert('เพิ่มผู้ใช้งานสำเร็จ');
+            alert('เพิ่มคณะ/หลักสูตรสำเร็จ');
         });
         document.addEventListener('DOMContentLoaded', function () {
             const selectElement = document.getElementById('thai-year');

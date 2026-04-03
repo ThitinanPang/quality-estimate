@@ -66,7 +66,8 @@
     <form action="" method="get">
         <div class="absolute left-[1160px] top-[270px]">
             <span>วิทยาเขต :</span>
-            <select name="campus" onchange="this.form.submit()" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+            <select name="campus" onchange="this.form.submit()"
+                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
                 <option value="" selected disabled>เลือกข้อมูล</option>
                 <option value="บางแสน" {{ request('campus') == 'บางแสน' ? 'selected' : '' }}>บางแสน</option>
                 <option value="จันทบุรี" {{ request('campus') == 'จันทบุรี' ? 'selected' : '' }}>จันทบุรี</option>
@@ -118,24 +119,21 @@
             </table>
         </div>
     </div>
-    <div id="pagination" class="mt-5 justify-center items-center flex space-x-2"></div>
     <script>
+        // 1. ฟังก์ชันค้นหา (Search)
         function myFunction() {
             var input = document.getElementById("myInput");
             var filter = input.value.toUpperCase();
             var table = document.getElementById("myTable");
             var tr = table.getElementsByTagName("tr");
-
             var found = false;
 
-            // ลบ row "ไม่พบข้อมูล" เดิมก่อน
             var oldMsg = document.getElementById("no-data-row");
             if (oldMsg) oldMsg.remove();
 
             for (var i = 1; i < tr.length; i++) {
                 var tds = tr[i].getElementsByTagName("td");
                 var show = false;
-
                 for (var j = 0; j < tds.length; j++) {
                     var txtValue = tds[j].textContent || tds[j].innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -143,112 +141,70 @@
                         break;
                     }
                 }
-
                 tr[i].style.display = show ? "" : "none";
                 if (show) found = true;
             }
 
-            // ถ้าไม่พบข้อมูล
             if (!found) {
                 var tbody = table.querySelector("tbody");
                 var row = document.createElement("tr");
                 row.id = "no-data-row";
-
                 var cell = document.createElement("td");
-                cell.colSpan = 10;
+                cell.colSpan = 2;
                 cell.className = "px-4 py-2 text-center";
                 cell.innerText = "ไม่พบข้อมูล";
-
                 row.appendChild(cell);
                 tbody.appendChild(row);
             }
         }
+
+        // 2. ฟังก์ชัน Import ไฟล์ Excel
         const excelInput = document.getElementById('excelInput');
         const form = document.getElementById('importForm');
 
-        excelInput.addEventListener('change', function () {
-            if (this.files.length > 0) {
-                form.submit();
-                // reset ค่าให้เลือกไฟล์เดิมได้อีก
-                this.value = "";
-            }
-            alert('เพิ่มผู้ใช้งานสำเร็จ');
-        });
+        if (excelInput) {
+            excelInput.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    form.submit();
+                }
+                alert('เพิ่มคณะ/หลักสูตรสำเร็จ');
+            });
+        }
+
+        // 3. ฟังก์ชันจัดการ Dropdown ปีการศึกษา
         document.addEventListener('DOMContentLoaded', function () {
             const selectElement = document.getElementById('thai-year');
+            if (!selectElement) return;
+
             const currentYear = new Date().getFullYear();
             const currentThaiYear = currentYear + 543;
-
             const startYear = currentThaiYear - 2;
             const endYear = currentThaiYear;
-
             const selectedYear = {{ $selectedThaiYear }};
 
             for (let i = endYear; i >= startYear; i--) {
                 const option = document.createElement('option');
                 option.value = i;
                 option.textContent = i;
-                if (i === selectedYear) {
-                    option.selected = true;
-                }
+                if (i === selectedYear) option.selected = true;
                 selectElement.appendChild(option);
             }
         });
-        // SORT ชื่อ
-        document.getElementById("sortName").addEventListener("change", function () {
 
+        // 4. ฟังก์ชันเรียงลำดับ ก-ฮ (Sort)
+        document.getElementById("sortName").addEventListener("change", function () {
             let order = this.value;
             let table = document.getElementById("myTable");
             let tbody = table.querySelector("tbody");
-            let rows = Array.from(tbody.querySelectorAll("tr"));
+            let rows = Array.from(tbody.querySelectorAll("tr:not(#no-data-row)"));
 
             rows.sort(function (a, b) {
-
                 let nameA = a.children[1].innerText.trim();
                 let nameB = b.children[1].innerText.trim();
-
-                if (order === "asc") {
-                    return nameA.localeCompare(nameB, 'th');
-                } else {
-                    return nameB.localeCompare(nameA, 'th');
-                }
-
+                return order === "asc" ? nameA.localeCompare(nameB, 'th') : nameB.localeCompare(nameA, 'th');
             });
 
             rows.forEach(row => tbody.appendChild(row));
-
-        });
-
-        $(document).ready(function () {
-            const rowsPerPage = ; // จำนวนแถวต่อหน้า
-            const $table = $('#myTable');
-            const $rows = $table.find('tbody tr');
-            const totalPages = Math.ceil($rows.length / rowsPerPage);
-
-            function showPage(page) {
-                const start = (page - 1) * rowsPerPage;
-                const end = start + rowsPerPage;
-                $rows.hide().slice(start, end).show();
-                // highlight ปุ่มที่เลือก
-                $('#pagination button').removeClass('bg-[#FFCE00] text-white');
-                $(`#pagination button[data-page=${page}]`).addClass('bg-[#FFCE00] text-black');
-            }
-
-            // สร้างปุ่มหน้า
-            for (let i = 1; i <= totalPages; i++) {
-                $('#pagination').append(
-                    `<button class="px-3 py-1 rounded-full hover:bg-[#FFCE00]" data-page="${i}">${i}</button>`
-                );
-            }
-
-            // กดปุ่มเปลี่ยนหน้า
-            $('#pagination').on('click', 'button', function () {
-                const page = $(this).data('page');
-                showPage(page);
-            });
-
-            // แสดงหน้าแรก
-            showPage(1);
         });
     </script>
 @endsection
