@@ -1,7 +1,8 @@
 @extends('layouts.header')
 
 @section('content')
-    <form action="{{route('results.collect')}}" method="GET">
+    <form id="assessmentForm" action="{{route('results.collect')}}" method="GET">
+        <input type="hidden" id="assessmentTypeInput">
         <div class="flex flex-col items-center justify-center">
             <p class="text-[36px] mt-[24px]">ข้อมูลการประเมิน</p>
             
@@ -18,7 +19,7 @@
                 
                 {{-- 1. ส่วนประธาน (ข้อมูลคงที่จาก Assessment แรก) --}}
                 <div class="w-[958px] h-[50px] rounded-[14px] bg-[#D9D9D9]">
-                    <p class="text-[24px] ml-[24px] mt-[5px]">ชื่อประธาน : {{ $firstAssessment->chairperson }}</p>
+                    <p class="text-[24px] ml-[24px] mt-[5px]">ชื่อประธาน : <span id="chairpersonText">{{ $firstAssessment->chairperson }}</span></p>
                 </div>
 
                 {{-- 2. ส่วนข้อมูลหลักสูตรและคณะ (เปลี่ยนตาม JS) --}}
@@ -37,6 +38,7 @@
                                         $iUser = $users[$asmt->intern] ?? null;
                                     @endphp
                                     <option value="{{ $course->id }}" 
+                                        data-chair="{{ $asmt->chairperson ?? '-' }}"
                                         data-type="{{ $asmt->assessment_type ?? '' }}"
                                         data-faculty="{{ $asmt->course->faculty->name ?? '-' }}"
                                         data-p-name="{{ $asmt->position ?? '-' }}"
@@ -59,6 +61,7 @@
                             หลักสูตร : {{ $courses->first()->name ?? '-' }}
                             <input type="hidden" name="course_id" value="{{ $courses->first()->id }}">
                             <input type="hidden" id="courseSelect" 
+                                data-chair="{{ $alone->chairperson ?? '-' }}"
                                 data-type="{{ $alone->assessment_type ?? '' }}"
                                 data-faculty="{{ $alone->course->faculty->name ?? '-' }}"
                                 data-p-name="{{ $alone->position ?? '-' }}"
@@ -100,43 +103,73 @@
             </button>
         </div>
     </form>
+<script>
+    function updateAllData() {
+        const element = document.getElementById('courseSelect');
+        if (!element) return;
 
-    <script>
-        function updateAllData() {
-            const element = document.getElementById('courseSelect');
-            if (!element) return;
+        let ds = {};
+        if (element.tagName === 'SELECT') {
+            const selected = element.options[element.selectedIndex];
+            ds = selected ? selected.dataset : {};
+        } else {
+            ds = element.dataset;
+        }
 
-            let ds = {};
-            if (element.tagName === 'SELECT') {
-                const selected = element.options[element.selectedIndex];
-                ds = selected ? selected.dataset : {};
-            } else {
-                ds = element.dataset;
+        // อัปเดตข้อความบนหน้าจอ
+        document.getElementById('chairpersonText').innerText = ds.chair || '-';
+        const types = { '1': 'แบบ 1 วัน (O)', '2': 'แบบเต็ม (F)', '3': 'แบบ 2 วัน (ปธ.คนนอก)' };
+        document.getElementById('assessmentTypeText').innerText = types[ds.type] || '-';
+        
+        // --- ส่วนสำคัญ: เก็บค่าเข้า Input เพื่อใช้เช็คตอนกดปุ่ม ---
+        document.getElementById('assessmentTypeInput').value = ds.type || '';
+        document.getElementById('facultyText').innerText = ds.faculty || '-';
+        document.getElementById('facultyInput').value = ds.faculty || '-';
+
+        document.getElementById('pNameText').innerText = ds.pName || '-';
+        document.getElementById('pEmailText').innerText = ds.pEmail || '-';
+        document.getElementById('pPhoneText').innerText = ds.pPhone || '-';
+        document.getElementById('iNameText').innerText = ds.iName || '-';
+        document.getElementById('iEmailText').innerText = ds.iEmail || '-';
+        document.getElementById('iPhoneText').innerText = ds.iPhone || '-';
+    }
+
+    // ฟังก์ชันเช็คสิทธิ์ตอนกด Submit
+    document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+        // 1. ดึงค่า Assessment Type ที่เลือกอยู่
+        const type = document.getElementById('assessmentTypeInput').value;
+        
+        // 2. ดึงชื่อคน Login ปัจจุบัน (Blade จะ Render เป็น String)
+        const currentUser = "{{ auth()->user()->name }}".trim();
+        
+        // 3. ดึงชื่อจากหน้าจอมาเช็ค
+        const chairName = document.getElementById('chairpersonText').innerText.trim();
+        const positionName = document.getElementById('pNameText').innerText.trim();
+
+        // 4. เช็ค Logic
+        if (type === '1' || type === '2') {
+            if (currentUser !== chairName) {
+                e.preventDefault(); // สั่งไม่ให้ส่งฟอร์ม
+                alert("เฉพาะ 'ประธาน' (" + chairName + ") เท่านั้นที่มีสิทธิ์ประเมิน");
+                return false;
             }
-
-            // แสดงประเภทการประเมิน
-            const types = { '1': 'แบบ 1 วัน (O)', '2': 'แบบเต็ม (F)', '3': 'แบบ 2 วัน (ปธ.คนนอก)' };
-            document.getElementById('assessmentTypeText').innerText = types[ds.type] || '-';
-
-            // --- ส่วนที่แก้ไข: อัปเดตทั้งตัวหนังสือ และค่าใน Input ---
-            const facultyValue = ds.faculty || '-';
-            document.getElementById('facultyText').innerText = facultyValue; // แสดงบนจอ
-            document.getElementById('facultyInput').value = facultyValue;    // ใส่ใน Input เพื่อส่งค่า Form
-            // --------------------------------------------------
-
-            // แสดงข้อมูลอื่นๆ
-            document.getElementById('pNameText').innerText = ds.pName || '-';
-            document.getElementById('pEmailText').innerText = ds.pEmail || '-';
-            document.getElementById('pPhoneText').innerText = ds.pPhone || '-';
-            document.getElementById('iNameText').innerText = ds.iName || '-';
-            document.getElementById('iEmailText').innerText = ds.iEmail || '-';
-            document.getElementById('iPhoneText').innerText = ds.iPhone || '-';
+        } 
+        else if (type === '3') {
+            if (currentUser !== positionName) {
+                e.preventDefault(); // สั่งไม่ให้ส่งฟอร์ม
+                alert("เนื่องจากประธานเป็นคนนอก ในรูปแบบนี้เฉพาะ 'กรรมการ' (" + positionName + ") เท่านั้นที่มีสิทธิ์ประเมิน");
+                return false;
+            }
         }
+    });
 
-        window.onload = updateAllData;
-        const courseSelect = document.getElementById('courseSelect');
-        if (courseSelect && courseSelect.tagName === 'SELECT') {
-            courseSelect.addEventListener('change', updateAllData);
-        }
-    </script>
+    // เรียกทำงานเมื่อโหลดหน้า
+    window.onload = updateAllData;
+    
+    // ตรวจสอบ Event Change สำหรับ Select
+    const courseSelect = document.getElementById('courseSelect');
+    if (courseSelect && courseSelect.tagName === 'SELECT') {
+        courseSelect.addEventListener('change', updateAllData);
+    }
+</script>
 @endsection
