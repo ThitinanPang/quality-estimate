@@ -59,7 +59,7 @@
                 {{-- role assessor --}}
                 <div id="form-assessor" class="hidden">
                     <p class="mt-[9px]">Code Assessor</p>
-                    <input name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3"
+                    <input required name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3"
                         value="{{ $user->code_assessor ?? '' }}">
 
                     <p class="mt-[9px]">คำนำหน้า</p>
@@ -91,7 +91,7 @@
                     </select>
 
                     <p class="mt-[9px]">Training Type</p>
-                    <input type="text" name="training_type"
+                    <input required type="text" name="training_type"
                         class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
                     <p class="mt-[9px]">อีเมล</p>
@@ -115,8 +115,7 @@
             <div class="justify-center flex gap-[50px]">
                 <button type="button" onclick="window.history.back()"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border">ยกเลิก</button>
-                <button type="submit" onclick="alert('แก้ไขสำเร็จ')"
-                    class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
+                <button type="submit" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
                     บันทึก
                 </button>
             </div>
@@ -163,5 +162,16 @@
 
         // 2. ทำงานทุกครั้งที่เปลี่ยนค่าใน Select
         roleSelector.addEventListener('change', toggleFields);
+
+        // เพิ่มเข้าไปต่อท้ายใน <script> เดิมของคุณ
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            // ตรวจสอบความถูกต้องของ Form (HTML5 Validation)
+            if (!form.checkValidity()) {
+                // ถ้าข้อมูลไม่ครบ Browser จะโชว์จุดที่ต้องกรอกให้เอง
+                return;
+            }
+        });
     </script>
 @endsection
