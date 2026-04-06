@@ -1746,8 +1746,9 @@ class AuthController extends Controller
         // รับ array ของ roles จาก checkbox (เช่น ['admin', 'assessor'])
         $roles = $request->input('roles', []);
 
-        // บันทึกลงไฟล์ JSON ใน storage/app/
-        Storage::put('report_access.json', json_encode($roles));
+        // บังคับเก็บไว้ที่ storage/app/report_access.json
+        $path = storage_path('app/report_access.json');
+        file_put_contents($path, json_encode(array_values($roles)));
 
         return back()->with('success', 'ปรับปรุงการเผยแพร่เรียบร้อยแล้ว');
     }

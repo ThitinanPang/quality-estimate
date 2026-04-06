@@ -3,10 +3,19 @@
 @section('content')
     @php
         $user = auth()->user();
-        // สิทธิ์การเข้าถึง: 
-        // 1. เป็น Admin University เข้าได้เสมอ
-        // 2. เป็น Role อื่น ต้องมีชื่ออยู่ในไฟล์ JSON ($publishedRoles)
-        $canAccess = ($user->role == 'admin university') || in_array($user->role, $publishedRoles ?? []);
+
+        // --- เพิ่มโค้ดส่วนนี้เพื่ออ่านไฟล์ JSON ---
+        $path = storage_path('app/report_access.json');
+        $publishedRoles = [];
+        if (file_exists($path)) {
+            $publishedRoles = json_decode(file_get_contents($path), true) ?: [];
+        }
+        // ---------------------------------------
+
+        // สิทธิ์การเข้าถึงหน้า: 
+        // 1. Admin University เข้าได้เสมอ
+        // 2. Role อื่น (เช่น user, assessor) ต้องถูกเลือกไว้ใน JSON
+        $canAccess = ($user->role == 'admin university') || in_array($user->role, $publishedRoles);
 
         $lockClass = !$canAccess ? 'pointer-events-none opacity-50' : '';
     @endphp

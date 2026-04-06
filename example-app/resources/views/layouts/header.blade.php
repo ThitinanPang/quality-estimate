@@ -55,6 +55,19 @@
                 </a>
             </li>
             @auth
+                @php
+                    $user = auth()->user();
+
+                    // 1. อ่านไฟล์ JSON เพื่อดูว่า Role ไหนบ้างที่ถูกติ๊ก "เผยแพร่"
+                    $path = storage_path('app/report_access.json');
+                    $publishedRoles = [];
+                    if (file_exists($path)) {
+                        $publishedRoles = json_decode(file_get_contents($path), true) ?: [];
+                    }
+
+                    // 2. เงื่อนไข: ต้องเป็น role 'user' เท่านั้น AND คำว่า 'user' ต้องอยู่ในไฟล์ JSON
+                    $isUserApproved = ($user->role == 'user') && in_array('user', $publishedRoles);
+                @endphp
                 @if (auth()->user()->role == 'admin' || auth()->user()->role == 'admin university')
                     <li class="relative hover:bg-[#FFCE00] rounded-lg w-[224px] mt-[16px] ml-[16px] mr-[16px]">
                         <a id="save-result-btn" class="relative flex items-center whitespace-nowrap dropdown-btn">
@@ -124,7 +137,8 @@
                             {{-- การจัดการหลักสูตร --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('listfaculty')}}" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
+                                <a href="{{route('listfaculty')}}"
+                                    class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
                                 <a href="" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับส่วนงาน</a>
                             </div>
                             <a href=""
@@ -139,14 +153,43 @@
                             {{-- บันทึกผลการปะเมิน --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('results')}}" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
+                                <a href="{{route('results')}}"
+                                    class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
                                 <a href="" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับส่วนงาน</a>
                             </div>
                             <a href="{{ route('tableassessor') }}"
                                 class="{{ request()->routeIs('tableassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 mt-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px]">ตารางการประเมิน</a>
                         </div>
                     </li>
-
+                    <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
+                        <a href="" id="save-result-btn" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
+                            <svg class="menu-icon" width="25" height="28" viewBox="0 0 22 26" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4.33317 25C3.62593 25 2.94765 24.719 2.44755 24.219C1.94746 23.7189 1.6665 23.0406 1.6665 22.3333V1H13.6665L20.3332 7.66667V22.3333C20.3332 23.0406 20.0522 23.7189 19.5521 24.219C19.052 24.719 18.3737 25 17.6665 25H4.33317Z"
+                                    stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12.3333 1V9H20.3333" stroke="black" stroke-width="1.5" stroke-linejoin="round" />
+                                <path d="M7 14.3334H15M7 19.6667H15" stroke="black" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span
+                                class="p-4 text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-[15px]">รายงานผลการประเมิน</span>
+                            <svg class="mr-2" width="16" height="10" viewBox="0 0 16 10" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                                    fill="black" />
+                            </svg>
+                            <div class="dropdown-container hidden bg-white w-full py-2">
+                                <a href="{{route('report')}}"
+                                    class="{{ request()->routeIs('report') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative">ระดับหลักสูตร</a>
+                                <a href=""
+                                    class="block px-2 py-2 text-[15px] hover:bg-[#D9D9D9] rounded-[12px] left-[10px] relative ">ระดับส่วนงาน</a>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+                @if($isUserApproved)
                     <li class="hover:bg-[#FFCE00] rounded-lg w-[224px] min-h-[56px] mt-[16px] ml-[16px] mr-[16px]">
                         <a href="" id="save-result-btn" class="relative flex items-center whitespace-nowrap mb-0 dropdown-btn">
                             <svg class="menu-icon" width="25" height="28" viewBox="0 0 22 26" fill="none"
@@ -204,41 +247,41 @@
 <script>
     var dropdowns = document.querySelectorAll(".dropdown-btn");
 
-dropdowns.forEach(function (dropdown) {
-    dropdown.addEventListener("click", function (event) {
-        event.preventDefault();
+    dropdowns.forEach(function (dropdown) {
+        dropdown.addEventListener("click", function (event) {
+            event.preventDefault();
 
-        var dropdownContainer = dropdown.nextElementSibling;
-        dropdownContainer.classList.toggle("hidden");
+            var dropdownContainer = dropdown.nextElementSibling;
+            dropdownContainer.classList.toggle("hidden");
 
-        var parentLi = dropdown.closest("li");
-        parentLi.classList.toggle("h-auto");
+            var parentLi = dropdown.closest("li");
+            parentLi.classList.toggle("h-auto");
 
-        const activeClasses = ["bg-[#D9D9D9]", "border-2", "border-gray-400"];
+            const activeClasses = ["bg-[#D9D9D9]", "border-2", "border-gray-400"];
 
-        // ⭐ เช็คว่าปุ่มที่คลิกไม่ใช่ปุ่ม "บันทึกผลการประเมิน" (ที่มีสีค้างอยู่แล้ว)
-        const isManagementBtn = (dropdown.id !== 'save-result-btn');
+            // ⭐ เช็คว่าปุ่มที่คลิกไม่ใช่ปุ่ม "บันทึกผลการประเมิน" (ที่มีสีค้างอยู่แล้ว)
+            const isManagementBtn = (dropdown.id !== 'save-result-btn');
 
-        if (isManagementBtn) {
-            // Logic สำหรับปุ่ม "จัดการหัวข้อการประเมิน" (ปุ่มบน)
-            if (!dropdownContainer.classList.contains("hidden")) {
-                dropdown.classList.add(...activeClasses);
-                dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
+            if (isManagementBtn) {
+                // Logic สำหรับปุ่ม "จัดการหัวข้อการประเมิน" (ปุ่มบน)
+                if (!dropdownContainer.classList.contains("hidden")) {
+                    dropdown.classList.add(...activeClasses);
+                    dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
+                } else {
+                    dropdown.classList.remove(...activeClasses);
+                    dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
+                }
             } else {
-                dropdown.classList.remove(...activeClasses);
-                dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
+                // Logic สำหรับปุ่ม "บันทึกผลการประเมิน" (ปุ่มล่าง - ที่มีสีอยู่แล้ว)
+                // แค่เปลี่ยนมุมมนเวลาเปิด/ปิดเท่านั้น ไม่ไปลบสีพื้นหลัง
+                if (!dropdownContainer.classList.contains("hidden")) {
+                    dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
+                } else {
+                    dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
+                }
             }
-        } else {
-            // Logic สำหรับปุ่ม "บันทึกผลการประเมิน" (ปุ่มล่าง - ที่มีสีอยู่แล้ว)
-            // แค่เปลี่ยนมุมมนเวลาเปิด/ปิดเท่านั้น ไม่ไปลบสีพื้นหลัง
-            if (!dropdownContainer.classList.contains("hidden")) {
-                dropdown.classList.replace("rounded-[5px]", "rounded-t-[5px]");
-            } else {
-                dropdown.classList.replace("rounded-t-[5px]", "rounded-[5px]");
-            }
-        }
+        });
     });
-});
 
     const sidebar = document.getElementById("sidebar");
     const homeIcon = document.querySelectorAll(".menu-icon");
