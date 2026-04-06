@@ -7,7 +7,7 @@
         // 1. เป็น Admin University เข้าได้เสมอ
         // 2. เป็น Role อื่น ต้องมีชื่ออยู่ในไฟล์ JSON ($publishedRoles)
         $canAccess = ($user->role == 'admin university') || in_array($user->role, $publishedRoles ?? []);
-        
+
         $lockClass = !$canAccess ? 'pointer-events-none opacity-50' : '';
     @endphp
     <div class="{{ $lockClass }}">
@@ -21,7 +21,8 @@
             @endif
             <br>
             <a href="javascript:void(0)" data-target="report-section-1"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 1
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                1
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร องค์ประกอบที่ 1 การกำกับมาตรฐาน</a>
             {{-- รายงานที่ 1 --}}
             <div id="report-section-1" class="report-content" style="display: none;">
@@ -135,7 +136,8 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-2"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 2
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                2
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall
                 Verdict)</a>
             {{-- รายงานที่ 2 --}}
@@ -452,7 +454,8 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-3"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 3
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                3
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบหนึ่งวัน)</a>
             {{-- รายงานที่ 3 --}}
@@ -718,7 +721,8 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-4"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 4
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                4
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายใน)</a>
             {{-- รายงานที่ 4 --}}
@@ -985,7 +989,8 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-5"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 5
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                5
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายนอก)</a>
             {{-- รายงานที่ 5 --}}
@@ -1250,7 +1255,8 @@
 
             </div>
             <a href="javascript:void(0)" data-target="report-section-6"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่ 6
+                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                6
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร ตามเกณฑ์ AUN-QA (ร้อยละ) <br> จำแนกตามลำดับ</a>
             {{-- รายงานที่ 6 --}}
             <div id="report-section-6" class="report-content" style="display: none;">
@@ -1346,9 +1352,13 @@
         <div class="h-[50px]"></div>
         <div id="publishModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 ">
             <div class="bg-white rounded-[16px] w-[450px] shadow-xl overflow-hidden">
-                <div class="bg-[#FFCE00] px-6 py-4 flex items-center justify-center gap-5">
+                <div class="bg-[#FFCE00] px-6 py-4 flex items-center justify-between">
+                    <div class="w-8"></div>
+
                     <h3 class="text-[22px] font-bold">ตั้งค่าสิทธิ์การเข้าถึงรายงาน</h3>
-                    <button onclick="closePublishModal()" class="text-black text-2xl">&times;</button>
+
+                    <button onclick="closePublishModal()"
+                        class="text-black text-2xl cursor-pointer w-8 text-right">&times;</button>
                 </div>
 
                 <form action="{{ route('report.publish.update') }}" method="POST" class="p-6">
@@ -1357,14 +1367,17 @@
 
                     <div class="space-y-3">
                         <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                            <input type="checkbox" name="roles[]" value="admin" 
-                            {{ in_array('admin', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
+                            <input type="checkbox" name="roles[]" value="user" {{ in_array('user', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
+                            <span class="ml-3 text-[18px]">User (ผู้ใช้ทั่วไป)</span>
+                        </label>
+
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="roles[]" value="admin" {{ in_array('admin', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
                             <span class="ml-3 text-[18px]">Admin Faculty (คณะ)</span>
                         </label>
 
                         <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                            <input type="checkbox" name="roles[]" value="assessor" 
-                            {{ in_array('assessor', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
+                            <input type="checkbox" name="roles[]" value="assessor" {{ in_array('assessor', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
                             <span class="ml-3 text-[18px]">Assessor (ผู้ประเมิน)</span>
                         </label>
                     </div>
