@@ -68,6 +68,22 @@ return new class extends Migration {
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        DB::table('users_assessor')->insert([
+            'code_assessor' => '66-000',
+            'prefix' => 'นางสาว',
+            'name' => 'ธนาวรรณ กองโชค',
+            'subject_group' => 'วิศวกรรมซอฟต์แวร์',
+            'faculty' => 'คณะวิทยาการสารสนเทศ',
+            'course' => null,
+            'role' => 'assessor',
+            'email' => '65160336@go.buu.ac.th',
+            'phone_number' => '0819289800',
+            'assessor_type' => 'junior',
+            'training_type' => 'AUN 66',
+            'status' => 'active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -208,7 +224,7 @@ return new class extends Migration {
             $table->string('code')->unique(); // รหัสหลักสูตร
             $table->string('name'); // ชื่อหลักสูตร
             $table->string('level')->nullable(); //1 = ตรี/2 = โท/3 = เอก
-            $table->enum('status', ['active', 'closed' , 'suspended'])->default('active');
+            $table->enum('status', ['active', 'closed', 'suspended'])->default('active');
             $table->timestamps();
         });
 
