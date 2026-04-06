@@ -89,19 +89,52 @@
                                     fill="black" />
                             </svg>
                         </a>
-                        <div class="dropdown-container hidden bg-white w-full py-2">
+                        <div class="dropdown-container hidden bg-white w-full py-3 shadow-inner">
                             <a href="{{route('user')}}"
-                                class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ใช้</a>
+                                class="{{ request()->routeIs('user') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-4 py-2 text-[15px] rounded-[10px] mx-2 mb-1 transition-colors">
+                                ข้อมูลผู้ใช้
+                            </a>
+
                             <a href="{{route('assessor')}}"
-                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px]  rounded-[12px] left-[10px] relative">ข้อมูลผู้ประเมิน</a>
-                            <a href="#" {{-- -{{route('listassessor')}} --}}
-                                class="{{ request()->routeIs('listassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">รายชื่อผู้ประเมิน</a>
-                            <a href="#" {{-- -{{route('listassessor')}} --}}
-                                class="{{ request()->routeIs('listname') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดโครงสร้างหลักสูตร</a>
+                                class="{{ request()->routeIs('assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-4 py-2 text-[15px] rounded-[10px] mx-2 mb-1 transition-colors">
+                                ข้อมูลผู้ประเมิน
+                            </a>
+
+                            <a href="#"
+                                class="{{ request()->routeIs('listassessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-4 py-2 text-[15px] rounded-[10px] mx-2 mb-1 transition-colors">
+                                รายชื่อผู้ประเมิน
+                            </a>
+
+                            <a href=""
+                                class="dropdown-btn flex items-center justify-between px-4 py-2 text-[15px] rounded-t-[10px] mx-2 transition-colors">
+                                <span>จัดโครงสร้างหลักสูตร</span>
+                                <svg width="12" height="8" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M9.06002 9.06001C8.77877 9.34091 8.39752 9.49869 8.00002 9.49869C7.60252 9.49869 7.22127 9.34091 6.94002 9.06001L1.28202 3.40401C1.00076 3.12262 0.842802 2.74102 0.842896 2.34316C0.842989 1.9453 1.00113 1.56377 1.28252 1.28251C1.56392 1.00125 1.94552 0.84329 2.34338 0.843384C2.74123 0.843478 3.12276 1.00162 3.40402 1.28301L8.00002 5.87901L12.596 1.28301C12.8788 1.00964 13.2576 0.858265 13.6509 0.861496C14.0442 0.864727 14.4205 1.0223 14.6988 1.30028C14.977 1.57827 15.1349 1.95441 15.1385 2.34771C15.1421 2.741 14.9911 3.11998 14.718 3.40301L9.06102 9.06101L9.06002 9.06001Z"
+                                        fill="black" />
+                                </svg>
+                            </a>
+
+                            <div
+                                class="dropdown-container hidden bg-[#D9D9D9] rounded-b-[10px] mx-2 border-2 border-t-0 border-gray-400 overflow-hidden">
+                                <a href="{{route('listfaculty')}}"
+                                    class="block px-8 py-2 text-[15px] hover:bg-white transition-colors border-b border-gray-300 last:border-b-0">
+                                    ระดับหลักสูตร
+                                </a>
+
+                                <a href="#" class="block px-8 py-2 text-[15px] hover:bg-white transition-colors">
+                                    ระดับส่วนงาน
+                                </a>
+                            </div>
                             <a href="{{ route('manage-assessor') }}"
-                                class="{{ request()->routeIs('manage-assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">จัดผู้ประเมินหลักสูตร</a>
+                                class="{{ request()->routeIs('manage-assessor') ? 'bg-[#D9D9D9]' : 'hover:bg-[#D9D9D9]' }} block px-4 py-2 text-[15px] rounded-[10px] mx-2 mb-1 transition-colors">
+                                จัดผู้ประเมินหลักสูตร
+                            </a>
+
                             <a href="{{ route('assessmentschedule') }}"
-                                class="block px-2 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[12px] left-[10px] relative">ตารางผู้ประเมิน</a>
+                                class="block px-4 py-2 hover:bg-[#D9D9D9] text-[15px] rounded-[10px] mx-2 transition-colors">
+                                ตารางผู้ประเมิน
+                            </a>
                         </div>
                     </li>
 
@@ -138,7 +171,7 @@
                             {{-- การจัดการหลักสูตร --}}
                             <div
                                 class="dropdown-container hidden w-full bg-[#D9D9D9] rounded-b-[5px] border-2 border-t-0 border-gray-400">
-                                <a href="{{route('listfaculty')}}"
+                                <a href=""
                                     class="block px-2 py-2 text-[15px] hover:bg-white">ระดับหลักสูตร</a>
                                 <a href="" class="block px-2 py-2 text-[15px] hover:bg-white">ระดับส่วนงาน</a>
                             </div>
