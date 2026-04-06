@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class UserAssessor extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+class UserAssessor extends Authenticatable
 {
+    use Notifiable;
     protected $table = 'users_assessor';
     protected $fillable = [
         'code_assessor',

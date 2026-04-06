@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\UserAssessor;
+
 return [
 
     /*
@@ -69,7 +71,7 @@ return [
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
         ],
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'multi_table',
             'model' => App\Models\User::class,
         ],
         // 'users' => [

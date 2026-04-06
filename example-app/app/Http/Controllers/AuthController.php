@@ -86,27 +86,29 @@ class AuthController extends Controller
             $userEmail = $ldapUser['mail'][0] ?? $username . '@go.buu.ac.th';
 
             // 6. จัดการข้อมูลใน Database ของระบบเรา
-            $existingUser = User::where('email', $userEmail)->first();
-            $displayName = $existingUser ? $existingUser->name : ($ldapUser['displayname'][0] ?? $username);
-            $user = User::updateOrCreate(
-                ['email' => $userEmail],
-                [
-                    'name' => $displayName,
-                    'role' => $existingUser->role ?? 'user', // รักษา Role เดิมไว้ถ้ามี
-                    'status' => 'active',
-                ]
-            );
+            $user = \App\Models\User::where('email', $userEmail)->first();
 
-            // 7. ตรวจสอบสิทธิ์ (Role)
-            if (empty($user->role)) {
-                Auth::logout();
-                return back()->withErrors(['email' => 'บัญชีนี้ยังไม่ได้รับสิทธิ์ให้เข้าใช้งานระบบ']);
+            if (!$user) {
+                // ถ้าไม่เจอใน users ให้ไปหาใน users_assessor
+                $user = \App\Models\UserAssessor::where('email', $userEmail)->first();
+            }
+
+            // 7. จัดการกรณีไม่พบข้อมูลในทั้งสองตาราง (เฉพาะ User ใหม่จริงๆ)
+            if (!$user) {
+                $user = \App\Models\User::create([
+                    'email' => $userEmail,
+                    'name' => $ldapUser['displayname'][0] ?? $username,
+                    'role' => 'user', // หรือค่า default ที่คุณต้องการ
+                    'status' => 'active',
+                ]);
             }
 
             // 8. สั่ง Login เข้าสู่ระบบ Laravel
+// การที่ $user เป็น Object จาก Model ไหนก็ได้ (User หรือ UserAssessor) 
+// Laravel สามารถสั่ง Login ได้ทันทีถ้า Model นั้นทำ Authenticatable ไว้
             Auth::login($user);
 
-            logger('LDAP Login Successful: ' . $username);
+            logger('Login Successful: ' . $userEmail . ' (Model: ' . get_class($user) . ')');
 
             // 9. Redirect ตามความเหมาะสม
             return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');

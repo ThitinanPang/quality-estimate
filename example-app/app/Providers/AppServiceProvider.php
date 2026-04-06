@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\File;
-
+use App\Providers\MultiUserProvider;
+use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -30,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('publishedRoles', $publishedRoles);
+        });
+        Auth::provider('multi_table', function ($app, array $config) {
+            return new MultiUserProvider($app['hash'], $config['model']);
         });
     }
 }
