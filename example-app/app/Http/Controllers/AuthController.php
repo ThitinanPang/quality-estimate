@@ -86,16 +86,16 @@ class AuthController extends Controller
             $userEmail = $ldapUser['mail'][0] ?? $username . '@go.buu.ac.th';
 
             // 6. จัดการข้อมูลใน Database ของระบบเรา
-            $user = \App\Models\User::where('email', $userEmail)->first();
+            $user = User::where('email', $userEmail)->first();
 
             if (!$user) {
                 // ถ้าไม่เจอใน users ให้ไปหาใน users_assessor
-                $user = \App\Models\UserAssessor::where('email', $userEmail)->first();
+                $user = UserAssessor::where('email', $userEmail)->first();
             }
 
             // 7. จัดการกรณีไม่พบข้อมูลในทั้งสองตาราง (เฉพาะ User ใหม่จริงๆ)
             if (!$user) {
-                $user = \App\Models\User::create([
+                $user = User::create([
                     'email' => $userEmail,
                     'name' => $ldapUser['displayname'][0] ?? $username,
                     'role' => 'user', // หรือค่า default ที่คุณต้องการ
