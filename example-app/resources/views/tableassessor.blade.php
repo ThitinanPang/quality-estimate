@@ -105,7 +105,7 @@
                                         </button>
                                     @else
                                         <button type="button" disabled
-                                            class="w-auto h-[37px] border bg-[#FFCE00] cursor-not-allowed rounded-[5px] p-2">
+                                            class="w-auto h-[37px] rounded-[5px] p-2">
                                             {{ $disabledText }}
                                         </button>
                                     @endif
