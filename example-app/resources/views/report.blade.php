@@ -30,7 +30,7 @@
             @endif
             <br>
             <a href="javascript:void(0)" data-target="report-section-1"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[40px] rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]">รายงานที่
                 1
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร องค์ประกอบที่ 1 การกำกับมาตรฐาน</a>
             {{-- รายงานที่ 1 --}}
@@ -145,7 +145,7 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-2"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[5px]  rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]">รายงานที่
                 2
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall
                 Verdict)</a>
@@ -463,7 +463,7 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-3"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[5px]  rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]">รายงานที่
                 3
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบหนึ่งวัน)</a>
@@ -730,7 +730,7 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-4"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[5px]  rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]]">รายงานที่
                 4
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายใน)</a>
@@ -998,7 +998,7 @@
                 </div>
             </div>
             <a href="javascript:void(0)" data-target="report-section-5"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[5px]  rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]">รายงานที่
                 5
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายในระดับหลักสูตรตามเกณฑ์ AUN-QA Version 4.0 <br> (Overall Verdict)
                 (ตรวจประเมินแบบเต็ม (2วัน) ประธานกรรมการเป็นบุคลภายนอก)</a>
@@ -1264,7 +1264,7 @@
 
             </div>
             <a href="javascript:void(0)" data-target="report-section-6"
-                class="report-toggle text-[24px] mt-[40px] border rounded-[10px] p-2 block w-[1200px] bg-[#FFCE00]">รายงานที่
+                class="report-toggle text-[24px] mt-[5px]  rounded-[10px] p-2 block w-[1200px] bg-[#D9D9D9] hover:bg-[#FFCE00]">รายงานที่
                 6
                 ผลการตรวจประเมินการประกันคุณภาพการศึกษาภายใน ระดับหลักสูตร ตามเกณฑ์ AUN-QA (ร้อยละ) <br> จำแนกตามลำดับ</a>
             {{-- รายงานที่ 6 --}}

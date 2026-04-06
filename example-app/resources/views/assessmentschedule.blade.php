@@ -21,7 +21,7 @@
                 <thead class="bg-[#FFCE00]">
                     <tr>
                         <th class="border text-[20px] px-2 py-2">ลำดับที่</th>
-                        <th class="border text-[20px] px-2 py-2">รหัสวิชา</th>
+                        <th class="border text-[20px] px-2 py-2">รหัสหลักสูตร</th>
                         <th class="border text-[20px] px-2 py-2">คณะ/วิทยาลัย</th>
                         <th class="border text-[20px] px-2 py-2">กลุ่มวิชา</th>
                         <th class="border text-[20px] px-2 py-2">
