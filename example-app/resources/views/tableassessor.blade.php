@@ -87,11 +87,28 @@
                                 {{ $levelMap[$row->education_level] ?? '-' }}</td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $typeMap[$row->assessment_type] ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->chairperson }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->position }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->intern }}</td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->chairperson }}
+                                <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
+                                    คณะ: {{ $row->getFacultyOf($row->chairperson) }}
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                                </div>
+                            </td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->position }}
+                                <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
+                                    คณะ: {{ $row->getFacultyOf($row->position) }}
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                                </div>                            </td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->intern }}
+                                <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
+                                    คณะ: {{ $row->getFacultyOf($row->intern) }}
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                                </div>                            </td>
                             <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date ? \Carbon\Carbon::parse($row->assessment_date)->addYears(543)->format('d/m/Y') : '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->secretary }}</td>
+                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->secretary }}
+                                <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
+                                    คณะ: {{ $row->getFacultyOf($row->secretary) }}
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
+                                </div>                            </td>
                             <form action="{{route('tableassessor.save')}}" method="get">
                                 <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
                                     <input type="hidden" name="faculty_id" value="{{ $row->faculty->id }}">

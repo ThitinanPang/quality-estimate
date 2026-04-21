@@ -33,4 +33,10 @@ class CourseAssessor extends Model
     {
         return $this->belongsTo(Faculty::class, 'faculty_id');
     }
+    public function getFacultyOf($name)
+    {
+        $user = \App\Models\UserAssessor::where('name', $name)->first();
+
+        return $user ? $user->faculty : 'ไม่พบข้อมูลคณะ';
+    }
 }

@@ -286,7 +286,8 @@
 
                 let courseId = this.dataset.id;
                 let status = this.value;
-
+                let statusText = status === 'active' ? 'เปิดใช้งาน' : 
+                         status === 'closed' ? 'ปิดหลักสูตร' : 'ระงับการใช้งาน';
                 fetch("{{ route('course.updateStatus') }}", {
                     method: "POST",
                     headers: {
@@ -300,6 +301,7 @@
                 })
                     .then(res => res.json())
                     .then(data => {
+                        alert('อัปเดตสถานะเป็น "' + statusText + '" สำเร็จแล้ว');
                         console.log("saved");
                     })
                     .catch(err => {
