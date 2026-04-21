@@ -5,6 +5,10 @@
 <script src="//unpkg.com/alpinejs" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
+    @php
+        $isAssessor = session('login_type') == 'assessor';
+        $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
+    @endphp
     <div class="ml-[90px] mt-[20px] flex items-center">
         <span class="text-[36px]">ตารางข้อมูลการประเมิน</span>
         <form method="GET">
@@ -26,7 +30,7 @@
             </svg>
         </div>
     </div>
-    <input type="text" readonly value="ผู้ประเมิน : {{ Auth::user()->name }}"
+    <input type="text" readonly value="ผู้ประเมิน : {{ $user->name }}"
         class="w-[1410px] h-[57px] border rounded-[50px] bg-[#DBDBDB] ml-[90px] mt-[20px] p-[30px] text-[30px]">
     <div class="flex ml-[90px] mt-[20px]">
         <div class="w-[2735px] overflow-auto">
@@ -93,7 +97,7 @@
                                     <input type="hidden" name="faculty_id" value="{{ $row->faculty->id }}">
                                     <input type="hidden" name="course_id" value="{{ $row->course->id }}">
                                     @php
-                                        $userName = Auth::user()->name;
+                                        $userName = $user->name;
                                         $isType3 = ($row->assessment_type == 3);
                                         $canAssess = ($isType3 && $userName === $row->position) || (!$isType3 && $userName === $row->chairperson);
                                         $disabledText = $isType3 ? 'เฉพาะกรรมการ' : 'เฉพาะประธานการประเมิน';

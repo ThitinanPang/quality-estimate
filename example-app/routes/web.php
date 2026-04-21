@@ -13,7 +13,7 @@ Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('/login', [AuthController::class, 'checkLogin'])->name('login.submit');
 
 // --- หน้าที่ "ต้อง Login" เท่านั้นถึงจะเข้าได้ ---
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:web,assessor_guard'])->group(function () {
     Route::get('/user', [AuthController::class, 'userPage'])->name('user');
     Route::get('/home', [AuthController::class, 'homePage'])->name('home');
     Route::get('/listassessor', [AuthController::class, 'listassessorPage'])->name('listassessor');

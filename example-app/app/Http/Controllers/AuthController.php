@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Config;
 
 class AuthController extends Controller
 {
@@ -34,94 +35,89 @@ class AuthController extends Controller
 
     public function checkLogin(Request $request)
     {
-        // 1. Validation: รับค่าเป็น String (รองรับทั้งตัวเลขและอีเมล)
+        // 1. Validation (คงเดิม)
         $request->validate([
             'email' => ['required', 'string'],
             'password' => 'required|min:6',
-        ], [
-            'email.required' => 'กรุณากรอกรหัสนิสิตหรืออีเมลมหาวิทยาลัย',
-            'password.required' => 'กรุณากรอกรหัสผ่าน',
-            'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
         ]);
 
         $input = $request->email;
 
-        // 2. เช็ค Security: ถ้ามีการใส่ @ ต้องเป็น domain ของมหาลัยเท่านั้น
-        if (str_contains($input, '@')) {
-            if (!str_ends_with($input, '@go.buu.ac.th')) {
-                return back()->withErrors([
-                    'email' => 'ไม่อนุญาตให้ใช้ Gmail หรืออีเมลภายนอก'
-                ])->withInput();
-            }
+        // 2. Security Check (คงเดิม)
+        if (str_contains($input, '@') && !str_ends_with($input, '@go.buu.ac.th')) {
+            return back()->withErrors(['email' => 'ไม่อนุญาตให้ใช้ Domain ภายนอก'])->withInput();
         }
 
-        // 3. เตรียมข้อมูลสำหรับ LDAP
-        // ตัดเอาแค่ username/รหัสนิสิต (เช่น 65160217) ไม่ว่าจะกรอกมาแบบไหน
         $username = explode('@', $input)[0];
         $ldapUsername = 'BUU\\' . $username;
-        $ldapPassword = $request->password;
 
         try {
-            // 4. สร้าง Connection และพยายาม Bind
+            // 3. LDAP Connection & Binding
             $connection = new Connection([
                 'hosts' => [config('app.ldap_host_2')],
                 'base_dn' => config('app.ldap_base_dn'),
                 'username' => $ldapUsername,
-                'password' => $ldapPassword,
+                'password' => $request->password,
                 'port' => config('app.ldap_port'),
             ]);
 
             $connection->connect();
             $connection->auth()->bind();
 
-            // 5. ค้นหาข้อมูลผู้ใช้จาก LDAP หลังจาก Login ผ่านแล้ว
-            $ldapUser = $connection->query()
-                ->where('samaccountname', '=', $username)
-                ->first();
+            // 4. ค้นหาข้อมูลจาก LDAP
+            $ldapUser = $connection->query()->where('samaccountname', '=', $username)->first();
 
             if (!$ldapUser) {
-                return back()->withErrors(['email' => 'ไม่พบข้อมูลผู้ใช้ในฐานข้อมูลมหาวิทยาลัย']);
+                return back()->withErrors(['email' => 'ไม่พบข้อมูลในระบบมหาวิทยาลัย']);
             }
-            // ดึง Email จริงจาก LDAP หรือสร้าง Format มาตรฐาน
+
             $userEmail = $ldapUser['mail'][0] ?? $username . '@go.buu.ac.th';
+            $displayName = $ldapUser['displayname'][0] ?? $username;
 
-            // 6. จัดการข้อมูลใน Database ของระบบเรา
-            $user = User::where('email', $userEmail)->first();
+            // 5. ค้นหาในฐานข้อมูล Local
+            $userEmail = $ldapUser['mail'][0] ?? $username . '@go.buu.ac.th';
+            $displayName = $ldapUser['displayname'][0] ?? $username;
 
-            if (!$user) {
-                // ถ้าไม่เจอใน users ให้ไปหาใน users_assessor
-                $user = UserAssessor::where('email', $userEmail)->first();
-            }
+            $userNormal = User::where('email', $userEmail)->first();
+            $userAssessor = UserAssessor::where('email', $userEmail)->first();
 
-            // 7. จัดการกรณีไม่พบข้อมูลในทั้งสองตาราง (เฉพาะ User ใหม่จริงๆ)
-            if (!$user) {
-                $user = User::create([
+            if ($userAssessor) {
+                // แก้ไข: อัปเดตชื่อเฉพาะกรณีที่ใน DB ยังไม่มีชื่อ (เป็น null หรือว่าง)
+                if (empty($userAssessor->name)) {
+                    $userAssessor->name = $displayName;
+                    $userAssessor->save();
+                }
+
+                Auth::guard('assessor_guard')->login($userAssessor);
+                session(['login_type' => 'assessor']);
+
+            } elseif ($userNormal) {
+                // แก้ไข: อัปเดตชื่อเฉพาะกรณีที่ใน DB ยังไม่มีชื่อ
+                if (empty($userNormal->name)) {
+                    $userNormal->name = $displayName;
+                    $userNormal->save();
+                }
+
+                Auth::guard('web')->login($userNormal);
+                session(['login_type' => 'user']);
+
+            } else {
+                // กรณีสร้างใหม่ (ยังไงก็ต้องใช้ชื่อจาก LDAP)
+                $newUser = User::create([
                     'email' => $userEmail,
-                    'name' => $ldapUser['displayname'][0] ?? $username,
-                    'role' => 'user', // หรือค่า default ที่คุณต้องการ
+                    'name' => $displayName,
+                    'role' => 'user',
                     'status' => 'active',
                 ]);
+                Auth::guard('web')->login($newUser);
+                session(['login_type' => 'user']);
             }
-
-            // 8. สั่ง Login เข้าสู่ระบบ Laravel
-// การที่ $user เป็น Object จาก Model ไหนก็ได้ (User หรือ UserAssessor) 
-// Laravel สามารถสั่ง Login ได้ทันทีถ้า Model นั้นทำ Authenticatable ไว้
-            Auth::login($user);
-
-            logger('Login Successful: ' . $userEmail . ' (Model: ' . get_class($user) . ')');
-
-            // 9. Redirect ตามความเหมาะสม
-            return redirect('/home')->with('success', 'เข้าสู่ระบบสำเร็จ');
-
+            return redirect('/home');
         } catch (\LdapRecord\Auth\BindException $e) {
-            // กรณีรหัสผ่านผิด หรือ User ไม่มีอยู่จริงใน LDAP
-            logger('LDAP Auth Failed: ' . $e->getMessage());
-            return back()->withErrors(['email' => 'อีเมลหรือรหัสผ่านไม่ถูกต้อง'])->withInput();
-
+            return back()->withErrors(['email' => 'รหัสผ่านไม่ถูกต้อง'])->withInput();
         } catch (\Exception $e) {
-            // กรณี Server LDAP ล่ม หรือ Config ผิด
-            logger('LDAP System Error: ' . $e->getMessage());
-            return back()->withErrors(['email' => 'ระบบพิสูจน์ตัวตนขัดข้อง กรุณาลองใหม่ภายหลัง']);
+            logger('Error: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'ระบบขัดข้อง: ' . $e->getMessage()]);
         }
     }
     public function store(Request $request)

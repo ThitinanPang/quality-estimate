@@ -1,6 +1,10 @@
 @extends('layouts.header')
 
 @section('content')
+    @php
+        $isAssessor = session('login_type') == 'assessor';
+        $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
+    @endphp
     <form id="assessmentForm" action="{{route('results.collect')}}" method="GET">
         <input type="hidden" id="assessmentTypeInput">
         <div class="flex flex-col items-center justify-center">
@@ -139,8 +143,9 @@
         // 1. ดึงค่า Assessment Type ที่เลือกอยู่
         const type = document.getElementById('assessmentTypeInput').value;
         
-        // 2. ดึงชื่อคน Login ปัจจุบัน (Blade จะ Render เป็น String)
-        const currentUser = "{{ auth()->user()->name }}".trim();
+        // 2. ดึงชื่อคน Login ปัจจุบัน 
+        // แก้ไข: ใช้ตัวแปร $user ที่เราประกาศไว้ด้านบนของไฟล์ Blade (ที่เช็คทั้ง 2 Guards แล้ว)
+        const currentUser = "{{ $user->name ?? '' }}".trim();
         
         // 3. ดึงชื่อจากหน้าจอมาเช็ค
         const chairName = document.getElementById('chairpersonText').innerText.trim();
@@ -162,7 +167,6 @@
             }
         }
     });
-
     // เรียกทำงานเมื่อโหลดหน้า
     window.onload = updateAllData;
     

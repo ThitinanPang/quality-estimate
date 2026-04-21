@@ -6,7 +6,7 @@
 @source '../**/*.js';
 
 @theme {
-  --font-sans: 'THSarabun', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'TH Sarabun', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -18,8 +18,6 @@
 @font-face {
   font-family: 'THSarabun';
   src: url('../fonts/THSarabunNew.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
 }
 
 body {

@@ -2,16 +2,21 @@
 
 @section('content')
     @php
-        $user = Auth::user();
-        $role = $user->role;
-        $userName = $user->name;
+        // --- ส่วนที่แก้ไข: เช็ค Guard เพื่อดึง User ให้ถูกต้อง ---
+        $isAssessor = session('login_type') == 'assessor';
+        $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
+        
+        // ป้องกัน Error กรณี user หลุด
+        $role = $user->role ?? '';
+        $userName = $user->name ?? '';
+        // ---------------------------------------------------
         
         $canEdit = false;
 
         if ($role === 'admin university') {
             $canEdit = true;
         } 
-        elseif ($role === 'assessor' && isset($courseAssessor)) {
+        elseif (($role === 'assessor' || $isAssessor) && isset($courseAssessor)) {
             $isType3 = ($courseAssessor->assessment_type == 3);
             if ($isType3) {
                 $canEdit = ($userName === $courseAssessor->position);
@@ -22,14 +27,13 @@
 
         $isDisabled = !$canEdit;
     @endphp
-
     <div class="{{ $isDisabled ? 'pointer-events-none opacity-50' : '' }}">
         <form action="{{route('save.collect')}}" method="POST">
             @csrf
             <div class="flex flex-col items-center justify-center">
                 <div class="w-[1032px] h-[265px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[74px] pl-[40px] pt-[10px]">
                     <p class="text-[24px]">ชื่อ - นามสกุล</p>
-                    <input type="text" readonly name="name" value="{{Auth::user()->name}}"
+                    <input type="text" readonly name="name" value="{{ $userName }}"
                         class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
                     <p class="text-[24px]">คณะ</p>
                     <input type="text" readonly name="faculty" value="{{ $faculty->name }}"

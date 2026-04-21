@@ -46,6 +46,10 @@ return [
             'driver' => 'session',
             'provider' => 'ldap',
         ],
+        'assessor_guard' => [ // เพิ่ม guard ใหม่
+            'driver' => 'session',
+            'provider' => 'assessors',
+        ],
     ],
 
     /*
@@ -73,6 +77,10 @@ return [
         'users' => [
             'driver' => 'multi_table',
             'model' => App\Models\User::class,
+        ],
+        'assessors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UserAssessor::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

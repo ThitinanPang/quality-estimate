@@ -1,11 +1,14 @@
 @extends('layouts.header')
 
 @section('content')
-    <div class="{{ auth()->user()->role == 'user' ? 'pointer-events-none opacity-50' : '' }}">
+    @php
+        $isAssessor = session('login_type') == 'assessor';
+        $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
+    @endphp
+    <div class="{{ ($user->role == 'user') ? 'pointer-events-none opacity-50' : '' }}">
         <p class="absolute top-[184px] left-[690px] text-[45px]">หน้าหลัก</p>
-        <button type="button" onclick="window.location.href='{{route('user')}}'"
-            class="absolute w-[427px] h-[548px] left-[100px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]
-            {{ auth()->user()->role == 'assessor' ? 'pointer-events-none opacity-50' : '' }}">
+        <button type="button" onclick="window.location.href='{{route('user')}}'" class="absolute w-[427px] h-[548px] left-[100px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]
+                {{ ($user->role == 'assessor') ? 'pointer-events-none opacity-50' : '' }}">
             <svg class="absolute top-[113px] left-[157px]" width="114" height="119" viewBox="0 0 114 119" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path

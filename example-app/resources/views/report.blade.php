@@ -2,27 +2,31 @@
 
 @section('content')
     @php
-        $user = auth()->user();
+        // 1. ดึง User จาก Guard ที่ถูกต้อง (ใช้ Logic เดิมที่คุณทำไว้ด้านบน)
+        $isAssessor = session('login_type') == 'assessor';
+        $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
 
-        // --- เพิ่มโค้ดส่วนนี้เพื่ออ่านไฟล์ JSON ---
+        // 2. อ่านไฟล์ JSON เพื่อดูว่าใครได้รับอนุญาตบ้าง
         $path = storage_path('app/report_access.json');
         $publishedRoles = [];
         if (file_exists($path)) {
             $publishedRoles = json_decode(file_get_contents($path), true) ?: [];
         }
-        // ---------------------------------------
 
-        // สิทธิ์การเข้าถึงหน้า: 
-        // 1. Admin University เข้าได้เสมอ
-        // 2. Role อื่น (เช่น user, assessor) ต้องถูกเลือกไว้ใน JSON
-        $canAccess = ($user->role == 'admin university') || in_array($user->role, $publishedRoles);
+        // 3. ตรรกะการเช็คสิทธิ์ (ใช้ $user ที่ดึงมาแล้ว)
+        // - ถ้าเป็น admin university เข้าได้เลย
+        // - ถ้า role อื่นๆ ต้องมีชื่ออยู่ในรายการที่ "เผยแพร่" (JSON)
+        $canAccess = false;
+        if ($user) {
+            $canAccess = ($user->role == 'admin university') || in_array($user->role, $publishedRoles);
+        }
 
         $lockClass = !$canAccess ? 'pointer-events-none opacity-50' : '';
     @endphp
     <div class="{{ $lockClass }}">
         <div class="ml-[110px] mt-[42px]">
             <span class="text-[36px]">ข้อมูลรายงานระดับหลักสูตร</span>
-            @if(auth()->user()->role == 'admin university')
+            @if($user && $user->role == 'admin university')
                 <a href="javascript:void(0)" onclick="openPublishModal()"
                     class="border rounded-[10px] p-2 bg-[#FFCE00] ml-[800px]">
                     เผยแพร่
