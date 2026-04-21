@@ -2,11 +2,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
-    <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[36px] leading-[54px]">
+    <p class="absolute w-[257px] h-[53px] left-[85px] top-[200px] font-normal text-[40px] leading-[54px]">
         ข้อมูลผู้ประเมิน</p>
     {{-- ตัวอย่าง excel --}}
     <a href="{{ route('assessor.template') }}"
-        class="absolute left-[330px] top-[215px]  w-[174px] h-[30px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
+        class="absolute text-[20px] left-[270px] top-[210px]  w-[174px] h-[30px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M7.75852 11.6378L2.90944 6.7887L4.26718 5.38247L6.7887 7.90399V0H8.72833V7.90399L11.2499 5.38247L12.6076 6.7887L7.75852 11.6378ZM1.93963 15.517C1.40623 15.517 0.949772 15.3273 0.570251 14.9478C0.19073 14.5682 0.000646543 14.1115 0 13.5774V10.668H1.93963V13.5774H13.5774V10.668H15.517V13.5774C15.517 14.1108 15.3273 14.5676 14.9478 14.9478C14.5682 15.3279 14.1115 15.5177 13.5774 15.517H1.93963Z"
@@ -16,23 +16,23 @@
     </a>
     <form method="GET">
         <div
-            class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
+            class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[24px] items-center flex justify-center">
             ปีการศึกษา
             <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
         </div>
     </form>
     <span
-        class="w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort
+        class="w-[79px] text-[20px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort
         By</span>
     <select name="" id="sortName"
-        class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
+        class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center text-[20px]">
         <option value="asc">ก-ฮ</option>
         <option value="desc">ฮ-ก</option>
     </select>
     <div
         class="absolute w-[284px] h-[34.67px] right-[85px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
-            class="ml-4 outline-none border-none focus:outline-none focus:border-none ">
+            class="ml-4 text-[20px] outline-none border-none focus:outline-none focus:border-none ">
         <svg class="absolute left-[247px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -48,7 +48,7 @@
 
         <!-- ปุ่มกด -->
         <button type="button" onclick="document.getElementById('excelInput').click();"
-            class="absolute w-[155px] h-[37px] left-[85px] top-[267px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[18px] hover:bg-white">
+            class="absolute w-[155px] h-[37px] left-[85px] top-[267px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[22px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -80,8 +80,8 @@
         <table id="myTable" class="w-[1350px] border border-black box-border" style="width:1350px;">
             <thead class="bg-[#FFCE00]">
                 <tr>
-                    <th class="px-4 py-2 border-b text-center align-middle">เลือกรายการ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">เลือกรายการ</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">
                         <div class="flex items-center justify-center gap-2">
                             Code Assessor
                             <a href="javascript:void(0)" onclick="sortTableByCode()" id="codeSortBtn" data-order="asc">
@@ -94,18 +94,18 @@
                             </a>
                         </div>
                     </th>
-                    <th class="px-4 py-2 border-b text-center align-middle">คำนำหน้า</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">ชื่อ - นามสกุล</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">คำนำหน้า</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">ชื่อ - นามสกุล</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">
                         <span class='inline-flex items-center justify-center'>
                             คณะ
                         </span>
                     </th>
-                    <th class="px-4 py-2 border-b text-center align-middle">สถานะ</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Assessor Type</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">Training Type</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">อีเมล</th>
-                    <th class="px-4 py-2 border-b text-center align-middle">เบอร์โทรศัพท์</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">สถานะ</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">Assessor Type</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">Training Type</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">อีเมล</th>
+                    <th class="px-4 py-2 border-b text-center align-middle text-[20px]">เบอร์โทรศัพท์</th>
                 </tr>
             </thead>
             <tbody>
@@ -122,23 +122,23 @@
                                         d='M13.0517 3.53243L14.4575 2.05305C14.7506 1.74484 15.148 1.57169 15.5625 1.57169C15.977 1.57169 16.3744 1.74484 16.6675 2.05305C16.9606 2.36126 17.1252 2.77929 17.1252 3.21517C17.1252 3.65105 16.9606 4.06907 16.6675 4.37729L7.81833 13.6839C7.37777 14.1469 6.83447 14.4873 6.2375 14.6742L4 15.3753L4.66667 13.0222C4.8444 12.3943 5.16803 11.823 5.60833 11.3596L13.0517 3.53243ZM13.0517 3.53243L15.25 5.84439M14 11.8697V16.0326C14 16.5556 13.8025 17.0572 13.4508 17.427C13.0992 17.7968 12.6223 18.0046 12.125 18.0046H3.375C2.87772 18.0046 2.40081 17.7968 2.04917 17.427C1.69754 17.0572 1.5 16.5556 1.5 16.0326V6.83035C1.5 6.30737 1.69754 5.8058 2.04917 5.436C2.40081 5.06619 2.87772 4.85843 3.375 4.85843H7.33333'
                                         stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' />
                                 </svg>
-                                <a href="{{ route('editassessor', $row['id']) }}" class="text-[#7B7B7B]">แก้ไข</a>
+                                <a href="{{ route('editassessor', $row['id']) }}" class="text-[#7B7B7B] text-[20px]">แก้ไข</a>
                             </td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['code_assessor'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['prefix'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle whitespace-nowrap">{{ $row['name'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['faculty'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle capitalize">{{ $row['status'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle capitalize">{{ $row['assessor_type'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['training_type'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['email'] }}</td>
-                            <td class="px-4 py-2 border-b text-center align-middle">{{ $row['phone_number'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['code_assessor'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['prefix'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle whitespace-nowrap text-[20px]">{{ $row['name'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['faculty'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle capitalize text-[20px]">{{ $row['status'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle capitalize text-[20px]">{{ $row['assessor_type'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['training_type'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['email'] }}</td>
+                            <td class="px-4 py-2 border-b text-center align-middle text-[20px]">{{ $row['phone_number'] }}</td>
                         </tr>
                         @php $counter++; @endphp
                     @endwhile
                 @else
                     <tr>
-                        <td class="px-4 py-2 border-b text-center" colspan="10">ไม่มีข้อมูล</td>
+                        <td class="px-4 py-2 border-b text-center text-[20px]" colspan="10">ไม่มีข้อมูล</td>
                     </tr>
                 @endif
             </tbody>

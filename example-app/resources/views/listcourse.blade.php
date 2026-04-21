@@ -2,10 +2,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
     <div class="flex ml-[90px] mt-[70px]">
-        <p class="text-[36px]">ข้อมูลหลักสูตร</p>
+        <p class="text-[40px]">ข้อมูลหลักสูตร</p>
         {{-- ตัวอย่าง excel --}}
         <a href="{{ route('faculty.template') }}"
-            class="w-[174px] h-[30px] mt-[15px] ml-[20px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
+            class="text-[20px] w-[174px] h-[30px] mt-[15px] ml-[20px] gap-2 border rounded-[10px] flex items-center justify-center bg-[#FFCE00]">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M7.75852 11.6378L2.90944 6.7887L4.26718 5.38247L6.7887 7.90399V0H8.72833V7.90399L11.2499 5.38247L12.6076 6.7887L7.75852 11.6378ZM1.93963 15.517C1.40623 15.517 0.949772 15.3273 0.570251 14.9478C0.19073 14.5682 0.000646543 14.1115 0 13.5774V10.668H1.93963V13.5774H13.5774V10.668H15.517V13.5774C15.517 14.1108 15.3273 14.5676 14.9478 14.9478C14.5682 15.3279 14.1115 15.5177 13.5774 15.517H1.93963Z"
@@ -17,9 +17,9 @@
     </div>
     <div class="flex ml-[90px] gap-2 mt-[10px]">
         <a href="{{ route('listfaculty') }}"
-            class="w-[135px] h-[38px] text-[20px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">คณะ</a>
+            class="w-[135px] h-[38px] text-[24px] bg-[#D9D9D9] rounded-[5px] flex items-center justify-center">คณะ</a>
         <a href="{{ route('listcourse') }}"
-            class="{{ request()->routeIs('listcourse') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[135px] h-[38px] text-[20px] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
+            class="{{ request()->routeIs('listcourse') ? 'bg-[#BEBEBE]' : 'hover:bg-[#D9D9D9]' }} w-[135px] h-[38px] text-[24px] rounded-[5px] flex items-center justify-center">หลักสูตร</a>
     </div>
     <form id="importForm" action="{{ route('import.faculty') }}" method="post" enctype="multipart/form-data">
         @csrf
@@ -28,7 +28,7 @@
 
         <!-- ปุ่มกด -->
         <button type="button" onclick="document.getElementById('excelInput').click();"
-            class=" w-[155px] h-[37px] ml-[90px] mt-[10px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[18px] hover:bg-white">
+            class=" w-[155px] h-[37px] ml-[90px] mt-[10px] bg-[#FFCE00] border border-black rounded-[9px] box-border flex items-center justify-center text-[22px] hover:bg-white">
             <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M11.5 7.75V14.25M14.875 11H8.125M21.625 11C21.625 12.2804 21.3631 13.5482 20.8543 14.7312C20.3455 15.9141 19.5996 16.9889 18.6595 17.8943C17.7193 18.7997 16.6031 19.5178 15.3747 20.0078C14.1462 20.4978 12.8296 20.75 11.5 20.75C10.1704 20.75 8.85375 20.4978 7.62533 20.0078C6.39691 19.5178 5.28074 18.7997 4.34054 17.8943C3.40035 16.9889 2.65455 15.9141 2.14572 14.7312C1.63689 13.5482 1.375 12.2804 1.375 11C1.375 8.41414 2.44174 5.93419 4.34054 4.10571C6.23935 2.27723 8.81468 1.25 11.5 1.25C14.1853 1.25 16.7606 2.27723 18.6595 4.10571C20.5583 5.93419 21.625 8.41414 21.625 11Z"
@@ -39,23 +39,23 @@
     </form>
     <form method="GET">
         <div
-            class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[20px] items-center flex justify-center">
+            class="w-[236px] h-[46px] bg-[#FFCE00] rounded-[24px] absolute right-[85px] top-[210px] text-[24px] items-center flex justify-center">
             ปีการศึกษา
             <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
         </div>
     </form>
     <span
-        class="w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort
+        class="text-[20px] w-[79px] h-[32px] border bg-[#D9D9D9] rounded-l-[20px] absolute top-[158.33px] right-[458px] px-3 py-1">Sort
         By</span>
     <select name="" id="sortName"
-        class="w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
+        class="text-[20px] w-[79px] h-[32px] border rounded-r-[20px] absolute top-[158.33px] right-[380px] text-center">
         <option value="asc">ก-ฮ</option>
         <option value="desc">ฮ-ก</option>
     </select>
     <div
         class="absolute w-[284px] h-[34.67px] right-[85px] top-[158.33px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
         <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
-            class="ml-4 outline-none border-none focus:outline-none focus:border-none ">
+            class="ml-4 text-[20px] outline-none border-none focus:outline-none focus:border-none ">
         <svg class="absolute left-[247px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path
@@ -65,17 +65,17 @@
     </div>
     <form action="{{ route('listcourse') }}" method="get" id="filterForm">
         <div class="absolute left-[1160px] top-[270px]">
-            <span>วิทยาเขต :</span>
+            <span class="text-[20px]">วิทยาเขต :</span>
             <select name="campus" onchange="this.form.submit()"
-                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center text-[20px]">
                 <option value="" selected disabled>เลือกข้อมูล</option>
                 <option value="บางแสน" {{ request('campus') == 'บางแสน' ? 'selected' : '' }}>บางแสน</option>
                 <option value="จันทบุรี" {{ request('campus') == 'จันทบุรี' ? 'selected' : '' }}>จันทบุรี</option>
             </select>
         </div>
-        <div class="absolute left-[1130px] top-[320px]">
+        <div class="absolute left-[1135px] top-[320px] text-[20px]">
             <span>กลุ่มสาขาวิชา :</span>
-            <select name="subject_group" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+            <select name="subject_group" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center text-[20px]">
                 <option value="">เลือกข้อมูล</option>
                 <option value="วิทยาศาสตร์สุขภาพ">วิทยาศาสตร์สุขภาพ</option>
                 <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
@@ -88,10 +88,10 @@
                 <option value="สหสาขาวิชา">สหสาขาวิชา</option>
             </select>
         </div>
-        <div class="absolute left-[1190px] top-[370px]">
-            <span>คณะ :</span>
+        <div class="absolute left-[1183px] top-[370px]">
+            <span class="text-[20px]">คณะ :</span>
             <select name="faculty_id" onchange="this.form.submit()"
-                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center text-[20px]">
                 <option value="">เลือกข้อมูล</option>
                 @foreach($allFaculties as $f)
                     <option value="{{ $f->id }}" {{ request('faculty_id') == $f->id ? 'selected' : '' }}>
@@ -106,9 +106,9 @@
             <table id="myTable" class="w-full">
                 <thead class="bg-[#FFCE00] h-[66px]">
                     <tr>
-                        <th class="text-[24px] text-center w-[120px]">ลำดับที่</th>
-                        <th class="text-[24px] text-center w-[120px]">สถานะ</th>
-                        <th class="text-[24px] text-left pl-4">หลักสูตรภายใน มหาวิทยาลัยบูรพา</th>
+                        <th class="text-[28px] text-center w-[120px]">ลำดับที่</th>
+                        <th class="text-[28px] text-center w-[120px]">สถานะ</th>
+                        <th class="text-[28px] text-left pl-4">หลักสูตรภายใน มหาวิทยาลัยบูรพา</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,8 +127,8 @@
                         @foreach ($faculties as $index => $faculty)
                             @foreach ($faculty->courses as $course)
                                 <tr>
-                                    <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$i++}}</td>
-                                    <td class="px-2 py-2 text-center text-[24px] w-[120px]">
+                                    <td class="px-2 py-2 text-center text-[28px] w-[120px]">{{$i++}}</td>
+                                    <td class="px-2 py-2 text-center text-[28px] w-[120px]">
                                         <select name="" data-id="{{ $course->id }}"
                                             class="w-auto h-[40px] rounded-[14px] border text-center status-select">
                                             <option class="bg-white" value="active" {{ $course->status == 'active' ? 'selected' : '' }}>
@@ -139,7 +139,7 @@
                                                 Suspended</option>
                                         </select>
                                     </td>
-                                    <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">
+                                    <td class="px-2 py-2 text-[28px] text-left pl-4 flex flex-col">
                                         <div class="w-full flex items-center">
                                             {{ $course->name }}
                                         </div>
@@ -150,7 +150,7 @@
                     @else
                         {{-- ใช้ Tailwind Class และคำว่า "ไม่มีข้อมูล" ตามที่คุณเขียนไว้ในโค้ดตั้งต้น --}}
                         <tr>
-                            <td class="px-4 py-2 text-center" colspan="3">
+                            <td class="px-4 py-2 text-center text-[28px]" colspan="3">
                                 ไม่มีข้อมูล
                             </td>
                         </tr>
@@ -197,7 +197,7 @@
 
                 var cell = document.createElement("td");
                 cell.colSpan = 10;
-                cell.className = "px-4 py-2 text-center";
+                cell.className = "px-4 py-2 text-center text-[28px]";
                 cell.innerText = "ไม่พบข้อมูล";
 
                 row.appendChild(cell);

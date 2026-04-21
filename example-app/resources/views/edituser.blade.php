@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col items-center justify-center mt-[32px]">
-        <p class="text-[24px] w-[900px] h-[40px] bg-[#FFCE00] text-center border border-b-0 rounded-t-[14px]">
+        <p class="text-[28px] w-[900px] h-[40px] bg-[#FFCE00] text-center border border-b-0 rounded-t-[14px]">
             แก้ไขข้อมูลผู้ใช้</p>
 
         <form action="{{ route('updateuser', $user->id) }}" method="POST">
@@ -10,8 +10,8 @@
             <div id="formContainer"
                 class="border rounded-b-[39px] bg-[#DBDBDB] w-[900px] pl-[40px] pr-[40px] pt-[10px] overflow-y-auto">
 
-                <p class="mt-[9px]">ตำแหน่ง</p>
-                <select name="role" id="roleSelector" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                <p class="mt-[9px] text-[20px]">ตำแหน่ง</p>
+                <select name="role" id="roleSelector" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin Faculty</option>
                     <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>Admin
@@ -20,36 +20,36 @@
                 </select>
 
                 <div id="form-user">
-                    <p class="mt-[9px]">คำนำหน้า</p>
+                    <p class="mt-[9px] text-[20px]">คำนำหน้า</p>
                     <input type="text" name="prefix" value="{{ $user->prefix }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">ชื่อ - สกุล</p>
+                    <p class="mt-[9px] text-[20px]">ชื่อ - สกุล</p>
                     <input type="text" name="name" value="{{ $user->name }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">กลุ่มวิชา</p>
+                    <p class="mt-[9px] text-[20px]">กลุ่มวิชา</p>
                     <input type="text" name="subject_group" value="{{ $user->subject_group }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">คณะ</p>
+                    <p class="mt-[9px] text-[20px]">คณะ</p>
                     <input type="text" name="faculty" value="{{ $user->faculty }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">หลักสูตร</p>
+                    <p class="mt-[9px] text-[20px]">หลักสูตร</p>
                     <input type="text" name="course" value="{{ $user->course }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">อีเมล</p>
+                    <p class="mt-[9px] text-[20px]">อีเมล</p>
                     <input type="email" name="email" value="{{ $user->email }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">เบอร์โทรศัพท์</p>
+                    <p class="mt-[9px] text-[20px]">เบอร์โทรศัพท์</p>
                     <input type="text" name="phone_number" value="{{ $user->phone_number }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">สถานะ</p>
-                    <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                    <p class="mt-[9px] text-[20px]">สถานะ</p>
+                    <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
                         <option value="retired" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
                         <option value="expired" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
@@ -58,52 +58,52 @@
                 </div>
                 {{-- role assessor --}}
                 <div id="form-assessor" class="hidden">
-                    <p class="mt-[9px]">Code Assessor <span class="text-red-500">*</span></p>
-                    <input required name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3"
+                    <p class="mt-[9px] text-[20px]">Code Assessor <span class="text-red-500">*</span></p>
+                    <input required name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]"
                         value="{{ $user->code_assessor ?? '' }}">
 
-                    <p class="mt-[9px]">คำนำหน้า</p>
+                    <p class="mt-[9px] text-[20px]">คำนำหน้า</p>
                     <input type="text" name="assessor_prefix" value="{{ $user->prefix }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">ชื่อ - สกุล</p>
+                    <p class="mt-[9px] text-[20px]">ชื่อ - สกุล</p>
                     <input type="text" name="name" value="{{ $user->name }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">กลุ่มวิชา</p>
+                    <p class="mt-[9px] text-[20px]">กลุ่มวิชา</p>
                     <input type="text" name="subject_group" value="{{ $user->subject_group }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">คณะ</p>
+                    <p class="mt-[9px] text-[20px]">คณะ</p>
                     <input type="text" name="faculty" value="{{ $user->faculty }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">หลักสูตร</p>
+                    <p class="mt-[9px] text-[20px]">หลักสูตร</p>
                     <input type="text" name="course" value="{{ $user->course }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">Assessor Type</p>
-                    <select name="assessor_type" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                    <p class="mt-[9px] text-[20px]">Assessor Type</p>
+                    <select name="assessor_type" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                         <option value="junior">Junior</option>
                         <option value="senior">Senior</option>
                         <option value="lead">Lead</option>
                         <option value="lead">Novice</option>
                     </select>
 
-                    <p class="mt-[9px]">Training Type <span class="text-red-500">*</span></p>
+                    <p class="mt-[9px] text-[20px]">Training Type <span class="text-red-500">*</span></p>
                     <input required type="text" name="training_type"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">อีเมล</p>
+                    <p class="mt-[9px] text-[20px]">อีเมล</p>
                     <input type="email" name="email" value="{{ $user->email }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">เบอร์โทรศัพท์</p>
+                    <p class="mt-[9px] text-[20px]">เบอร์โทรศัพท์</p>
                     <input type="text" name="phone_number" value="{{ $user->phone_number }}"
-                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
-                    <p class="mt-[9px]">สถานะ</p>
-                    <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
+                    <p class="mt-[9px] text-[20px]">สถานะ</p>
+                    <select name="status" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>Active</option>
                         <option value="retired" {{ $user->status == 'retire' ? 'selected' : '' }}>Retired</option>
                         <option value="expired" {{ $user->status == 'expire' ? 'selected' : '' }}>Expired</option>
@@ -114,8 +114,8 @@
 
             <div class="justify-center flex gap-[50px]">
                 <button type="button" onclick="window.history.back()"
-                    class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border">ยกเลิก</button>
-                <button type="submit" onclick="myfunction()" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
+                    class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border text-[20px]">ยกเลิก</button>
+                <button type="submit" onclick="myfunction()" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white text-[20px]">
                     บันทึก
                 </button>
             </div>
@@ -141,14 +141,14 @@
             if (isAssessor) {
                 formUser.classList.add('hidden');
                 formAssessor.classList.remove('hidden');
-                formContainer.style.height = "840px";
+                formContainer.style.height = "920px";
 
                 setInputsDisabled(formUser, true);
                 setInputsDisabled(formAssessor, false);
             } else {
                 formUser.classList.remove('hidden');
                 formAssessor.classList.add('hidden');
-                formContainer.style.height = "650px";
+                formContainer.style.height = "700px";
 
                 setInputsDisabled(formUser, false);
                 setInputsDisabled(formAssessor, true);

@@ -34,24 +34,24 @@
                 <div class="w-[1032px] h-[265px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[74px] pl-[40px] pt-[10px]">
                     <p class="text-[24px]">ชื่อ - นามสกุล</p>
                     <input type="text" readonly name="name" value="{{ $userName }}"
-                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
+                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3 text-[20px]">
                     <p class="text-[24px]">คณะ</p>
                     <input type="text" readonly name="faculty" value="{{ $faculty->name }}"
-                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
+                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3 text-[20px]">
                     <p class="text-[24px]">หลักสูตร</p>
                     <input type="text" readonly name="courses" value="{{$course->name}}"
-                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3">
+                        class="bg-[#BEBEBE] w-[937px] h-[30px] rounded border mt-2 pl-3 text-[20px]">
                 </div>
 
                 <div class="w-[1032px] h-[213px] bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] pl-[40px] pt-[10px]">
                     <p class="text-[24px]">ส่วนที่ 1 การกำกับมาตรฐาน</p>
-                    <select name="criterion" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3">
+                    <select name="criterion" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3 text-[20px]">
                         <option value="เป็นไปตามเกณฑ์" {{ old('criterion', $existingAssessment->criterion ?? '') == 'เป็นไปตามเกณฑ์' ? 'selected' : '' }}>เป็นไปตามเกณฑ์</option>
                         <option value="ไม่เป็นไปตามเกณฑ์" {{ old('criterion', $existingAssessment->criterion ?? '') == 'ไม่เป็นไปตามเกณฑ์' ? 'selected' : '' }}>ไม่เป็นไปตามเกณฑ์</option>
                     </select>
 
                     <p class="text-[24px] mt-[9px]">ส่วนที่ 2 ผลการตรวจประเมินตามเกณฑ์ AUN-QA</p>
-                    <select name="result" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3">
+                    <select name="result" class="w-[918px] h-[42px] border rounded-[5px] bg-white mt-[9px] pl-3 text-[20px]">
                         <option value="1" {{ old('result', $existingAssessment->result ?? '') == '1' ? 'selected' : '' }}>Absolutely Inadequate (Rating 1)</option>
                         <option value="2" {{ old('result', $existingAssessment->result ?? '') == '2' ? 'selected' : '' }}>Inadequate and Improvement is Necessary (Rating 2)</option>
                         <option value="3" {{ old('result', $existingAssessment->result ?? '') == '3' ? 'selected' : '' }}>Inadequate but Minor Improvement Will Make It Adequate (Rating 3)</option>
@@ -64,9 +64,9 @@
 
                 <div class="w-[1040px] h-auto bg-[#DBDBDB] border border-black rounded-[39px] mt-[32px] p-[20px] pl-[40px]">
                     <p class="text-[24px]">Strength</p>
-                    <textarea name="strength" class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]">{{ old('strength', $existingAssessment->strength ?? '') }}</textarea>
+                    <textarea name="strength" class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px] text-[20px]">{{ old('strength', $existingAssessment->strength ?? '') }}</textarea>
                     <p class="text-[24px] mt-[9px]">Area for Improvement</p>
-                    <textarea name="improvement" class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px]">{{ old('improvement', $existingAssessment->improvement ?? '') }}</textarea>
+                    <textarea name="improvement" class="pl-3 w-[918px] h-[42px] rounded-[5px] bg-white border mt-[9px] text-[20px]">{{ old('improvement', $existingAssessment->improvement ?? '') }}</textarea>
                 </div>
 
                 @php
@@ -123,7 +123,7 @@
                 @endforeach
 
                 <button type="submit" onclick="alert('บันทึกสำเร็จ')"
-                    class="w-[155px] h-[37px] mt-[32px] hover:bg-white bg-[#FFCE00] border rounded-[9px]">บันทึก</button>
+                    class="w-[155px] h-[37px] mt-[32px] hover:bg-white bg-[#FFCE00] border rounded-[9px] text-[20px]">บันทึก</button>
                 <div class="h-[100px]"></div>
             </div>
         </form>

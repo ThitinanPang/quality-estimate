@@ -5,9 +5,6 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
-@theme {
-  --font-sans: 'TH Sarabun', ui-sans-serif, system-ui, sans-serif;
-}
 
 @layer base {
   [x-cloak] {
@@ -16,10 +13,10 @@
 }
 
 @font-face {
-  font-family: 'THSarabun';
+  font-family: 'TH Sarabun New';
   src: url('../fonts/THSarabunNew.ttf') format('truetype');
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: 'TH Sarabun New';
 }

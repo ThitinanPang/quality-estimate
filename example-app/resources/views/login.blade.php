@@ -13,12 +13,12 @@
     <a href="{{route('login')}}"></a>
     <div class="flex flex-col items-center justify-center min-h-screen">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Buu-logo11.png" alt="" class="w-[100px] h-[100px]">
-        <span class="text-[24px] text-center p-5">ระบบรายงานผลคุณภาพการศึกษา <br> ภายในมหาวิทยาลัยบูรพา</span>
+        <span class="text-[28px] text-center p-5">ระบบรายงานผลคุณภาพการศึกษา <br> ภายในมหาวิทยาลัยบูรพา</span>
         {{-- ฟอร์มเข้าสู่ระบบ --}}
         <form method="POST" action="{{route('login.submit')}}"
             class="flex flex-col space-y-4 p-8 bg-white rounded-xl shadow-lg border mt-3">
             @csrf
-            <h1 class="text-2xl font-bold text-center">เข้าสู่ระบบ</h1>
+            <h1 class="text-[28px] font-bold text-center">เข้าสู่ระบบ</h1>
             {{-- แสดงข้อความ error ในการเข้าสู้ระบบ --}}
             @if($errors->any())
                 <div class="text-red-500 text-sm items-center justify-center flex">
@@ -30,10 +30,10 @@
                 </div>
             @endif
             <input name="email" type="text" placeholder="EMAIL BUU" value="{{old('email')}}"
-                class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-[24px]">
             <div class="relative">
                 <input id="password" name="password" type="password" placeholder="PASSWORD"
-                    class="px-4 py-2 border rounded-md w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="px-4 py-2 border rounded-md w-full pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 text-[24px]">
                 {{-- ปุ่ม toggle แสดง/ซ่อนรหัสผ่าน --}}
                 <button type="button" onclick="togglePassword()"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center text-black-500">
@@ -55,8 +55,8 @@
             </div>
 
             <a href="https://myid.buu.ac.th/newchangepwd"
-                class="text-blue-500 hover:underline text-sm text-center">ลืมรหัสผ่าน?</a>
-            <button class="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">ตกลง</button>
+                class="text-blue-500 hover:underline text-[20px] text-center">ลืมรหัสผ่าน?</a>
+            <button class="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 text-[24px]">ตกลง</button>
         </form>
     </div>
 </body>

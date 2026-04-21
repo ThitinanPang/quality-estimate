@@ -28,7 +28,7 @@
             <span class="text-[36px]">ข้อมูลรายงานระดับหลักสูตร</span>
             @if($user && $user->role == 'admin university')
                 <a href="javascript:void(0)" onclick="openPublishModal()"
-                    class="border rounded-[10px] p-2 bg-[#FFCE00] ml-[800px]">
+                    class="border rounded-[10px]  p-2 bg-[#FFCE00] ml-[870px] text-[20px]">
                     เผยแพร่
                 </a>
             @endif
@@ -1368,7 +1368,7 @@
                 <div class="bg-[#FFCE00] px-6 py-4 flex items-center justify-between">
                     <div class="w-8"></div>
 
-                    <h3 class="text-[22px] font-bold">ตั้งค่าสิทธิ์การเข้าถึงรายงาน</h3>
+                    <h3 class="text-[24px] font-bold">ตั้งค่าสิทธิ์การเข้าถึงรายงาน</h3>
 
                     <button onclick="closePublishModal()"
                         class="text-black text-2xl cursor-pointer w-8 text-right">&times;</button>
@@ -1376,30 +1376,30 @@
 
                 <form action="{{ route('report.publish.update') }}" method="POST" class="p-6">
                     @csrf
-                    <p class="text-[18px] mb-4 text-gray-600">เลือกกลุ่มผู้ใช้งานที่สามารถเข้าถึงหน้านี้ได้:</p>
+                    <p class="text-[22px] mb-4 text-gray-600">เลือกกลุ่มผู้ใช้งานที่สามารถเข้าถึงหน้านี้ได้:</p>
 
                     <div class="space-y-3">
                         <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                             <input type="checkbox" name="roles[]" value="user" {{ in_array('user', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
-                            <span class="ml-3 text-[18px]">User (ผู้ใช้ทั่วไป)</span>
+                            <span class="ml-3 text-[22px]">User (ผู้ใช้ทั่วไป)</span>
                         </label>
 
                         <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                             <input type="checkbox" name="roles[]" value="admin" {{ in_array('admin', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
-                            <span class="ml-3 text-[18px]">Admin Faculty (คณะ)</span>
+                            <span class="ml-3 text-[22px]">Admin Faculty (คณะ)</span>
                         </label>
 
                         <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                             <input type="checkbox" name="roles[]" value="assessor" {{ in_array('assessor', $publishedRoles) ? 'checked' : '' }} class="w-5 h-5 text-[#FFCE00]">
-                            <span class="ml-3 text-[18px]">Assessor (ผู้ประเมิน)</span>
+                            <span class="ml-3 text-[22px]">Assessor (ผู้ประเมิน)</span>
                         </label>
                     </div>
 
                     <div class="mt-6 flex justify-end gap-3">
                         <button type="button" onclick="closePublishModal()"
-                            class="px-4 py-2 bg-gray-200 rounded-lg">ยกเลิก</button>
+                            class="px-4 py-2 bg-gray-200 rounded-lg text-[20px]">ยกเลิก</button>
                         <button type="submit"
-                            class="px-4 py-2 bg-[#FFCE00] rounded-lg font-bold hover:bg-yellow-500">บันทึกการเผยแพร่</button>
+                            class="px-4 py-2 bg-[#FFCE00] rounded-lg hover:bg-yellow-500 text-[20px]">บันทึกการเผยแพร่</button>
                     </div>
                 </form>
             </div>

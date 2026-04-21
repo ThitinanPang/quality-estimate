@@ -10,10 +10,10 @@
         $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
     @endphp
     <div class="ml-[90px] mt-[20px] flex items-center">
-        <span class="text-[36px]">ตารางข้อมูลการประเมิน</span>
+        <span class="text-[40px]">ตารางข้อมูลการประเมิน</span>
         <form method="GET">
             <div
-                class="w-[236px] h-[46px] bg-[#FFCE00] ml-[20px] rounded-[24px] text-[20px] items-center flex justify-center">
+                class="w-[236px] h-[46px] bg-[#FFCE00] ml-[20px] rounded-[24px] text-[24px] items-center flex justify-center">
                 ปีการศึกษา
                 <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
             </div>
@@ -21,8 +21,8 @@
         <div
             class="w-[284px] h-[34.67px] ml-[530px] bg-[#D9D9D9] border border-black rounded-[20px] box-border flex items-center">
             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search" title="Type in a name"
-                class="ml-4 outline-none border-none focus:outline-none focus:border-none ">
-            <svg class="ml-[40px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                class="ml-4 text-[20px] outline-none border-none focus:outline-none focus:border-none ">
+            <svg class="ml-[80px]" width="18" height="18" viewBox="0 0 18 18" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M17.1542 16.2675L12.5061 11.9769M12.5061 11.9769C13.7641 10.8157 14.4709 9.24071 14.4709 7.59847C14.4709 5.95622 13.7641 4.38124 12.5061 3.21999C11.2481 2.05875 9.54189 1.40637 7.76279 1.40637C5.98369 1.40637 4.27746 2.05875 3.01944 3.21999C1.76143 4.38124 1.05469 5.95622 1.05469 7.59847C1.05469 9.24071 1.76143 10.8157 3.01944 11.9769C4.27746 13.1382 5.98369 13.7906 7.76279 13.7906C9.54189 13.7906 11.2481 13.1382 12.5061 11.9769Z"
@@ -37,11 +37,11 @@
             <table id="myTable" class="w-[2735px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
-                        <th class="border text-[20px] px-4 py-2">ลำดับที่</th>
-                        <th class="border text-[20px] px-4 py-2">หลักสูตร</th>
-                        <th class="border text-[20px] px-4 py-2">คณะ/วิทยาลัย</th>
-                        <th class="border text-[20px] px-4 py-2">ระดับการศึกษา</th>
-                        <th class="border text-[20px] px-4 py-2">
+                        <th class="border text-[24px] px-4 py-2">ลำดับที่</th>
+                        <th class="border text-[24px] px-4 py-2">หลักสูตร</th>
+                        <th class="border text-[24px] px-4 py-2">คณะ/วิทยาลัย</th>
+                        <th class="border text-[24px] px-4 py-2">ระดับการศึกษา</th>
+                        <th class="border text-[24px] px-4 py-2">
                             <div class="flex items-center justify-center gap-2">
                                 รูปแบบการประเมิน
                                 <a href="" onclick="openModal(); return false;">
@@ -54,12 +54,12 @@
                                 </a>
                             </div>
                         </th>
-                        <th class="border text-[20px] px-4 py-2">ประธานการประเมิน</th>
-                        <th class="border text-[20px] px-4 py-2">กรรมการ</th>
-                        <th class="border text-[20px] px-4 py-2">ผู้ฝึกประสบการณ์</th>
-                        <th class="border text-[20px] px-4 py-2">วันตรวจประเมิน</th>
-                        <th class="border text-[20px] px-4 py-2">เลขา</th>
-                        <th class="border text-[20px] px-4 py-2">ประเมิน</th>
+                        <th class="border text-[24px] px-4 py-2">ประธานการประเมิน</th>
+                        <th class="border text-[24px] px-4 py-2">กรรมการ</th>
+                        <th class="border text-[24px] px-4 py-2">ผู้ฝึกประสบการณ์</th>
+                        <th class="border text-[24px] px-4 py-2">วันตรวจประเมิน</th>
+                        <th class="border text-[24px] px-4 py-2">เลขา</th>
+                        <th class="border text-[24px] px-4 py-2">ประเมิน</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,39 +78,39 @@
                     @endphp
                     @forelse ($courseassessor as $index => $row)
                         <tr>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $index + 1 }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->course->name ?? '-' }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $index + 1 }}</td>
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->course->name ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->faculty->name ?? '-' }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->faculty->name ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $levelMap[$row->education_level] ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $typeMap[$row->assessment_type] ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->chairperson }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->chairperson }}
                                 <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
                                     คณะ: {{ $row->getFacultyOf($row->chairperson) }}
                                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
                                 </div>
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->position }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->position }}
                                 <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
                                     คณะ: {{ $row->getFacultyOf($row->position) }}
                                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
                                 </div>                            </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->intern }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->intern }}
                                 <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
                                     คณะ: {{ $row->getFacultyOf($row->intern) }}
                                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
                                 </div>                            </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date ? \Carbon\Carbon::parse($row->assessment_date)->addYears(543)->format('d/m/Y') : '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->secretary }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->assessment_date ? \Carbon\Carbon::parse($row->assessment_date)->addYears(543)->format('d/m/Y') : '-' }}</td>
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB] relative group cursor-pointer">{{ $row->secretary }}
                                 <div class="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-black text-white text-xs rounded-md whitespace-nowrap">
                                     คณะ: {{ $row->getFacultyOf($row->secretary) }}
                                     <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-black"></div>
                                 </div>                            </td>
                             <form action="{{route('tableassessor.save')}}" method="get">
-                                <td class="border text-center px-4 py-4 bg-[#DBDBDB]">
+                                <td class="border text-center px-4 py-4 bg-[#DBDBDB] text-[24px]">
                                     <input type="hidden" name="faculty_id" value="{{ $row->faculty->id }}">
                                     <input type="hidden" name="course_id" value="{{ $row->course->id }}">
                                     @php
@@ -121,12 +121,12 @@
                                     @endphp
                                     @if($canAssess)
                                         <button type="submit"
-                                            class="w-[155px] h-[37px] border bg-[#FFCE00] hover:bg-white rounded-[5px] p-2">
+                                            class="w-[155px] h-[37px] border bg-[#FFCE00] hover:bg-white rounded-[5px] p-2 text-[24px]">
                                             ประเมิน
                                         </button>
                                     @else
                                         <button type="button" disabled
-                                            class="w-auto h-[37px] rounded-[5px] p-2">
+                                            class="w-auto h-[37px] rounded-[5px] p-2 text-[24px]">
                                             {{ $disabledText }}
                                         </button>
                                     @endif
@@ -135,7 +135,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="text-center text-[20px] py-4 border bg-[#DBDBDB]">ไม่มีข้อมูล</td>
+                            <td colspan="11" class="text-center text-[24px] py-4 border bg-[#DBDBDB]">ไม่มีข้อมูล</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -146,7 +146,7 @@
         <div class="bg-white rounded-[16px] w-[500px] shadow-lg">
             <!-- header -->
             <div class="bg-[#FFCE00] px-4 py-3 flex justify-between items-center rounded-t-[16px] border-b">
-                <p class="text-[20px]">รูปแบบการตรวจประเมิน</p>
+                <p class="text-[24px]">รูปแบบการตรวจประเมิน</p>
                 <a href="" onclick="closeModal(); return false;">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -156,7 +156,7 @@
                 </a>
             </div>
             <!-- content -->
-            <div class="p-4 text-[16px]">
+            <div class="p-4 text-[20px]">
                 <p>1. การตรวจประเมินแบบหนึ่งวัน (O)</p>
                 <p>2. การตรวจประเมินแบบเต็ม (Full Assessment, 2 วัน : F)</p>
                 <p>3. การตรวจประเมินโดยมีกรรมการเป็นผู้ทรงคุณวุฒิภายนอก <br> (ตรวจประเมินฯ 2 วัน : ประธานคนนอก)</p>
@@ -211,7 +211,7 @@
 
                 var cell = document.createElement("td");
                 cell.colSpan = 11;
-                cell.className = "py-4 text-center border bg-[#DBDBDB] text-[20px]";
+                cell.className = "py-4 text-center border bg-[#DBDBDB] text-[24px]";
                 cell.innerText = "ไม่พบข้อมูล";
 
                 row.appendChild(cell);

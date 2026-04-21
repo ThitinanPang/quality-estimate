@@ -6,10 +6,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('content')
     <div class="ml-[90px] mt-[20px] flex items-center">
-        <span class="text-[36px]">ผู้ประเมินหลักสูตร</span>
+        <span class="text-[40px]">ผู้ประเมินหลักสูตร</span>
         <form method="GET">
             <div
-                class="w-[236px] h-[46px] bg-[#FFCE00] ml-[900px] rounded-[24px] text-[20px] items-center flex justify-center">
+                class="w-[236px] h-[46px] bg-[#FFCE00] ml-[900px] rounded-[24px] text-[24px] items-center flex justify-center">
                 ปีการศึกษา
                 <select name="thai_year" id="thai-year" class="h-[46px] ml-2" onchange="this.form.submit()"></select>
             </div>
@@ -20,11 +20,11 @@
             <table id="myTable" class="w-[2328px]">
                 <thead class="bg-[#FFCE00]">
                     <tr>
-                        <th class="border text-[20px] px-2 py-2">ลำดับที่</th>
-                        <th class="border text-[20px] px-2 py-2">รหัสหลักสูตร</th>
-                        <th class="border text-[20px] px-2 py-2">คณะ/วิทยาลัย</th>
-                        <th class="border text-[20px] px-2 py-2">กลุ่มวิชา</th>
-                        <th class="border text-[20px] px-2 py-2">
+                        <th class="border text-[24px] px-2 py-2">ลำดับที่</th>
+                        <th class="border text-[24px] px-2 py-2">รหัสหลักสูตร</th>
+                        <th class="border text-[24px] px-2 py-2">คณะ/วิทยาลัย</th>
+                        <th class="border text-[24px] px-2 py-2">กลุ่มวิชา</th>
+                        <th class="border text-[24px] px-2 py-2">
                             <div class="flex items-center justify-center gap-2">
                                 ระดับการศึกษา
                                 <a href="" onclick="sortTable(4); return false;">
@@ -38,8 +38,8 @@
                                 </a>
                             </div>
                         </th>
-                        <th class="border text-[20px] px-2 py-2">หลักสูตร</th>
-                        <th class="border text-[20px] px-2 py-2">
+                        <th class="border text-[24px] px-2 py-2">หลักสูตร</th>
+                        <th class="border text-[24px] px-2 py-2">
                             <div class="flex items-center justify-center gap-2">
                                 รูปแบบการประเมิน
                                 <a href="" onclick="openModal(); return false;">
@@ -52,9 +52,9 @@
                                 </a>
                             </div>
                         </th>
-                        <th class="border text-[20px] px-2 py-2">ประธานการประเมิน</th>
-                        <th class="border text-[20px] px-2 py-2">กรรมการ</th>
-                        <th class="border text-[20px] px-2 py-2">ผู้ฝึกประสบการณ์</th>
+                        <th class="border text-[24px] px-2 py-2">ประธานการประเมิน</th>
+                        <th class="border text-[24px] px-2 py-2">กรรมการ</th>
+                        <th class="border text-[24px] px-2 py-2">ผู้ฝึกประสบการณ์</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,33 +73,33 @@
                     @endphp
                     @forelse ($courseassessor as $index => $row)
                         <tr>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $index + 1 }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $index + 1 }}</td>
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $row->course->code ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $row->course->faculty->name ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $row->subject_group ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $levelMap[$row->education_level] ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $row->course->name ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">
                                 {{ $typeMap[$row->assessment_type] ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->chairperson ?? '-' }}
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->chairperson ?? '-' }}
                             </td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->position ?? '-' }}</td>
-                            <td class="border text-[20px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->intern ?? '-' }}</td>
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->position ?? '-' }}</td>
+                            <td class="border text-[24px] text-center px-4 py-2 bg-[#DBDBDB]">{{ $row->intern ?? '-' }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="text-center text-[20px] py-4 border bg-[#DBDBDB]">ไม่มีข้อมูล</td>
+                            <td colspan="10" class="text-center text-[24px] py-4 border bg-[#DBDBDB]">ไม่มีข้อมูล</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -110,7 +110,7 @@
         <div class="bg-white rounded-[16px] w-[500px] shadow-lg">
             <!-- header -->
             <div class="bg-[#FFCE00] px-4 py-3 flex justify-between items-center rounded-t-[16px] border-b">
-                <p class="text-[20px]">รูปแบบการตรวจประเมิน</p>
+                <p class="text-[24px]">รูปแบบการตรวจประเมิน</p>
                 <a href="" onclick="closeModal(); return false;">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -120,7 +120,7 @@
                 </a>
             </div>
             <!-- content -->
-            <div class="p-4 text-[16px]">
+            <div class="p-4 text-[20px]">
                 <p>1. การตรวจประเมินแบบหนึ่งวัน (O)</p>
                 <p>2. การตรวจประเมินแบบเต็ม (Full Assessment, 2 วัน : F)</p>
                 <p>3. การตรวจประเมินโดยมีกรรมการเป็นผู้ทรงคุณวุฒิภายนอก <br> (ตรวจประเมินฯ 2 วัน : ประธานคนนอก)</p>

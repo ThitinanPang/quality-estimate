@@ -6,7 +6,7 @@
         $user = $isAssessor ? Auth::guard('assessor_guard')->user() : Auth::user();
     @endphp
     <div class="{{ ($user->role == 'user') ? 'pointer-events-none opacity-50' : '' }}">
-        <p class="absolute top-[184px] left-[690px] text-[45px]">หน้าหลัก</p>
+        <p class="absolute top-[184px] left-[690px] text-[49px]">หน้าหลัก</p>
         <button type="button" onclick="window.location.href='{{route('user')}}'" class="absolute w-[427px] h-[548px] left-[100px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]
                 {{ ($user->role == 'assessor') ? 'pointer-events-none opacity-50' : '' }}">
             <svg class="absolute top-[113px] left-[157px]" width="114" height="119" viewBox="0 0 114 119" fill="none"
@@ -22,7 +22,7 @@
                     d="M56.9995 73.8116C45.6471 73.8116 36.4321 64.2144 36.4321 52.4517C36.4321 40.6891 45.6471 31.1411 56.9995 31.1411C68.352 31.1411 77.567 40.6891 77.567 52.4517C77.567 64.2144 68.352 73.8116 56.9995 73.8116ZM56.9995 38.5235C49.5895 38.5235 43.5571 44.7741 43.5571 52.4517C43.5571 60.1787 49.5895 66.4291 56.9995 66.4291C64.4095 66.4291 70.442 60.1787 70.442 52.4517C70.442 44.7741 64.4095 38.5235 56.9995 38.5235Z"
                     fill="black" fill-opacity="0.9" />
             </svg>
-            <span class="absolute top-[300px] left-[122px] text-[40px]">ข้อมูลพื้นฐาน</span>
+            <span class="absolute top-[300px] left-[142px] text-[44px]">ข้อมูลพื้นฐาน</span>
         </button>
         <button type="button" onclick="window.location.href='{{route('results')}}'"
             class="absolute w-[427px] h-[548px] left-[550px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
@@ -35,7 +35,7 @@
                     d="M38 61.75H49.875M38 42.75H68.875M38 80.75H45.125M94.183 15.067C88.6207 9.50003 79.6622 9.50003 61.75 9.50003H52.25C34.3377 9.50003 25.3792 9.50003 19.817 15.067C14.2547 20.634 14.25 29.5878 14.25 47.5V66.5C14.25 84.4123 14.25 93.3708 19.817 98.933C25.384 104.495 34.3377 104.5 52.25 104.5H61.75C79.6622 104.5 88.6207 104.5 94.183 98.933C98.667 94.4538 99.5362 87.78 99.7072 76"
                     stroke="black" stroke-width="6.48387" stroke-linecap="round" />
             </svg>
-            <span class="absolute top-[300px] left-[53px] text-[40px]">บันทึกข้อมูลพื้นฐาน</span>
+            <span class="absolute top-[300px] left-[93px] text-[44px]">บันทึกข้อมูลพื้นฐาน</span>
         </button>
         <button type="button" onclick="window.location.href='{{route('report')}}'"
             class="absolute w-[427px] h-[548px] left-[1008px] top-[299px] bg-[#D9D9D9] shadow-md rounded-[12px] hover:bg-[#FFCE00]">
@@ -46,7 +46,7 @@
                     fill="black" />
                 <path d="M35.625 78.375H78.375V85.5H35.625V78.375ZM35.625 57H78.375V64.125H35.625V57Z" fill="black" />
             </svg>
-            <span class="absolute top-[274px] left-[98px] text-[40px] whitespace-pre-line">รายงาน
+            <span class="absolute top-[274px] left-[130px] text-[44px] whitespace-pre-line">รายงาน
                 ผลการประเมิน</span>
         </button>
     </div>
@@ -70,11 +70,11 @@
                 d="M13.9997 0C6.26795 0 0 6.2911 0 14.0514C0 20.641 4.52023 26.1705 10.6179 27.6892V18.3455H7.73121V14.0514H10.6179V12.2011C10.6179 7.41859 12.7745 5.20184 17.4526 5.20184C18.3396 5.20184 19.8701 5.37664 20.4962 5.55088V9.44312C20.1658 9.40827 19.5918 9.39085 18.8789 9.39085C16.5835 9.39085 15.6965 10.2637 15.6965 12.5327V14.0514H20.2694L19.4837 18.3455H15.6965V28C22.6286 27.1597 28 21.2356 28 14.0514C27.9994 6.2911 21.7315 0 13.9997 0Z"
                 fill="black" />
         </svg>
-        <p class="absolute whitespace-pre-line text-[15px] left-[88px]">ติดต่อ
+        <p class="absolute whitespace-pre-line text-[19px] left-[88px]">ติดต่อ
             กองบริหารการศึกษา</p>
-        <p class="absolute whitespace-pre-line text-[15px] left-[313px]">อีเมล
+        <p class="absolute whitespace-pre-line text-[19px] left-[313px]">อีเมล
             service@go.buu.ac.th</p>
-        <p class="absolute whitespace-pre-line text-[15px] left-[579px]">Facebook
+        <p class="absolute whitespace-pre-line text-[19px] left-[579px]">Facebook
             กองบริหารการศึกษา</p>
     </footer>
 @endsection
