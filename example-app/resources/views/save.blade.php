@@ -72,7 +72,7 @@
                 @php
                     $aunqaTopics = [
                         'AUN-QA 1_Expected Learning Outcomes',
-                        'AUN-QA 2_Programme Strucure and Content',
+                        'AUN-QA 2_Programme Structure and Content',
                         'AUN-QA 3_Teaching and Learning Approach',
                         'AUN-QA 4_Student Assessment',
                         'AUN-QA 5_Academic Staff',
