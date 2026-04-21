@@ -58,7 +58,7 @@
                 </div>
                 {{-- role assessor --}}
                 <div id="form-assessor" class="hidden">
-                    <p class="mt-[9px]">Code Assessor</p>
+                    <p class="mt-[9px]">Code Assessor <span class="text-red-500">*</span></p>
                     <input required name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3"
                         value="{{ $user->code_assessor ?? '' }}">
 
@@ -90,7 +90,7 @@
                         <option value="lead">Novice</option>
                     </select>
 
-                    <p class="mt-[9px]">Training Type</p>
+                    <p class="mt-[9px]">Training Type <span class="text-red-500">*</span></p>
                     <input required type="text" name="training_type"
                         class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3">
 
@@ -115,7 +115,7 @@
             <div class="justify-center flex gap-[50px]">
                 <button type="button" onclick="window.history.back()"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border">ยกเลิก</button>
-                <button type="submit" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
+                <button type="submit" onclick="myfunction()" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white">
                     บันทึก
                 </button>
             </div>
@@ -154,6 +154,9 @@
                 setInputsDisabled(formAssessor, true);
             }
         }
+        function myfunction() {
+            alert("บันทึกสำเร็จ");
+        }
 
         // --- ส่วนที่สำคัญมาก: ต้องเพิ่มบรรทัดข้างล่างนี้ ---
 
@@ -163,7 +166,6 @@
         // 2. ทำงานทุกครั้งที่เปลี่ยนค่าใน Select
         roleSelector.addEventListener('change', toggleFields);
 
-        // เพิ่มเข้าไปต่อท้ายใน <script> เดิมของคุณ
         const form = document.querySelector('form');
 
         form.addEventListener('submit', function (event) {
