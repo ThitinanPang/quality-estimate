@@ -63,7 +63,7 @@
                 stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
     </div>
-    <form action="" method="get">
+    <form action="{{ route('listcourse') }}" method="get" id="filterForm">
         <div class="absolute left-[1160px] top-[270px]">
             <span>วิทยาเขต :</span>
             <select name="campus" onchange="this.form.submit()"
@@ -73,23 +73,35 @@
                 <option value="จันทบุรี" {{ request('campus') == 'จันทบุรี' ? 'selected' : '' }}>จันทบุรี</option>
             </select>
         </div>
+        <div class="absolute left-[1130px] top-[320px]">
+            <span>กลุ่มสาขาวิชา :</span>
+            <select name="subject_group" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+                <option value="">เลือกข้อมูล</option>
+                <option value="วิทยาศาสตร์สุขภาพ">วิทยาศาสตร์สุขภาพ</option>
+                <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
+                <option value="วิศวกรรมศาตร์">วิศวกรรมศาตร์</option>
+                <option value="สถาปัตยกรรมศาสตร์">สถาปัตยกรรมศาสตร์</option>
+                <option value="เกษตรศาสตร์">เกษตรศาสตร์</option>
+                <option value="บริหารธุรกิจ">บริหารธุรกิจ</option>
+                <option value="ศิลปกรรมศาสตร์">ศิลปกรรมศาสตร์</option>
+                <option value="ครุศาสตร์/ศึกษาศาสตร์">ครุศาสตร์/ศึกษาศาสตร์</option>
+                <option value="สหสาขาวิชา">สหสาขาวิชา</option>
+            </select>
+        </div>
+        <div class="absolute left-[1190px] top-[370px]">
+            <span>คณะ :</span>
+            <select name="faculty_id" onchange="this.form.submit()"
+                class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
+                <option value="">เลือกข้อมูล</option>
+                @foreach($allFaculties as $f)
+                    <option value="{{ $f->id }}" {{ request('faculty_id') == $f->id ? 'selected' : '' }}>
+                        {{ $f->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
     </form>
-    <div class="absolute left-[1130px] top-[320px]">
-        <span>กลุ่มสาขาวิชา :</span>
-        <select name="subject_group" class="w-[196px] h-[35px] bg-[#DBDBDB] rounded-[10px] text-center">
-            <option value="">เลือกข้อมูล</option>
-            <option value="วิทยาศาสตร์สุขภาพ">วิทยาศาสตร์สุขภาพ</option>
-            <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
-            <option value="วิศวกรรมศาตร์">วิศวกรรมศาตร์</option>
-            <option value="สถาปัตยกรรมศาสตร์">สถาปัตยกรรมศาสตร์</option>
-            <option value="เกษตรศาสตร์">เกษตรศาสตร์</option>
-            <option value="บริหารธุรกิจ">บริหารธุรกิจ</option>
-            <option value="ศิลปกรรมศาสตร์">ศิลปกรรมศาสตร์</option>
-            <option value="ครุศาสตร์/ศึกษาศาสตร์">ครุศาสตร์/ศึกษาศาสตร์</option>
-            <option value="สหสาขาวิชา">สหสาขาวิชา</option>
-        </select>
-    </div>
-    <div class="flex items-center justify-center mt-[20px]">
+    <div class="flex items-center justify-center mt-[70px]">
         <div class="w-[1350px] rounded-[10px] overflow-hidden">
             <table id="myTable" class="w-full">
                 <thead class="bg-[#FFCE00] h-[66px]">
@@ -100,33 +112,49 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php $i = 1; @endphp
-                    @forelse ($faculties as $index => $faculty)
-                        @foreach ($faculty->courses as $course)
-                            <tr>
-                                <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$i++}}</td>
-                                <td class="px-2 py-2 text-center text-[24px] w-[120px]">
-                                    <select name="" data-id="{{ $course->id }}"
-                                        class="w-auto h-[40px] rounded-[14px] border text-center status-select">
-                                        <option class="bg-white" value="active" {{ $course->status == 'active' ? 'selected' : '' }}>Active</option>
-                                        <option class="bg-white" value="closed" {{ $course->status == 'closed' ? 'selected' : '' }}>Closed</option>
-                                        <option class="bg-white" value="suspended" {{ $course->status == 'suspended' ? 'selected' : '' }}>Suspended</option>
-                                    </select>
-                                </td>
-                                <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">
-                                    <div class="w-full flex items-center">
-                                        {{ $course->name }}
-                                    </div>
-                                </td>
-                            </tr>
+                    @php 
+                        $i = 1; 
+                        // ตรวจสอบว่ามีหลักสูตรอย่างน้อยหนึ่งอย่างในบรรดาคณะที่ดึงมาหรือไม่
+                        $hasCourses = false;
+                        foreach ($faculties as $f) {
+                            if ($f->courses->count() > 0) {
+                                $hasCourses = true;
+                                break;
+                            }
+                        }
+                    @endphp
+                    @if($hasCourses)
+                        @foreach ($faculties as $index => $faculty)
+                            @foreach ($faculty->courses as $course)
+                                <tr>
+                                    <td class="px-2 py-2 text-center text-[24px] w-[120px]">{{$i++}}</td>
+                                    <td class="px-2 py-2 text-center text-[24px] w-[120px]">
+                                        <select name="" data-id="{{ $course->id }}"
+                                            class="w-auto h-[40px] rounded-[14px] border text-center status-select">
+                                            <option class="bg-white" value="active" {{ $course->status == 'active' ? 'selected' : '' }}>
+                                                Active</option>
+                                            <option class="bg-white" value="closed" {{ $course->status == 'closed' ? 'selected' : '' }}>
+                                                Closed</option>
+                                            <option class="bg-white" value="suspended" {{ $course->status == 'suspended' ? 'selected' : '' }}>
+                                                Suspended</option>
+                                        </select>
+                                    </td>
+                                    <td class="px-2 py-2 text-[24px] text-left pl-4 flex flex-col">
+                                        <div class="w-full flex items-center">
+                                            {{ $course->name }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endforeach
-                    @empty
+                    @else
+                        {{-- ใช้ Tailwind Class และคำว่า "ไม่มีข้อมูล" ตามที่คุณเขียนไว้ในโค้ดตั้งต้น --}}
                         <tr>
                             <td class="px-4 py-2 text-center" colspan="3">
                                 ไม่มีข้อมูล
                             </td>
                         </tr>
-                    @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -286,8 +314,8 @@
 
                 let courseId = this.dataset.id;
                 let status = this.value;
-                let statusText = status === 'active' ? 'เปิดใช้งาน' : 
-                         status === 'closed' ? 'ปิดหลักสูตร' : 'ระงับการใช้งาน';
+                let statusText = status === 'active' ? 'เปิดใช้งาน' :
+                    status === 'closed' ? 'ปิดหลักสูตร' : 'ระงับการใช้งาน';
                 fetch("{{ route('course.updateStatus') }}", {
                     method: "POST",
                     headers: {

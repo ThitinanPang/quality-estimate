@@ -626,16 +626,26 @@ class AuthController extends Controller
 
         $selectedADYear = $selectedThaiYear - 543;
 
-        $query = Faculty::with('courses')->whereYear('created_at', $selectedADYear);
+        $allFaculties = Faculty::all();
+
+        $query = Faculty::query();
 
         // filter campus
         if ($request->campus) {
             $query->where('campus', $request->campus);
         }
+        // filter faculty
+        if ($request->faculty_id) {
+            $query->where('id', $request->faculty_id);
+        }
 
-        $faculties = $query->get();
+        $faculties = $query->with([
+            'courses' => function ($q) use ($selectedADYear) {
+                $q->whereYear('created_at', $selectedADYear);
+            }
+        ])->get();
 
-        return view('listcourse', compact('faculties', 'selectedThaiYear'));
+        return view('listcourse', compact('faculties', 'selectedThaiYear', 'allFaculties'));
     }
     public function updateStatus(Request $request)
     {
