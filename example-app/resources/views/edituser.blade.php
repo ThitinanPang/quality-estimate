@@ -1,17 +1,18 @@
 @extends('layouts.header')
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @section('content')
     <div class="flex flex-col items-center justify-center mt-[32px]">
         <p class="text-[28px] w-[900px] h-[40px] bg-[#FFCE00] text-center border border-b-0 rounded-t-[14px]">
             แก้ไขข้อมูลผู้ใช้</p>
 
-        <form action="{{ route('updateuser', $user->id) }}" method="POST">
+        <form action="{{ route('updateuser', $user->id) }}" method="POST" id="updateUserForm">
             @csrf
             <div id="formContainer"
                 class="border rounded-b-[39px] bg-[#DBDBDB] w-[900px] pl-[40px] pr-[40px] pt-[10px] overflow-y-auto">
 
                 <p class="mt-[9px] text-[20px]">ตำแหน่ง</p>
-                <select name="role" id="roleSelector" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
+                <select name="role" id="roleSelector"
+                    class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                     <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin Faculty</option>
                     <option value="admin university" {{ $user->role == 'admin university' ? 'selected' : '' }}>Admin
@@ -59,7 +60,8 @@
                 {{-- role assessor --}}
                 <div id="form-assessor" class="hidden">
                     <p class="mt-[9px] text-[20px]">Code Assessor <span class="text-red-500">*</span></p>
-                    <input required name="code_assessor" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]"
+                    <input required name="code_assessor"
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]"
                         value="{{ $user->code_assessor ?? '' }}">
 
                     <p class="mt-[9px] text-[20px]">คำนำหน้า</p>
@@ -83,7 +85,8 @@
                         class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
 
                     <p class="mt-[9px] text-[20px]">Assessor Type</p>
-                    <select name="assessor_type" class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
+                    <select name="assessor_type"
+                        class="bg-white h-[25px] w-[800px] border rounded mt-[9px] pl-3 text-[20px]">
                         <option value="junior">Junior</option>
                         <option value="senior">Senior</option>
                         <option value="lead">Lead</option>
@@ -115,7 +118,8 @@
             <div class="justify-center flex gap-[50px]">
                 <button type="button" onclick="window.history.back()"
                     class="w-[155px] h-[37px] mt-[32px] bg-[#DBDBDB] rounded-[9px] border text-[20px]">ยกเลิก</button>
-                <button type="submit" onclick="myfunction()" class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white text-[20px]">
+                <button type="submit"
+                    class="w-[155px] h-[37px] mt-[32px] bg-[#FFCE00] border rounded-[9px] hover:bg-white text-[20px]">
                     บันทึก
                 </button>
             </div>
@@ -127,6 +131,8 @@
         const formUser = document.getElementById('form-user');
         const formAssessor = document.getElementById('form-assessor');
         const formContainer = document.getElementById('formContainer');
+        // ประกาศชื่อตัวแปรให้ชัดเจน และประกาศแค่ครั้งเดียวพอครับ
+        const updateForm = document.getElementById('updateUserForm');
 
         function setInputsDisabled(container, isDisabled) {
             const inputs = container.querySelectorAll('input, select, textarea');
@@ -154,26 +160,35 @@
                 setInputsDisabled(formAssessor, true);
             }
         }
-        function myfunction() {
-            alert("บันทึกสำเร็จ");
-        }
 
-        // --- ส่วนที่สำคัญมาก: ต้องเพิ่มบรรทัดข้างล่างนี้ ---
-
-        // 1. ทำงานทันทีเมื่อโหลดหน้าเว็บเสร็จ
+        // ทำงานเมื่อโหลดหน้าและเมื่อเปลี่ยนค่า Role
         document.addEventListener('DOMContentLoaded', toggleFields);
-
-        // 2. ทำงานทุกครั้งที่เปลี่ยนค่าใน Select
         roleSelector.addEventListener('change', toggleFields);
 
-        const form = document.querySelector('form');
+        // --- ส่วนของ SweetAlert (แก้ไขให้เหลืออันเดียว) ---
+        updateForm.addEventListener('submit', function (event) {
+            // 1. ป้องกันการ Submit ทันที
+            event.preventDefault();
 
-        form.addEventListener('submit', function (event) {
-            // ตรวจสอบความถูกต้องของ Form (HTML5 Validation)
-            if (!form.checkValidity()) {
-                // ถ้าข้อมูลไม่ครบ Browser จะโชว์จุดที่ต้องกรอกให้เอง
+            // 2. ตรวจสอบ HTML5 Validation (เช่น required)
+            if (!updateForm.checkValidity()) {
+                updateForm.reportValidity();
                 return;
             }
+
+            // 3. แสดง SweetAlert ยืนยัน
+            Swal.fire({
+                icon: 'success',
+                title: 'บันทึกสำเร็จ!',
+                text: 'ข้อมูลของคุณถูกอัปเดตเรียบร้อยแล้ว',
+                showConfirmButton: false, // ไม่โชว์ปุ่มตกลง
+                timer: 1500, // แสดงผล 1.5 วินาที
+                timerProgressBar: true
+            }).then(() => {
+
+                updateForm.submit();
+
+            });
         });
     </script>
 @endsection

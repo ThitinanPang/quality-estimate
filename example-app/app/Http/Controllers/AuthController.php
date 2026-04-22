@@ -156,27 +156,37 @@ class AuthController extends Controller
         ]);
 
         $file = $request->file('excel_file');
-
-        // โหลดไฟล์ Excel
         $spreadsheet = IOFactory::load($file->getPathname());
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray();
 
-        // ข้าม row แรก (header)
+        $existingInAssessor = []; // เก็บรายชื่อที่ซ้ำในตาราง assessors (ถ้าต้องการเช็คข้ามตาราง)
+        $successCount = 0;
+
         foreach ($rows as $index => $row) {
             if ($index === 0)
                 continue;
-            $email = trim($row[5] ?? '');
-            if ($email == '') {
-                continue;
-            }
-            $phone = $row[6] ?? null;
 
+            $email = trim($row[5] ?? '');
+            if ($email == '')
+                continue;
+
+            // --- ส่วนการเช็คข้อมูลซ้ำ (ตัวอย่าง: เช็คว่าอีเมลนี้มีอยู่ในตาราง UserAssessor หรือยัง) ---
+            $isAssessor = User::where('email', $email)->first();
+
+            if ($isAssessor) {
+                $existingInAssessor[] = "{$isAssessor->name}";
+                continue; // ข้ามการนำเข้าคนนี้
+            }
+            // -----------------------------------------------------------------------
+
+            $phone = $row[6] ?? null;
             if ($phone) {
                 $phone = preg_replace('/[^0-9]/', '', $phone);
             }
+
             User::updateOrCreate(
-                ['email' => $email], // ใช้ email เป็น unique key
+                ['email' => $email],
                 [
                     'prefix' => $row[0] ?? null,
                     'name' => $row[1] ?? null,
@@ -186,9 +196,21 @@ class AuthController extends Controller
                     'phone_number' => $phone,
                 ]
             );
+            $successCount++;
         }
 
-        return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ');
+        // จัดการการส่งกลับ (Redirect) พร้อมแจ้งเตือน
+        if (count($existingInAssessor) > 0) {
+            $htmlList = "<ul style='text-align: left; margin-left: 20px; font-size: 16px;'>";
+            foreach ($existingInAssessor as $item) {
+                $htmlList .= "<li>" . $item . "</li>";
+            }
+            $htmlList .= "</ul>";
+
+            return redirect()->route('user')->with('warning_list', $htmlList);
+        }
+
+        return redirect()->route('user')->with('success', 'นำเข้าข้อมูลสำเร็จ ' . $successCount . ' รายการ');
     }
     public function importassessor(Request $request)
     {

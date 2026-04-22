@@ -190,7 +190,34 @@
                 // reset ค่าให้เลือกไฟล์เดิมได้อีก
                 this.value = "";
             }
-            alert('เพิ่มผู้ใช้งานสำเร็จ');
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. แจ้งเตือนกรณีมีข้อมูลซ้ำ (แสดงเป็นรายการ)
+            @if(session('warning_list'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'พบข้อมูลอยู่ในระบบแล้ว',
+                    html: `
+                        <div style="font-family: 'Kanit', sans-serif;">
+                            <p style="margin-bottom: 10px;">รายชื่อต่อไปนี้มีข้อมูลอยู่ในระบบหลักแล้ว จึงไม่ถูกเพิ่ม:</p>
+                            {!! session('warning_list') !!}
+                        </div>
+                    `,
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#FFCE00'
+                });
+            @endif
+
+            // 2. แจ้งเตือนกรณีสำเร็จ
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ',
+                    text: "{{ session('success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            @endif
         });
         document.addEventListener('DOMContentLoaded', function () {
             const selectElement = document.getElementById('thai-year');
@@ -268,5 +295,6 @@
             // แสดงหน้าแรก
             showPage(1);
         });
+        
     </script>
 @endsection
